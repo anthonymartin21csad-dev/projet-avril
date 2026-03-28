@@ -1,8 +1,562 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <body>
-    <h1>Agence PÂQUES</h1>
-    <p>Site en construction...</p>
-    <p>TEST!</p>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Agence PÂQUES — Portail Sécurisé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── CONFIG FACILE À MODIFIER ── */
+    :root {
+      --agent-code: "LAPIN07";       /* ← NOM DE CODE DE L'AGENT */
+      --agent-password: "CHOCOLAT";  /* ← MOT DE PASSE */
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    body {
+      background: #0a0c0f;
+      color: #c8f0d0;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 1.5rem;
+    }
+ 
+    /* Grille de fond animée */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 20s linear infinite;
+      pointer-events: none;
+    }
+ 
+    @keyframes gridScroll {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+ 
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+ 
+    .screen {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+    }
+ 
+    /* ── HEADER AGENCE ── */
+    .agency-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.3s;
+    }
+ 
+    .agency-badge {
+      display: inline-block;
+      border: 2px solid #00ff50;
+      padding: 0.3rem 1rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: #00ff50;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+ 
+    .agency-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #fff;
+      line-height: 1;
+    }
+ 
+    .agency-name span {
+      color: #00ff50;
+    }
+ 
+    .agency-subtitle {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: #4a7a55;
+      margin-top: 0.4rem;
+    }
+ 
+    /* ── TERMINAL CARD ── */
+    .terminal {
+      background: rgba(0,10,5,0.85);
+      border: 1px solid #1a3a22;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0,255,80,0.07), inset 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.6s;
+    }
+ 
+    .terminal-bar {
+      background: #0d1f12;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid #1a3a22;
+    }
+ 
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-r { background: #ff453a; }
+    .dot-y { background: #ffd60a; }
+    .dot-g { background: #30d158; }
+ 
+    .terminal-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #4a7a55;
+      margin-left: auto;
+      margin-right: auto;
+    }
+ 
+    .terminal-body { padding: 1.5rem; }
+ 
+    /* ── SECTION LOGIN ── */
+    #section-login { display: block; }
+    #section-inbox { display: none; }
+    #section-email { display: none; }
+ 
+    .prompt-line {
+      font-size: 0.7rem;
+      color: #4a7a55;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+ 
+    .prompt-line .blink {
+      animation: blink 1s step-end infinite;
+    }
+ 
+    @keyframes blink { 50% { opacity: 0; } }
+ 
+    .field-group { margin-bottom: 1.2rem; }
+ 
+    .field-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #4a7a55;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+ 
+    .field-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #1a5a2a;
+      padding: 0.5rem 0;
+      color: #00ff50;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      outline: none;
+      text-transform: uppercase;
+      transition: border-color 0.3s;
+    }
+ 
+    .field-input:focus { border-color: #00ff50; }
+    .field-input::placeholder { color: #1a3a22; }
+ 
+    .error-msg {
+      font-size: 0.6rem;
+      color: #ff453a;
+      margin-top: 0.5rem;
+      min-height: 1rem;
+      letter-spacing: 0.1em;
+    }
+ 
+    .btn-connect {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.9rem;
+      background: transparent;
+      border: 1px solid #00ff50;
+      color: #00ff50;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+ 
+    .btn-connect:active {
+      background: #00ff50;
+      color: #0a0c0f;
+    }
+ 
+    /* ── LOADING ── */
+    .loading-bar-wrap {
+      margin-top: 1.2rem;
+      display: none;
+    }
+ 
+    .loading-label {
+      font-size: 0.55rem;
+      color: #4a7a55;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.4rem;
+    }
+ 
+    .loading-bar {
+      height: 2px;
+      background: #1a3a22;
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .loading-bar::after {
+      content: '';
+      position: absolute;
+      left: -60%;
+      top: 0;
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, transparent, #00ff50, transparent);
+      animation: loading 1s linear infinite;
+    }
+ 
+    @keyframes loading {
+      0% { left: -60%; }
+      100% { left: 110%; }
+    }
+ 
+    /* ── INBOX ── */
+    .inbox-header {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #4a7a55;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #1a3a22;
+    }
+ 
+    .inbox-header span { color: #00ff50; }
+ 
+    .email-row {
+      padding: 1rem 0.8rem;
+      border: 1px solid #1a3a22;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+ 
+    .email-row:active { background: rgba(0,255,80,0.05); border-color: #00ff50; }
+ 
+    .unread-dot {
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: #00ff50;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00ff50;
+      animation: pulse 2s ease-in-out infinite;
+    }
+ 
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+ 
+    .email-from {
+      font-size: 0.7rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+ 
+    .email-subject {
+      font-size: 0.65rem;
+      color: #00ff50;
+      margin-bottom: 0.3rem;
+    }
+ 
+    .email-preview {
+      font-size: 0.6rem;
+      color: #3a6a45;
+    }
+ 
+    .email-date {
+      font-size: 0.55rem;
+      color: #2a4a30;
+      margin-top: 0.4rem;
+      text-align: right;
+    }
+ 
+    /* ── EMAIL VIEW ── */
+    .email-nav {
+      font-size: 0.6rem;
+      color: #4a7a55;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+ 
+    .email-meta {
+      border-bottom: 1px solid #1a3a22;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+ 
+    .email-meta-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+ 
+    .meta-key {
+      font-size: 0.6rem;
+      color: #4a7a55;
+      letter-spacing: 0.1em;
+      min-width: 50px;
+    }
+ 
+    .meta-val {
+      font-size: 0.6rem;
+      color: #c8f0d0;
+      letter-spacing: 0.05em;
+    }
+ 
+    .meta-val.subject { color: #fff; font-size: 0.7rem; }
+ 
+    .email-body {
+      font-size: 0.7rem;
+      color: #b0d8b8;
+      line-height: 1.8;
+    }
+ 
+    .email-body p { margin-bottom: 1rem; }
+ 
+    .email-body .signature {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #1a3a22;
+      color: #4a7a55;
+      font-size: 0.6rem;
+      line-height: 1.6;
+    }
+ 
+    .email-body .highlight {
+      color: #00ff50;
+      font-weight: bold;
+    }
+ 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+ 
+    .section-animate {
+      animation: fadeIn 0.4s ease forwards;
+    }
+  </style>
+</head>
+<body>
+<div class="screen">
+ 
+  <div class="agency-header">
+    <div class="agency-badge">⬛ ACCÈS RESTREINT ⬛</div>
+    <div class="agency-name">AGENCE <span>PÂQUES</span></div>
+    <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
+  </div>
+ 
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <div class="terminal-title">PORTAIL-AGENT v4.2.1</div>
+    </div>
+ 
+    <div class="terminal-body">
+ 
+      <!-- LOGIN -->
+      <div id="section-login">
+        <div class="prompt-line">
+          &gt; Connexion au portail sécurisé...<br>
+          &gt; Veuillez vous authentifier.<span class="blink">_</span>
+        </div>
+ 
+        <div class="field-group">
+          <label class="field-label" for="inp-code">// NOM DE CODE AGENT</label>
+          <input class="field-input" id="inp-code" type="text" placeholder="XXXXXXX" autocomplete="off" autocorrect="off" spellcheck="false" />
+        </div>
+ 
+        <div class="field-group">
+          <label class="field-label" for="inp-pass">// MOT DE PASSE</label>
+          <input class="field-input" id="inp-pass" type="password" placeholder="••••••••" autocomplete="off" />
+        </div>
+ 
+        <div class="error-msg" id="error-msg"></div>
+ 
+        <button class="btn-connect" id="btn-connect" onclick="tryLogin()">[ CONNEXION ]</button>
+ 
+        <div class="loading-bar-wrap" id="loading-wrap">
+          <div class="loading-label">&gt; VÉRIFICATION EN COURS...</div>
+          <div class="loading-bar"></div>
+        </div>
+      </div>
+ 
+      <!-- INBOX -->
+      <div id="section-inbox">
+        <div class="inbox-header">
+          BOÎTE DE RÉCEPTION — <span>1 MESSAGE NON LU</span>
+        </div>
+        <div class="email-row" onclick="openEmail()">
+          <div class="unread-dot"></div>
+          <div class="email-from">Directrice G. Delargent</div>
+          <div class="email-subject">AFFAIRE LAFLEUR — Mission urgente</div>
+          <div class="email-preview">Agent, nous avons besoin de vous. Maintenant...</div>
+          <div class="email-date">Aujourd'hui, 06:47</div>
+        </div>
+      </div>
+ 
+      <!-- EMAIL -->
+      <div id="section-email">
+        <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
+ 
+        <div class="email-meta">
+          <div class="email-meta-row">
+            <div class="meta-key">DE :</div>
+            <div class="meta-val">g.delargent@agence-paques.gc.ca</div>
+          </div>
+          <div class="email-meta-row">
+            <div class="meta-key">À :</div>
+            <div class="meta-val">agent@agence-paques.gc.ca</div>
+          </div>
+          <div class="email-meta-row">
+            <div class="meta-key">OBJET :</div>
+            <div class="meta-val subject">AFFAIRE LAFLEUR — Mission urgente</div>
+          </div>
+          <div class="email-meta-row">
+            <div class="meta-key">DATE :</div>
+            <div class="meta-val">Dimanche, 06:47</div>
+          </div>
+        </div>
+ 
+        <div class="email-body">
+          <p>Agent,</p>
+ 
+          <p>Je serai brève — c'est dimanche matin, je n'ai pas encore bu mon café, et franchement, je préférerais être ailleurs.</p>
+ 
+          <p>La nuit dernière, un certain <span class="highlight">Réginald Lafleur</span> — chocolatier excentrique, citoyen imposable, collectionneur de chapeaux inutiles — a été retrouvé mort dans sa salle de jeu. La police parle de crise cardiaque. L'Agence, elle, parle d'autre chose.</p>
+ 
+          <p>Vous êtes notre meilleur agent disponible ce matin. Vous êtes, en réalité, notre <em>seul</em> agent disponible ce matin. Les autres ont pris congé pour Pâques. Je ne fais pas de commentaires là-dessus.</p>
+ 
+          <p>Votre mission : déterminer si la mort de M. Lafleur est naturelle ou non, identifier le ou les responsables, et récupérer ce qu'on lui a volé avant que ça disparaisse pour de bon.</p>
+ 
+          <p>Votre premier briefing complet vous attend <span class="highlight">sur la table de la salle à manger</span>. Trouvez l'enveloppe. Lisez-la. Puis commencez à travailler.</p>
+ 
+          <p>L'Agence compte sur vous. Ce qui, ce matin, est à la fois un honneur et une légère source d'inquiétude de notre part.</p>
+ 
+          <div class="signature">
+            Bonne chance,<br><br>
+            <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+            Directrice des opérations<br>
+            Agence PÂQUES<br>
+            <em style="color:#2a4a30;">"Nous résolvons ce que les autres ignorent."</em><br>
+            <em style="color:#2a4a30;">(Et parfois ce qu'ils préfèrent ne pas savoir.)</em>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+</div>
+ 
+<script>
+  // ── CONFIGURATION ──────────────────────────────────────────
+  const AGENT_CODE     = "LAPIN07";    // ← Modifier ici
+  const AGENT_PASSWORD = "CHOCOLAT";   // ← Modifier ici
+  // ───────────────────────────────────────────────────────────
+ 
+  function tryLogin() {
+    const code = document.getElementById('inp-code').value.trim().toUpperCase();
+    const pass = document.getElementById('inp-pass').value.trim().toUpperCase();
+    const err  = document.getElementById('error-msg');
+    const wrap = document.getElementById('loading-wrap');
+    const btn  = document.getElementById('btn-connect');
+ 
+    err.textContent = '';
+ 
+    if (code !== AGENT_CODE || pass !== AGENT_PASSWORD) {
+      err.textContent = '> ACCÈS REFUSÉ. Identifiants incorrects.';
+      document.getElementById('inp-code').style.borderColor = '#ff453a';
+      document.getElementById('inp-pass').style.borderColor = '#ff453a';
+      setTimeout(() => {
+        document.getElementById('inp-code').style.borderColor = '';
+        document.getElementById('inp-pass').style.borderColor = '';
+      }, 1500);
+      return;
+    }
+ 
+    btn.style.display = 'none';
+    wrap.style.display = 'block';
+ 
+    setTimeout(() => {
+      document.getElementById('section-login').style.display = 'none';
+      const inbox = document.getElementById('section-inbox');
+      inbox.style.display = 'block';
+      inbox.classList.add('section-animate');
+    }, 1800);
+  }
+ 
+  function openEmail() {
+    document.getElementById('section-inbox').style.display = 'none';
+    const email = document.getElementById('section-email');
+    email.style.display = 'block';
+    email.classList.add('section-animate');
+  }
+ 
+  function backToInbox() {
+    document.getElementById('section-email').style.display = 'none';
+    document.getElementById('section-inbox').style.display = 'block';
+  }
+ 
+  // Permettre de soumettre avec Entrée
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryLogin();
+  });
+</script>
+</body>
 </html>
