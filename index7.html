@@ -390,52 +390,6 @@
 <body>
 <div id="scene">
 
-  <!-- ZONE VISUELLE -->
-  <div id="visual-zone">
-    <div id="room-bg"></div>
-    <div class="lamp"></div>
-
-    <div id="lucie-char">
-      <!-- SVG Lucie -->
-      <div class="char-face">
-        <svg viewBox="0 0 68 68" width="68" height="68" xmlns="http://www.w3.org/2000/svg">
-          <!-- Corps -->
-          <ellipse cx="34" cy="56" rx="18" ry="10" fill="#2a1f42"/>
-          <!-- Cou -->
-          <rect x="30" y="44" width="8" height="8" fill="#d4a574" rx="2"/>
-          <!-- Tête -->
-          <ellipse cx="34" cy="34" rx="16" ry="18" fill="#d4a574"/>
-          <!-- Cheveux -->
-          <ellipse cx="34" cy="22" rx="17" ry="10" fill="#5c3d1e"/>
-          <ellipse cx="18" cy="32" rx="5" ry="10" fill="#5c3d1e"/>
-          <ellipse cx="50" cy="32" rx="5" ry="10" fill="#5c3d1e"/>
-          <!-- Yeux -->
-          <ellipse cx="27" cy="34" rx="3" ry="3.5" fill="#fff"/>
-          <ellipse cx="41" cy="34" rx="3" ry="3.5" fill="#fff"/>
-          <circle cx="28" cy="34" r="1.8" fill="#3a2010"/>
-          <circle cx="42" cy="34" r="1.8" fill="#3a2010"/>
-          <circle cx="28.8" cy="33.2" r="0.6" fill="#fff"/>
-          <circle cx="42.8" cy="33.2" r="0.6" fill="#fff"/>
-          <!-- Sourcils normaux -->
-          <path id="brow-l" d="M24 29 Q27 27 30 29" stroke="#3a2010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <path id="brow-r" d="M38 29 Q41 27 44 29" stroke="#3a2010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <!-- Nez -->
-          <ellipse cx="34" cy="39" rx="2" ry="1.5" fill="#c49060"/>
-          <!-- Bouche -->
-          <path id="mouth" d="M29 44 Q34 48 39 44" stroke="#9a5040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Boucles d'oreilles -->
-          <circle cx="18" cy="36" r="2" fill="#a78bfa"/>
-          <circle cx="50" cy="36" r="2" fill="#a78bfa"/>
-        </svg>
-      </div>
-      <div class="char-name-tag">LUCIE ÉBEL</div>
-    </div>
-
-    <div id="visual-overlay">
-      <div class="visual-card" id="visual-card"></div>
-    </div>
-  </div>
-
   <!-- STATUS BAR -->
   <div id="status-bar">
     <div class="status-item">
@@ -487,88 +441,50 @@ const STEPS = [
   {
     speaker: 'agent',
     text: 'Madame Ébel, merci de vous m\'accorder votre temps. Pouvez-vous nous décrire votre relation avec M. Bernard Lafleur ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'C\'était mon voisin. On se connaît depuis dix ans. Enfin, on <span class="important">se connaissait</span>. C\'était quelqu\'un de... particulier. Un peu distrait. Surtout avec les plantes des autres. (Petite blague — mais vraiment, ses orchidées, c\'est lui qui les a tuées.)',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'agent',
     text: 'Où étiez-vous le samedi 14 mars au soir ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'Chez mon amie <span class="important">Martine Bouleau</span>, au 12 rue des Érables. On a regardé un film, mangé des pâtes carbonara. Martine fait les meilleures carbonara du quartier. Meilleures que Bernard en tout cas — lui, il mettait de la crème. De la crème ! Dans des carbonara ! C\'est un crime, ça aussi!',
-    visual: { type: 'text', content: '🏠  12, rue des Érables<br><span style="color:#88ddff;font-size:0.6rem;">Domicile de Martine Bouleau</span><br><span style="color:#6ee7b7;font-size:0.55rem;margin-top:4px;display:block;">Alibi déclaré — 19h00 à 23h30</span>' },
-    expression: 'smug'
   },
   {
     speaker: 'agent',
     text: 'Avez-vous une preuve de votre présence là-bas ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'Oui, justement. J\'ai des photos. Martine et moi on a pris des selfies pendant le film. <span class="important">À 21h14</span>, avec la localisation GPS. Et avant que vous demandiez : non, on ne peut pas truquer le GPS. J\'ai essayé une fois pour éviter une contravention. Ça n\'a pas marché. Longue histoire.',
-    visual: {
-      type: 'photo',
-      bg: 'linear-gradient(135deg, #1a1030 0%, #2a1848 60%, #1e1438 100%)',
-      scene: '🛋️',
-      caption: 'Soirée chez Martine',
-      timestamp: '14/03 — 21:14:07',
-      location: '📍 12 rue des Érables'
-    },
-    expression: 'smug'
   },
   {
     speaker: 'agent',
     text: 'Avez-vous une autre photo ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'Oui, une de nous deux à <span class="important">23h02</span>, juste avant que je reparte. Et là, j\'ai vu les messages de Bernard qui ne répondait pas. J\'étais dans tous mes états. Mes orchidées... Bon, au moins lui, il est mort. Mes orchidées, elles, elles souffrent encore. C\'est plus long, pour une plante.',
-    visual: {
-      type: 'photo',
-      bg: 'linear-gradient(135deg, #0e1820 0%, #1a2a3a 60%, #101e2c 100%)',
-      scene: '🌙',
-      caption: 'Départ de chez Martine',
-      timestamp: '14/03 — 23:02:41',
-      location: '📍 12 rue des Érables'
-    },
-    expression: 'laugh'
   },
   {
     speaker: 'agent',
     text: 'Avez-vous envoyé des messages à M. Lafleur ce soir-là ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'Oui. Plusieurs. Je ne vais pas vous mentir, j\'étais fâchée. Très fâchée. <span class="important">Sapperlipopette</span>, ces orchidées coûtaient 80 dollars pièce ! Mais être fâchée ne fait pas de moi une meurtrière. Si c\'était le cas, mon ancien dentiste serait disparu depuis longtemps.',
-    visual: { type: 'text', content: '📱  Messages envoyés à Bernard Lafleur<br><span style="color:#f87171;font-size:0.6rem;">21:47 — 21:52 — 22:38 — 23:02</span><br><span style="color:#7a6e90;font-size:0.55rem;margin-top:4px;display:block;">Confirmés par les relevés téléphoniques</span>' },
-    expression: 'angry'
   },
   {
     speaker: 'agent',
     text: 'Une dernière question. Saviez-vous que M. Lafleur était en conflit avec d\'autres personnes ?',
-    visual: null,
-    expression: 'normal'
   },
   {
     speaker: 'lucie',
     text: 'Claude Lavi, oui. Tout le monde était au courant. Cette histoire de recette de ganache... Bernard était comme ça. Charmant, mais il <span class="important">empruntait</span> les idées des autres sans vraiment demander. Comme les plantes. Comme les recettes.',
-    visual: { type: 'text', content: '⚠️  <span style="color:#f9c74f;">Suspect mentionné</span><br><span style="color:#a78bfa;font-size:0.65rem;font-weight:500;">Claude Lavi</span><br><span style="color:#7a6e90;font-size:0.55rem;margin-top:4px;display:block;">Conflit documenté — recette de ganache</span>' },
-    expression: 'normal'
   }
 ];
 
@@ -578,73 +494,9 @@ let typeTimer = null;
 
 const dialogueText = document.getElementById('dialogue-text');
 const speakerLabel = document.getElementById('speaker-label');
-const visualCard   = document.getElementById('visual-card');
 const progressFill = document.getElementById('progress-fill');
 const stepCounter  = document.getElementById('step-counter');
-const lucieChar    = document.getElementById('lucie-char');
 const btnNext      = document.getElementById('btn-next');
-
-// ── EXPRESSIONS ──
-function setExpression(expr) {
-  const browL = document.getElementById('brow-l');
-  const browR = document.getElementById('brow-r');
-  const mouth = document.getElementById('mouth');
-  if (!browL) return;
-
-  switch(expr) {
-    case 'angry':
-      browL.setAttribute('d', 'M24 30 Q27 27.5 30 29.5');
-      browR.setAttribute('d', 'M38 29.5 Q41 27.5 44 30');
-      mouth.setAttribute('d', 'M29 46 Q34 43 39 46');
-      break;
-    case 'sad':
-      browL.setAttribute('d', 'M24 28 Q27 30 30 29');
-      browR.setAttribute('d', 'M38 29 Q41 30 44 28');
-      mouth.setAttribute('d', 'M29 46 Q34 43.5 39 46');
-      break;
-    case 'smug':
-      browL.setAttribute('d', 'M24 29 Q27 27 30 28');
-      browR.setAttribute('d', 'M38 28 Q41 27 44 29');
-      mouth.setAttribute('d', 'M30 44 Q34 47.5 39 44');
-      break;
-    case 'laugh':
-      browL.setAttribute('d', 'M24 28 Q27 26 30 28');
-      browR.setAttribute('d', 'M38 28 Q41 26 44 28');
-      mouth.setAttribute('d', 'M28 43 Q34 50 40 43');
-      break;
-    default:
-      browL.setAttribute('d', 'M24 29 Q27 27 30 29');
-      browR.setAttribute('d', 'M38 29 Q41 27 44 29');
-      mouth.setAttribute('d', 'M29 44 Q34 48 39 44');
-  }
-}
-
-// ── VISUEL ──
-function showVisual(visual) {
-  if (!visual) {
-    visualCard.classList.remove('show');
-    setTimeout(() => { visualCard.innerHTML = ''; }, 400);
-    return;
-  }
-
-  if (visual.type === 'photo') {
-    visualCard.innerHTML = `
-      <div class="fake-photo">
-        <div class="fake-photo-inner" style="background:${visual.bg};">
-          <div style="font-size:2.5rem;">${visual.scene}</div>
-          <div style="font-size:0.65rem;color:#b0a0d0;letter-spacing:0.08em;">${visual.caption}</div>
-          <div class="photo-location">${visual.location}</div>
-          <div class="photo-timestamp">${visual.timestamp}</div>
-        </div>
-      </div>`;
-  } else {
-    visualCard.innerHTML = `<div class="visual-msg">${visual.content}</div>`;
-  }
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => visualCard.classList.add('show'));
-  });
-}
 
 // ── TYPEWRITER ──
 function typeText(html, onDone) {
@@ -665,7 +517,6 @@ function typeText(html, onDone) {
     typing = false;
     btnNext.disabled = false;
     if (onDone) onDone();
-    lucieChar.classList.remove('talking');
   }, delay);
 }
 
@@ -713,7 +564,6 @@ function nextStep() {
     dialogueText.innerHTML = step.text + '<span class="cursor"></span>';
     typing = false;
     btnNext.disabled = false;
-    lucieChar.classList.remove('talking');
     return;
   }
 
