@@ -1,1 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Agence PÂQUES — Rapport d'enquête</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════════════════
+       CONFIGURATION — MODIFIER ICI
+    ══════════════════════════════════════════ */
 
+    /*
+      SUSPECTS_ANSWERS : prénom attendu pour chaque case (insensible à la casse)
+      FORM_QUESTION    : la question affichée en haut du formulaire
+      SUCCESS_MESSAGE  : message HTML affiché après une bonne réponse
+    */
+
+    :root {
+      --green:      #00ff50;
+      --green-dim:  #1a5a2a;
+      --green-dark: #1a3a22;
+      --green-bg:   #0d1f12;
+      --text:       #c8f0d0;
+      --text-dim:   #4a7a55;
+      --text-mid:   #b0d8b8;
+      --bg:         #0a0c0f;
+      --red:        #ff453a;
+      --yellow:     #ffd60a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { height: 100%; overflow-y: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Grille animée */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gridScroll {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SCREEN ── */
+    .screen {
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 1;
+      padding-bottom: 2rem;
+    }
+
+    /* ── HEADER ── */
+    .agency-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.2s;
+    }
+
+    .agency-badge {
+      display: inline-block;
+      border: 2px solid var(--green);
+      padding: 0.25rem 0.9rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--green);
+      margin-bottom: 0.6rem;
+    }
+
+    .agency-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .agency-name span { color: var(--green); }
+
+    .agency-subtitle {
+      font-size: 0.5rem;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      margin-top: 0.35rem;
+      line-height: 1.5;
+    }
+
+    /* ── TERMINAL ── */
+    .terminal {
+      background: rgba(0,10,5,0.88);
+      border: 1px solid var(--green-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0,255,80,0.06), inset 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.5s;
+    }
+
+    .terminal-bar {
+      background: var(--green-bg);
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--green-dark);
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-r { background: var(--red); }
+    .dot-y { background: var(--yellow); }
+    .dot-g { background: #30d158; }
+
+    .terminal-title {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin: 0 auto;
+    }
+
+    .terminal-body { padding: 1.5rem; }
+
+    /* ── FORMULAIRE ── */
+    .form-question {
+      font-size: 0.72rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--green-dark);
+    }
+
+    .form-question .accent { color: var(--green); }
+
+    .suspect-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .suspect-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .suspect-last {
+      font-size: 0.65rem;
+      color: var(--text-mid);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .field-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--green-dim);
+      padding: 0.5rem 0;
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .field-input:focus { border-color: var(--green); }
+    .field-input::placeholder { color: var(--green-dark); }
+
+    .error-msg {
+      font-size: 0.6rem;
+      color: var(--red);
+      margin-top: 0.8rem;
+      min-height: 1rem;
+      letter-spacing: 0.1em;
+      line-height: 1.5;
+    }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 1.2rem;
+      padding: 0.9rem;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 2px;
+    }
+
+    .btn-submit:active { background: var(--green); color: var(--bg); }
+
+    /* ── SUCCÈS ── */
+    .success-panel {
+      display: none;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    .success-header {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--green);
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px rgba(0,255,80,0.3);
+    }
+
+    .success-divider {
+      height: 1px;
+      background: var(--green-dark);
+      margin-bottom: 1.2rem;
+    }
+
+    .success-body {
+      font-size: 0.7rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+    }
+
+    .success-body p { margin-bottom: 1rem; }
+    .success-body p:last-child { margin-bottom: 0; }
+    .success-body .highlight { color: var(--green); font-weight: bold; }
+
+    .success-body .signature {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--green-dark);
+      color: var(--text-dim);
+      font-size: 0.6rem;
+      line-height: 1.6;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div class="screen">
+
+  <div class="agency-header">
+    <div class="agency-badge">ACCÈS RESTREINT</div>
+    <div class="agency-name">AGENCE <span>PÂQUES</span></div>
+    <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <div class="terminal-title">RAPPORT D'ENQUÊTE</div>
+    </div>
+    <div class="terminal-body">
+
+      <!-- FORMULAIRE -->
+      <div id="form-section">
+        <div class="form-question">
+          &gt; <span class="accent">RAPPORT INTERMÉDIAIRE REQUIS</span><br><br>
+          Sur la base des indices recueillis jusqu'à présent, identifiez les
+          <span class="accent">deux suspects principaux</span> de l'affaire Lafleur.
+          Entrez le prénom de chacun ci-dessous.
+        </div>
+
+        <div class="suspect-group">
+          <span class="suspect-label">// SUSPECT N°1</span>
+          <div class="suspect-last">Nom de famille : <strong style="color:var(--text);">Lavi</strong></div>
+          <input class="field-input" id="input-suspect1" type="text"
+                 placeholder="Prénom..." autocomplete="off" autocorrect="off" spellcheck="false" />
+        </div>
+
+        <div class="suspect-group">
+          <span class="suspect-label">// SUSPECT N°2</span>
+          <div class="suspect-last">Nom de famille : <strong style="color:var(--text);">Ébel</strong></div>
+          <input class="field-input" id="input-suspect2" type="text"
+                 placeholder="Prénom..." autocomplete="off" autocorrect="off" spellcheck="false" />
+        </div>
+
+        <div class="error-msg" id="form-error"></div>
+
+        <button class="btn-submit" onclick="submitForm()">[ SOUMETTRE LE RAPPORT ]</button>
+      </div>
+
+      <!-- SUCCÈS -->
+      <div class="success-panel" id="success-section">
+        <div class="success-header">✓ RAPPORT ACCEPTÉ</div>
+        <div class="success-divider"></div>
+        <div class="success-body" id="success-body"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ══════════════════════════════════════════════════════════
+  //  CONFIGURATION — MODIFIER ICI
+  // ══════════════════════════════════════════════════════════
+
+  // Prénoms attendus (insensibles à la casse, sans accents optionnels)
+  const SUSPECT_1_PRENOM = "Claude";   // ← Prénom de Lavi
+  const SUSPECT_2_PRENOM = "Lucie";    // ← Prénom d'Ébel
+
+  // Message d'erreur si un prénom est incorrect
+  const ERROR_MESSAGE = "> Identification incorrecte. Réexaminez vos indices et réessayez.";
+
+  // Message de succès (HTML accepté, utilisez <span class="highlight">texte</span> pour le vert)
+  const SUCCESS_HTML = `
+    <p>Identification confirmée. Les deux suspects ont été localisés et convoqués
+    pour interrogatoire.</p>
+
+    <p>Votre analyse est cohérente avec les indices recueillis sur la scène de crime.
+    L'Agence autorise le passage à la prochaine phase de l'enquête.</p>
+
+    <p>Rendez-vous dans le <span class="highlight">bureau de Lafleur</span>.
+    Un indice crucial vous y attend.</p>
+
+    <div class="signature">
+      Bien reçu, Agent.<br><br>
+      <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+      Directrice des opérations — Agence PÂQUES<br><br>
+      <em style="color:#2a4a30;">Je savais que vous y arriveriez.</em><br>
+      <em style="color:#2a4a30;">Ne le répétez pas... J'avais parié le contraire...</em>
+    </div>
+  `;
+
+  // ══════════════════════════════════════════════════════════
+  //  LOGIQUE
+  // ══════════════════════════════════════════════════════════
+
+  function normalize(str) {
+    return str.trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // retire les accents
+  }
+
+  function submitForm() {
+    const val1 = document.getElementById('input-suspect1').value;
+    const val2 = document.getElementById('input-suspect2').value;
+    const err  = document.getElementById('form-error');
+
+    err.textContent = '';
+
+    const ok1 = normalize(val1) === normalize(SUSPECT_1_PRENOM);
+    const ok2 = normalize(val2) === normalize(SUSPECT_2_PRENOM);
+
+    if (!ok1 || !ok2) {
+      err.textContent = ERROR_MESSAGE;
+
+      // Souligner en rouge les champs incorrects
+      const inp1 = document.getElementById('input-suspect1');
+      const inp2 = document.getElementById('input-suspect2');
+      if (!ok1) { inp1.style.borderColor = 'var(--red)'; setTimeout(() => inp1.style.borderColor = '', 1500); }
+      if (!ok2) { inp2.style.borderColor = 'var(--red)'; setTimeout(() => inp2.style.borderColor = '', 1500); }
+      return;
+    }
+
+    // Succès
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-body').innerHTML = SUCCESS_HTML;
+    const panel = document.getElementById('success-section');
+    panel.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Soumettre avec Entrée
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitForm();
+  });
+</script>
+</body>
+</html>
