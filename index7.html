@@ -534,18 +534,6 @@ function showStep(idx) {
   speakerLabel.textContent = isLucie ? 'LUCIE ÉBEL' : 'AGENT — AGENCE PÂQUES';
   speakerLabel.className = 'dialogue-speaker ' + (isLucie ? 'speaker-lucie' : 'speaker-agent');
 
-  // Expression & animation
-  if (isLucie) {
-    setExpression(step.expression || 'normal');
-    lucieChar.classList.add('talking');
-  } else {
-    setExpression('normal');
-    lucieChar.classList.remove('talking');
-  }
-
-  // Visuel
-  showVisual(step.visual || null);
-
   // Progrès
   const pct = Math.round(((idx + 1) / STEPS.length) * 100);
   progressFill.style.width = pct + '%';
