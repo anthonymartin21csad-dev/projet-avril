@@ -1,1381 +1,1382 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Agence PÂQUES — Portail Sécurisé</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --green:      #00ff50;
-      --green-dim:  #1a5a2a;
-      --green-dark: #1a3a22;
-      --green-bg:   #0d1f12;
-      --text:       #c8f0d0;
-      --text-dim:   #4a7a55;
-      --text-mid:   #b0d8b8;
-      --bg:         #0a0c0f;
-      --red:        #ff453a;
-      --yellow:     #ffd60a;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { height: 100%; overflow-y: auto; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: visible;
-      padding: 1.5rem 1.5rem 6rem;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: gridScroll 20s linear infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes gridScroll {
-      0%   { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .screen {
-      width: 100%;
-      max-width: 440px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── HEADER ── */
-    .agency-header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards 0.2s;
-    }
-
-    .agency-badge {
-      display: inline-block;
-      border: 2px solid var(--green);
-      padding: 0.25rem 0.9rem;
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
-      color: var(--green);
-      margin-bottom: 0.6rem;
-    }
-
-    .agency-name {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .agency-name span { color: var(--green); }
-
-    .agency-subtitle {
-      font-size: 0.5rem;
-      letter-spacing: 0.18em;
-      color: var(--text-dim);
-      margin-top: 0.35rem;
-      line-height: 1.5;
-    }
-
-    /* ── TAB BAR ── */
-    .tab-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(10,12,15,0.97);
-      border-top: 1px solid var(--green-dark);
-      display: flex;
-      justify-content: space-around;
-      padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
-      backdrop-filter: blur(8px);
-    }
-
-    .tab-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      cursor: pointer;
-      padding: 0.4rem 1rem;
-      border: none;
-      background: transparent;
-      color: var(--text-dim);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-    }
-
-    .tab-btn .tab-icon { font-size: 1.1rem; line-height: 1; }
-    .tab-btn.active { color: var(--green); }
-
-    .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -0.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 24px;
-      height: 2px;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-    }
-
-    /* ── TERMINAL ── */
-    .terminal {
-      background: rgba(0,10,5,0.88);
-      border: 1px solid var(--green-dark);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(0,255,80,0.06), inset 0 0 30px rgba(0,0,0,0.5);
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards 0.5s;
-    }
-
-    .terminal-bar {
-      background: var(--green-bg);
-      padding: 0.55rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--green-dark);
-    }
-
-    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .dot-r { background: var(--red); }
-    .dot-y { background: var(--yellow); }
-    .dot-g { background: #30d158; }
-
-    .terminal-title {
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      margin: 0 auto;
-    }
-
-    .terminal-body { padding: 1.5rem; }
-
-    /* ── PAGES ── */
-    .page { display: none; }
-    .page.active { display: block; }
-
-    /* ── PORTAIL ── */
-    #section-inbox  { display: block; }
-    #section-email1, #section-email2 { display: none; }
-
-    .field-group { margin-bottom: 1.2rem; }
-
-    .field-label {
-      font-size: 0.58rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      margin-bottom: 0.4rem;
-      display: block;
-    }
-
-    .field-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--green-dim);
-      padding: 0.5rem 0;
-      color: var(--green);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-      outline: none;
-      text-transform: uppercase;
-      transition: border-color 0.3s;
-    }
-
-    .field-input:focus { border-color: var(--green); }
-    .field-input::placeholder { color: var(--green-dark); }
-
-    .error-msg {
-      font-size: 0.6rem;
-      color: var(--red);
-      margin-top: 0.5rem;
-      min-height: 1rem;
-      letter-spacing: 0.1em;
-    }
-
-    .btn-action {
-      width: 100%;
-      margin-top: 1rem;
-      padding: 0.9rem;
-      background: transparent;
-      border: 1px solid var(--green);
-      color: var(--green);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.3em;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: background 0.2s, color 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      border-radius: 2px;
-    }
-
-    .btn-action:active { background: var(--green); color: var(--bg); }
-
-    .loading-bar-wrap { margin-top: 1.2rem; display: none; }
-
-    .loading-label {
-      font-size: 0.55rem;
-      color: var(--text-dim);
-      letter-spacing: 0.15em;
-      margin-bottom: 0.4rem;
-    }
-
-    .loading-bar {
-      height: 2px;
-      background: var(--green-dark);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .loading-bar::after {
-      content: '';
-      position: absolute;
-      left: -60%; top: 0;
-      height: 100%; width: 60%;
-      background: linear-gradient(90deg, transparent, var(--green), transparent);
-      animation: loadingAnim 1s linear infinite;
-    }
-
-    @keyframes loadingAnim {
-      0%   { left: -60%; }
-      100% { left: 110%; }
-    }
-
-    .inbox-header {
-      font-size: 0.58rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--green-dark);
-    }
-
-    .inbox-header span { color: var(--green); }
-
-    .email-row {
-      padding: 1rem 0.8rem;
-      border: 1px solid var(--green-dark);
-      border-radius: 3px;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      margin-bottom: 0.6rem;
-    }
-
-    .email-row:active { background: rgba(0,255,80,0.05); border-color: var(--green); }
-
-    .unread-dot {
-      position: absolute;
-      top: 50%; left: -6px;
-      transform: translateY(-50%);
-      width: 6px; height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-
-    .email-from   { font-size: 0.7rem; color: #fff; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
-    .email-subject{ font-size: 0.65rem; color: var(--green); margin-bottom: 0.3rem; }
-    .email-preview{ font-size: 0.6rem; color: #3a6a45; }
-    .email-date   { font-size: 0.55rem; color: #2a4a30; margin-top: 0.4rem; text-align: right; }
-
-    .email-nav {
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .email-meta { border-bottom: 1px solid var(--green-dark); padding-bottom: 1rem; margin-bottom: 1.2rem; }
-    .email-meta-row { display: flex; gap: 0.5rem; margin-bottom: 0.3rem; }
-    .meta-key { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; min-width: 50px; }
-    .meta-val { font-size: 0.6rem; color: var(--text); letter-spacing: 0.05em; }
-    .meta-val.subject { color: #fff; font-size: 0.7rem; }
-
-    .email-body { font-size: 0.7rem; color: var(--text-mid); line-height: 1.8; }
-    .email-body p { margin-bottom: 1rem; }
-
-    .email-body .signature {
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--green-dark);
-      color: var(--text-dim);
-      font-size: 0.6rem;
-      line-height: 1.6;
-    }
-
-    .email-body .highlight { color: var(--green); font-weight: bold; }
-
-    /* ── CODE ── */
-    .code-door-label { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--text-dim); margin-bottom: 0.3rem; }
-
-    .code-door-id {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--green);
-      letter-spacing: 0.1em;
-      margin-bottom: 1.2rem;
-      text-shadow: 0 0 20px rgba(0,255,80,0.4);
-    }
-
-    .code-divider { height: 1px; background: var(--green-dark); margin-bottom: 1.2rem; }
-
-    .code-instruction {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      line-height: 1.7;
-      margin-bottom: 1.4rem;
-    }
-
-    .code-instruction .accent { color: var(--text-mid); }
-
-    .qr-prompt {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      border: 1px dashed var(--green-dark);
-      border-radius: 4px;
-      margin-bottom: 1.2rem;
-    }
-
-    .qr-icon { font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.6; }
-
-    .qr-text { font-size: 0.65rem; color: var(--text-dim); line-height: 1.7; letter-spacing: 0.05em; }
-    .qr-text strong { color: var(--text-mid); }
-
-    .code-result {
-      display: none;
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      line-height: 1.7;
-      letter-spacing: 0.05em;
-    }
-
-    .code-result.success {
-      border: 1px solid var(--green);
-      background: rgba(0,255,80,0.05);
-      color: var(--text-mid);
-    }
-
-    .result-title {
-      font-size: 0.75rem;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      margin-bottom: 0.6rem;
-    }
-
-    .result-title.ok { color: var(--green); }
-
-    /* ════════════════════════════════════════════
-       TÉLÉPHONE DE BERNARD — UI complètement différente
-    ════════════════════════════════════════════ */
-    #page-telephone {
-      display: none;
-      position: fixed;
-      inset: 0;
-      bottom: calc(44px + env(safe-area-inset-bottom));
-      z-index: 10;
-      background: var(--bg);
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      overflow: hidden;
-    }
-
-    #page-telephone.active {
-      display: flex;
-    }
-
-    .phone-wrapper {
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards 0.5s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Cadre du téléphone */
-    .phone-frame {
-      background: #1a1a1e;
-      border-radius: 36px;
-      border: 3px solid #3a3a3e;
-      box-shadow:
-        0 0 0 1px #2a2a2e,
-        0 20px 60px rgba(0,0,0,0.7),
-        inset 0 1px 0 rgba(255,255,255,0.07);
-      overflow: hidden;
-      width: min(340px, 100%);
-      height: min(600px, 100%);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    /* Encoche */
-    .phone-notch {
-      background: #1a1a1e;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .notch-pill {
-      width: 100px;
-      height: 12px;
-      background: #0a0a0c;
-      border-radius: 10px;
-    }
-
-    /* Barre de statut */
-    .phone-status {
-      background: #f2f2f7;
-      padding: 4px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .status-time {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #000;
-      letter-spacing: 0;
-    }
-
-    .status-icons {
-      font-size: 0.7rem;
-      color: #000;
-      letter-spacing: 0.05em;
-    }
-
-    /* Écran verouillé vs déverrouillé */
-    #phone-locked   { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-    #phone-unlocked { display: none; flex-direction: column; flex: 1; overflow: hidden; }
-
-    /* ── ÉCRAN VERROUILLÉ ── */
-    .phone-lockscreen {
-      background: linear-gradient(160deg, #1c1c3a 0%, #0f0f1f 50%, #1a0a0a 100%);
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1.5rem 1.5rem;
-      position: relative;
-      scrollbar-width: none;
-    }
-    .phone-lockscreen::-webkit-scrollbar { display: none; }
-
-    .phone-lockscreen::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 30%, rgba(100,80,200,0.15) 0%, transparent 70%);
-    }
-
-    .lock-time {
-      font-family: -apple-system, 'SF Pro Display', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 200;
-      color: #fff;
-      letter-spacing: -0.02em;
-      line-height: 1;
-      margin-bottom: 0.2rem;
-      position: relative;
-    }
-
-    .lock-date {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .lock-notification {
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(20px);
-      border-radius: 14px;
-      padding: 0.8rem 1rem;
-      width: 100%;
-      margin-bottom: 0.6rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      position: relative;
-    }
-
-    .notif-app {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.6rem;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .notif-app-icon {
-      width: 14px; height: 14px;
-      background: #34c759;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.5rem;
-    }
-
-    .notif-sender {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.15rem;
-    }
-
-    .notif-text {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.3;
-    }
-
-    .lock-unlock-hint {
-      margin-top: auto;
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.4);
-      text-align: center;
-      position: relative;
-    }
-
-    .lock-passcode-wrap {
-      width: 100%;
-      margin-top: 1rem;
-      position: relative;
-    }
-
-    .lock-passcode-label {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      margin-bottom: 0.6rem;
-    }
-
-    .lock-passcode-dots {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .passcode-dot {
-      width: 14px; height: 14px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      transition: background 0.1s, border-color 0.1s;
-    }
-
-    .passcode-dot.filled {
-      background: #fff;
-      border-color: #fff;
-    }
-
-    .lock-passcode-error {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.65rem;
-      color: #ff453a;
-      text-align: center;
-      min-height: 1rem;
-      margin-bottom: 0.4rem;
-    }
-
-    /* Clavier numérique */
-    .numpad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.6rem;
-      padding: 0 1rem;
-    }
-
-    .numpad-key {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      border-radius: 50%;
-      width: 60px; height: 60px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.1s;
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-    }
-
-    .numpad-key:active { background: rgba(255,255,255,0.35); }
-
-    .numpad-key .key-num {
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .numpad-key .key-letters {
-      font-size: 0.4rem;
-      color: rgba(255,255,255,0.6);
-      letter-spacing: 0.15em;
-      margin-top: 1px;
-    }
-
-    .numpad-key.special {
-      background: transparent;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.7);
-      font-family: -apple-system, sans-serif;
-    }
-
-    .phone-passcode-screen {
-      justify-content: center;
-      gap: 1rem;
-      padding-bottom: 1.5rem;
-    }
-
-    .numpad-cancel {
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      cursor: pointer;
-      padding: 0.5rem;
-      text-align: center;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* ── TÉLÉPHONE DÉVERROUILLÉ ── */
-    .phone-screen {
-      background: #f2f2f7;
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      scrollbar-width: none;
-    }
-    .phone-screen::-webkit-scrollbar { display: none; }
-
-    /* Header Messages */
-    .messages-header {
-      background: #f2f2f7;
-      padding: 0.5rem 1rem 0.4rem;
-      border-bottom: 1px solid #d1d1d6;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .msg-back {
-      font-family: -apple-system, sans-serif;
-      font-size: 1rem;
-      color: #007aff;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      padding: 0.2rem 0.3rem;
-      display: none;
-    }
-
-    /* Liste de conversations */
-    #sms-list { display: block; }
-    #sms-thread { display: none; flex-direction: column; flex: 1; }
-
-    .sms-list-header {
-      padding: 0.6rem 1rem 0.3rem;
-    }
-
-    .sms-list-title {
-      font-family: -apple-system, 'SF Pro Display', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #000;
-    }
-
-    .sms-list-subtitle {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.65rem;
-      color: #8e8e93;
-      margin-top: 0.1rem;
-    }
-
-    .sms-contact-row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.7rem 1rem;
-      border-bottom: 1px solid #e5e5ea;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      background: #fff;
-      transition: background 0.1s;
-    }
-
-    .sms-contact-row:active { background: #e5e5ea; }
-
-    .sms-avatar {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ff6b9d, #c44dff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
-      flex-shrink: 0;
-    }
-
-    .sms-contact-info { flex: 1; min-width: 0; }
-
-    .sms-contact-name {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #000;
-      margin-bottom: 0.15rem;
-    }
-
-    .sms-contact-preview {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.78rem;
-      color: #8e8e93;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .sms-contact-meta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.3rem;
-    }
-
-    .sms-contact-time {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.7rem;
-      color: #8e8e93;
-    }
-
-    .sms-unread-badge {
-      background: #ff3b30;
-      color: #fff;
-      font-family: -apple-system, sans-serif;
-      font-size: 0.65rem;
-      font-weight: 600;
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* ── THREAD SMS ── */
-    .thread-header {
-      background: #f2f2f7;
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid #d1d1d6;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .thread-back {
-      font-family: -apple-system, sans-serif;
-      font-size: 1rem;
-      color: #007aff;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      padding: 0.2rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-    }
-
-    .thread-back-count {
-      background: #ff3b30;
-      color: #fff;
-      font-size: 0.6rem;
-      font-weight: 600;
-      min-width: 16px; height: 16px;
-      border-radius: 8px;
-      padding: 0 0.3rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .thread-contact-info {
-      flex: 1;
-      text-align: center;
-    }
-
-    .thread-avatar-sm {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ff6b9d, #c44dff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: #fff;
-      margin: 0 auto 0.1rem;
-    }
-
-    .thread-contact-name {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #000;
-    }
-
-    .thread-messages {
-      background: #fff;
-      padding: 1rem 0.8rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .msg-date-divider {
-      text-align: center;
-      font-family: -apple-system, sans-serif;
-      font-size: 0.62rem;
-      color: #8e8e93;
-      margin: 0.3rem 0;
-    }
-
-    /* Bulles */
-    .bubble-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 0.4rem;
-    }
-
-    .bubble-row.sent { justify-content: flex-end; }
-    .bubble-row.received { justify-content: flex-start; }
-
-    .bubble {
-      max-width: 72%;
-      padding: 0.55rem 0.75rem;
-      border-radius: 18px;
-      font-family: -apple-system, 'SF Pro Text', sans-serif;
-      font-size: 0.82rem;
-      line-height: 1.4;
-    }
-
-    .bubble.sent {
-      background: #007aff;
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-
-    .bubble.received {
-      background: #e9e9eb;
-      color: #000;
-      border-bottom-left-radius: 4px;
-    }
-
-    .bubble.received.angry {
-      background: #ffe5e5;
-      color: #1a0000;
-    }
-
-    .bubble-time {
-      font-family: -apple-system, sans-serif;
-      font-size: 0.55rem;
-      color: #8e8e93;
-      margin-top: 0.15rem;
-      text-align: center;
-    }
-
-    .bubble-col { display: flex; flex-direction: column; max-width: 72%; }
-    .bubble-col.sent { align-items: flex-end; }
-    .bubble-col.received { align-items: flex-start; }
-
-    /* Home indicator */
-    .phone-home-indicator {
-      background: #f2f2f7;
-      padding: 0.5rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .home-bar {
-      width: 100px;
-      height: 4px;
-      background: #000;
-      border-radius: 2px;
-      opacity: 0.2;
-    }
-
-
-
-    /* Label "TÉLÉPHONE SAISI" au dessus */
-    .evidence-header {
-      text-align: center;
-      margin-bottom: 0.8rem;
-    }
-
-    .evidence-label {
-      display: inline-block;
-      border: 1px solid var(--red);
-      color: var(--red);
-      font-size: 0.55rem;
-      letter-spacing: 0.25em;
-      padding: 0.25rem 0.8rem;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .evidence-desc {
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .anim-in { animation: fadeUp 0.35s ease forwards; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Agence PÂQUES — Portail Sécurisé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green:      #00ff50;
+            --green-dim:  #1a5a2a;
+            --green-dark: #1a3a22;
+            --green-bg:   #0d1f12;
+            --text:       #c8f0d0;
+            --text-dim:   #4a7a55;
+            --text-mid:   #b0d8b8;
+            --bg:         #0a0c0f;
+            --red:        #ff453a;
+            --yellow:     #ffd60a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; overflow-y: auto; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: visible;
+            padding: 1.5rem 1.5rem 6rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                    linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridScroll 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridScroll {
+            0%   { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    0deg, transparent, transparent 2px,
+                    rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        .agency-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards 0.2s;
+        }
+
+        .agency-badge {
+            display: inline-block;
+            border: 2px solid var(--green);
+            padding: 0.25rem 0.9rem;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            color: var(--green);
+            margin-bottom: 0.6rem;
+        }
+
+        .agency-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .agency-name span { color: var(--green); }
+
+        .agency-subtitle {
+            font-size: 0.5rem;
+            letter-spacing: 0.18em;
+            color: var(--text-dim);
+            margin-top: 0.35rem;
+            line-height: 1.5;
+        }
+
+        /* ── TAB BAR ── */
+        .tab-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(10,12,15,0.97);
+            border-top: 1px solid var(--green-dark);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+            backdrop-filter: blur(8px);
+        }
+
+        .tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            padding: 0.4rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        .tab-btn .tab-icon { font-size: 1.1rem; line-height: 1; }
+        .tab-btn.active { color: var(--green); }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 2px;
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        /* ── TERMINAL ── */
+        .terminal {
+            background: rgba(0,10,5,0.88);
+            border: 1px solid var(--green-dark);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,255,80,0.06), inset 0 0 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards 0.5s;
+        }
+
+        .terminal-bar {
+            background: var(--green-bg);
+            padding: 0.55rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--green-dark);
+        }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .dot-r { background: var(--red); }
+        .dot-y { background: var(--yellow); }
+        .dot-g { background: #30d158; }
+
+        .terminal-title {
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin: 0 auto;
+        }
+
+        .terminal-body { padding: 1.5rem; }
+
+        /* ── PAGES ── */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ── PORTAIL ── */
+        #section-inbox  { display: block; }
+        #section-email1, #section-email2 { display: none; }
+
+        .field-group { margin-bottom: 1.2rem; }
+
+        .field-label {
+            font-size: 0.58rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .field-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--green-dim);
+            padding: 0.5rem 0;
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            outline: none;
+            text-transform: uppercase;
+            transition: border-color 0.3s;
+        }
+
+        .field-input:focus { border-color: var(--green); }
+        .field-input::placeholder { color: var(--green-dark); }
+
+        .error-msg {
+            font-size: 0.6rem;
+            color: var(--red);
+            margin-top: 0.5rem;
+            min-height: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-action {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.9rem;
+            background: transparent;
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.3em;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s, color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            border-radius: 2px;
+        }
+
+        .btn-action:active { background: var(--green); color: var(--bg); }
+
+        .loading-bar-wrap { margin-top: 1.2rem; display: none; }
+
+        .loading-label {
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            margin-bottom: 0.4rem;
+        }
+
+        .loading-bar {
+            height: 2px;
+            background: var(--green-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            left: -60%; top: 0;
+            height: 100%; width: 60%;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            animation: loadingAnim 1s linear infinite;
+        }
+
+        @keyframes loadingAnim {
+            0%   { left: -60%; }
+            100% { left: 110%; }
+        }
+
+        .inbox-header {
+            font-size: 0.58rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--green-dark);
+        }
+
+        .inbox-header span { color: var(--green); }
+
+        .email-row {
+            padding: 1rem 0.8rem;
+            border: 1px solid var(--green-dark);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            margin-bottom: 0.6rem;
+        }
+
+        .email-row:active { background: rgba(0,255,80,0.05); border-color: var(--green); }
+
+        .unread-dot {
+            position: absolute;
+            top: 50%; left: -6px;
+            transform: translateY(-50%);
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+        .email-from   { font-size: 0.7rem; color: #fff; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+        .email-subject{ font-size: 0.65rem; color: var(--green); margin-bottom: 0.3rem; }
+        .email-preview{ font-size: 0.6rem; color: #3a6a45; }
+        .email-date   { font-size: 0.55rem; color: #2a4a30; margin-top: 0.4rem; text-align: right; }
+
+        .email-nav {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .email-meta { border-bottom: 1px solid var(--green-dark); padding-bottom: 1rem; margin-bottom: 1.2rem; }
+        .email-meta-row { display: flex; gap: 0.5rem; margin-bottom: 0.3rem; }
+        .meta-key { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; min-width: 50px; }
+        .meta-val { font-size: 0.6rem; color: var(--text); letter-spacing: 0.05em; }
+        .meta-val.subject { color: #fff; font-size: 0.7rem; }
+
+        .email-body { font-size: 0.7rem; color: var(--text-mid); line-height: 1.8; }
+        .email-body p { margin-bottom: 1rem; }
+
+        .email-body .signature {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--green-dark);
+            color: var(--text-dim);
+            font-size: 0.6rem;
+            line-height: 1.6;
+        }
+
+        .email-body .highlight { color: var(--green); font-weight: bold; }
+
+        /* ── CODE ── */
+        .code-door-label { font-size: 0.55rem; letter-spacing: 0.2em; color: var(--text-dim); margin-bottom: 0.3rem; }
+
+        .code-door-id {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            text-shadow: 0 0 20px rgba(0,255,80,0.4);
+        }
+
+        .code-divider { height: 1px; background: var(--green-dark); margin-bottom: 1.2rem; }
+
+        .code-instruction {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 1.4rem;
+        }
+
+        .code-instruction .accent { color: var(--text-mid); }
+
+        .qr-prompt {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border: 1px dashed var(--green-dark);
+            border-radius: 4px;
+            margin-bottom: 1.2rem;
+        }
+
+        .qr-icon { font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.6; }
+
+        .qr-text { font-size: 0.65rem; color: var(--text-dim); line-height: 1.7; letter-spacing: 0.05em; }
+        .qr-text strong { color: var(--text-mid); }
+
+        .code-result {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            line-height: 1.7;
+            letter-spacing: 0.05em;
+        }
+
+        .code-result.success {
+            border: 1px solid var(--green);
+            background: rgba(0,255,80,0.05);
+            color: var(--text-mid);
+        }
+
+        .result-title {
+            font-size: 0.75rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.6rem;
+        }
+
+        .result-title.ok { color: var(--green); }
+
+        /* ════════════════════════════════════════════
+           TÉLÉPHONE DE BERNARD — UI complètement différente
+        ════════════════════════════════════════════ */
+        #page-telephone {
+            display: none;
+            position: fixed;
+            inset: 0;
+            bottom: calc(44px + env(safe-area-inset-bottom));
+            z-index: 10;
+            background: var(--bg);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        #page-telephone.active {
+            display: flex;
+        }
+
+        .phone-wrapper {
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Cadre du téléphone */
+        .phone-frame {
+            background: #1a1a1e;
+            border-radius: 36px;
+            border: 3px solid #3a3a3e;
+            box-shadow:
+                    0 0 0 1px #2a2a2e,
+                    0 20px 60px rgba(0,0,0,0.7),
+                    inset 0 1px 0 rgba(255,255,255,0.07);
+            overflow: hidden;
+            width: min(340px, 100%);
+            height: min(600px, 100%);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Encoche */
+        .phone-notch {
+            background: #1a1a1e;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .notch-pill {
+            width: 100px;
+            height: 12px;
+            background: #0a0a0c;
+            border-radius: 10px;
+        }
+
+        /* Barre de statut */
+        .phone-status {
+            background: #f2f2f7;
+            padding: 4px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-time {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #000;
+            letter-spacing: 0;
+        }
+
+        .status-icons {
+            font-size: 0.7rem;
+            color: #000;
+            letter-spacing: 0.05em;
+        }
+
+        /* Écran verouillé vs déverrouillé */
+        #phone-locked   { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        #phone-unlocked { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+
+        /* ── ÉCRAN VERROUILLÉ ── */
+        .phone-lockscreen {
+            background: linear-gradient(160deg, #1c1c3a 0%, #0f0f1f 50%, #1a0a0a 100%);
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.5rem 1.5rem;
+            position: relative;
+            scrollbar-width: none;
+        }
+        .phone-lockscreen::-webkit-scrollbar { display: none; }
+
+        .phone-lockscreen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(100,80,200,0.15) 0%, transparent 70%);
+        }
+
+        .lock-time {
+            font-family: -apple-system, 'SF Pro Display', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 200;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: 0.2rem;
+            position: relative;
+        }
+
+        .lock-date {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .lock-notification {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 14px;
+            padding: 0.8rem 1rem;
+            width: 100%;
+            margin-bottom: 0.6rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+        }
+
+        .notif-app {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .notif-app-icon {
+            width: 14px; height: 14px;
+            background: #34c759;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+        }
+
+        .notif-sender {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.15rem;
+        }
+
+        .notif-text {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.3;
+        }
+
+        .lock-unlock-hint {
+            margin-top: auto;
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            position: relative;
+        }
+
+        .lock-passcode-wrap {
+            width: 100%;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .lock-passcode-label {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .lock-passcode-dots {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .passcode-dot {
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            transition: background 0.1s, border-color 0.1s;
+        }
+
+        .passcode-dot.filled {
+            background: #fff;
+            border-color: #fff;
+        }
+
+        .lock-passcode-error {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.65rem;
+            color: #ff453a;
+            text-align: center;
+            min-height: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Clavier numérique */
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            padding: 0 1rem;
+        }
+
+        .numpad-key {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 50%;
+            width: 60px; height: 60px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.1s;
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            z-index: 500;
+        }
+
+        .numpad-key:active { background: rgba(255,255,255,0.35); }
+
+        .numpad-key .key-num {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .numpad-key .key-letters {
+            font-size: 0.4rem;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.15em;
+            margin-top: 1px;
+        }
+
+        .numpad-key.special {
+            background: transparent;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+            font-family: -apple-system, sans-serif;
+        }
+
+        .phone-passcode-screen {
+            justify-content: center;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .numpad-cancel {
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            padding: 0.5rem;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ── TÉLÉPHONE DÉVERROUILLÉ ── */
+        .phone-screen {
+            background: #f2f2f7;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            scrollbar-width: none;
+        }
+        .phone-screen::-webkit-scrollbar { display: none; }
+
+        /* Header Messages */
+        .messages-header {
+            background: #f2f2f7;
+            padding: 0.5rem 1rem 0.4rem;
+            border-bottom: 1px solid #d1d1d6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .msg-back {
+            font-family: -apple-system, sans-serif;
+            font-size: 1rem;
+            color: #007aff;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            padding: 0.2rem 0.3rem;
+            display: none;
+        }
+
+        /* Liste de conversations */
+        #sms-list { display: block; }
+        #sms-thread { display: none; flex-direction: column; flex: 1; }
+
+        .sms-list-header {
+            padding: 0.6rem 1rem 0.3rem;
+        }
+
+        .sms-list-title {
+            font-family: -apple-system, 'SF Pro Display', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .sms-list-subtitle {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.65rem;
+            color: #8e8e93;
+            margin-top: 0.1rem;
+        }
+
+        .sms-contact-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #e5e5ea;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            background: #fff;
+            transition: background 0.1s;
+        }
+
+        .sms-contact-row:active { background: #e5e5ea; }
+
+        .sms-avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b9d, #c44dff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sms-contact-info { flex: 1; min-width: 0; }
+
+        .sms-contact-name {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 0.15rem;
+        }
+
+        .sms-contact-preview {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.78rem;
+            color: #8e8e93;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sms-contact-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.3rem;
+        }
+
+        .sms-contact-time {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.7rem;
+            color: #8e8e93;
+        }
+
+        .sms-unread-badge {
+            background: #ff3b30;
+            color: #fff;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── THREAD SMS ── */
+        .thread-header {
+            background: #f2f2f7;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #d1d1d6;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .thread-back {
+            font-family: -apple-system, sans-serif;
+            font-size: 1rem;
+            color: #007aff;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            padding: 0.2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .thread-back-count {
+            background: #ff3b30;
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 600;
+            min-width: 16px; height: 16px;
+            border-radius: 8px;
+            padding: 0 0.3rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thread-contact-info {
+            flex: 1;
+            text-align: center;
+        }
+
+        .thread-avatar-sm {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b9d, #c44dff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 auto 0.1rem;
+        }
+
+        .thread-contact-name {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .thread-messages {
+            background: #fff;
+            padding: 1rem 0.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .msg-date-divider {
+            text-align: center;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.62rem;
+            color: #8e8e93;
+            margin: 0.3rem 0;
+        }
+
+        /* Bulles */
+        .bubble-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.4rem;
+        }
+
+        .bubble-row.sent { justify-content: flex-end; }
+        .bubble-row.received { justify-content: flex-start; }
+
+        .bubble {
+            max-width: 72%;
+            padding: 0.55rem 0.75rem;
+            border-radius: 18px;
+            font-family: -apple-system, 'SF Pro Text', sans-serif;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .bubble.sent {
+            background: #007aff;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble.received {
+            background: #e9e9eb;
+            color: #000;
+            border-bottom-left-radius: 4px;
+        }
+
+        .bubble.received.angry {
+            background: #ffe5e5;
+            color: #1a0000;
+        }
+
+        .bubble-time {
+            font-family: -apple-system, sans-serif;
+            font-size: 0.55rem;
+            color: #8e8e93;
+            margin-top: 0.15rem;
+            text-align: center;
+        }
+
+        .bubble-col { display: flex; flex-direction: column; max-width: 72%; }
+        .bubble-col.sent { align-items: flex-end; }
+        .bubble-col.received { align-items: flex-start; }
+
+        /* Home indicator */
+        .phone-home-indicator {
+            background: #f2f2f7;
+            padding: 0.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .home-bar {
+            width: 100px;
+            height: 4px;
+            background: #000;
+            border-radius: 2px;
+            opacity: 0.2;
+        }
+
+
+
+        /* Label "TÉLÉPHONE SAISI" au dessus */
+        .evidence-header {
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .evidence-label {
+            display: inline-block;
+            border: 1px solid var(--red);
+            color: var(--red);
+            font-size: 0.55rem;
+            letter-spacing: 0.25em;
+            padding: 0.25rem 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .evidence-desc {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .anim-in { animation: fadeUp 0.35s ease forwards; }
+    </style>
 </head>
 <body>
 <div class="screen">
 
-  <!-- HEADER -->
-  <div class="agency-header">
-    <div class="agency-badge">ACCÈS RESTREINT</div>
-    <div class="agency-name">AGENCE <span>PÂQUES</span></div>
-    <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
-  </div>
-
-  <!-- ═══ PORTAIL ═══ -->
-  <div class="page active" id="page-portail">
-    <div class="terminal">
-      <div class="terminal-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <div class="terminal-title">PORTAIL-AGENT v4.2.1</div>
-      </div>
-      <div class="terminal-body">
-        <div id="section-inbox">
-          <div class="inbox-header">BOÎTE DE RÉCEPTION — <span>2 MESSAGES</span></div>
-          <div class="email-row" onclick="openEmail(1)">
-            <div class="email-from">Directrice G. Delargent</div>
-            <div class="email-subject">AFFAIRE LAFLEUR — Mission urgente</div>
-            <div class="email-preview">Agent, nous avons besoin de vous. Maintenant...</div>
-            <div class="email-date">Aujourd'hui, 06:47</div>
-          </div>
-          <div class="email-row" onclick="openEmail(2)">
-            <div class="email-from">Directrice G. Delargent</div>
-            <div class="email-subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div>
-            <div class="email-preview">Nos scientifiques ont terminé d'analyser...</div>
-            <div class="email-date">Aujourd'hui, 08:35</div>
-          </div>
-        </div>
-
-        <div id="section-email1">
-          <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
-          <div class="email-meta">
-            <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
-            <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
-            <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Mission urgente</div></div>
-            <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 06:47</div></div>
-          </div>
-          <div class="email-body">
-            <p>Agent,</p>
-            <p>Je serai brève — c'est dimanche matin, je n'ai pas encore bu mon café, et franchement, je préférerais être ailleurs.</p>
-            <p>La nuit dernière, un certain <span class="highlight">Bernard Lafleur</span> — chocolatier excentrique, pianiste médiocre (il avait un piano chez lui), collectionneur de chapeaux inutiles — a été retrouvé mort dans sa demeure. La police parle de crise cardiaque. L'Agence, elle, parle d'autre chose.</p>
-            <p>Vous êtes notre meilleur agent disponible ce matin. Vous êtes, en réalité, notre <em>seul</em> agent disponible ce matin. Les autres ont pris congé pour Pâques. Je ne fais pas de commentaires là-dessus.</p>
-            <p>Votre mission : déterminer si la mort de M. Lafleur est naturelle ou non, identifier le ou les responsables, et récupérer ce qu'on lui a volé avant que ça disparaisse pour de bon.</p>
-            <p>Votre premier briefing complet vous attend <span class="highlight">chez lui</span>.</p>
-            <p>L'Agence compte sur vous. Ce qui, ce matin, est à la fois un honneur et une légère source d'inquiétude de notre part.</p>
-            <div class="signature">
-              Bonne chance,<br><br>
-              <strong style="color:#c8f0d0;">G. Delargent</strong><br>
-              Directrice des opérations — Agence PÂQUES<br><br>
-              <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a rien à voir</em><br>
-              <em style="color:#2a4a30;">"Le code pour entrer dans sa maison était 9357"</em>
-            </div>
-          </div>
-        </div>
-
-        <div id="section-email2">
-          <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
-          <div class="email-meta">
-            <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
-            <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
-            <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div></div>
-            <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 08:35</div></div>
-          </div>
-          <div class="email-body">
-            <p>Agent,</p>
-            <p>Nos scientifiques ont terminé d'analyser l'ADN présent sur la scène de crime, malheureusement, nous n'avons pas été en mesure d'identifier le meurtrier.</p>
-            <p>Par contre, si vous êtes capable de <span class="highlight">recueillir l'ADN</span> des autres suspects, nous pourrons identifier le meurtrier.</p>
-            <p>Pour l'instant, je compte sur vous pour <span class="highlight">trouver qui aurait pu vouloir assassiner Monsieur Lafleur</span>.</p>
-            <div class="signature">
-              Bonne chance,<br><br>
-              <strong style="color:#c8f0d0;">G. Delargent</strong><br>
-              Directrice des opérations — Agence PÂQUES<br><br>
-              <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a toujours rien à voir</em><br>
-              <em style="color:#2a4a30;">"J'ai entendu dire qu'il aimait beaucoup le Poker..."</em>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- HEADER -->
+    <div class="agency-header">
+        <div class="agency-badge">ACCÈS RESTREINT</div>
+        <div class="agency-name">AGENCE <span>PÂQUES</span></div>
+        <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
     </div>
-  </div>
 
-  <!-- ═══ CODE ═══ -->
-  <div class="page" id="page-code">
-    <div class="terminal">
-      <div class="terminal-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <div class="terminal-title">SYSTÈME DE DÉVERROUILLAGE</div>
-      </div>
-      <div class="terminal-body" id="code-body"></div>
+    <!-- ═══ PORTAIL ═══ -->
+    <div class="page active" id="page-portail">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+                <div class="terminal-title">PORTAIL-AGENT v4.2.1</div>
+            </div>
+            <div class="terminal-body">
+                <div id="section-inbox">
+                    <div class="inbox-header">BOÎTE DE RÉCEPTION — <span>2 MESSAGES</span></div>
+                    <div class="email-row" onclick="openEmail(1)">
+                        <div class="email-from">Directrice G. Delargent</div>
+                        <div class="email-subject">AFFAIRE LAFLEUR — Mission urgente</div>
+                        <div class="email-preview">Agent, nous avons besoin de vous. Maintenant...</div>
+                        <div class="email-date">Aujourd'hui, 06:47</div>
+                    </div>
+                    <div class="email-row" onclick="openEmail(2)">
+                        <div class="email-from">Directrice G. Delargent</div>
+                        <div class="email-subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div>
+                        <div class="email-preview">Nos scientifiques ont terminé d'analyser...</div>
+                        <div class="email-date">Aujourd'hui, 08:35</div>
+                    </div>
+                </div>
+
+                <div id="section-email1">
+                    <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
+                    <div class="email-meta">
+                        <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
+                        <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
+                        <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Mission urgente</div></div>
+                        <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 06:47</div></div>
+                    </div>
+                    <div class="email-body">
+                        <p>Agent,</p>
+                        <p>Je serai brève — c'est dimanche matin, je n'ai pas encore bu mon café, et franchement, je préférerais être ailleurs.</p>
+                        <p>La nuit dernière, un certain <span class="highlight">Bernard Lafleur</span> — chocolatier excentrique, pianiste médiocre (il avait un piano chez lui), collectionneur de chapeaux inutiles — a été retrouvé mort dans sa demeure. La police parle de crise cardiaque. L'Agence, elle, parle d'autre chose.</p>
+                        <p>Vous êtes notre meilleur agent disponible ce matin. Vous êtes, en réalité, notre <em>seul</em> agent disponible ce matin. Les autres ont pris congé pour Pâques. Je ne fais pas de commentaires là-dessus.</p>
+                        <p>Votre mission : déterminer si la mort de M. Lafleur est naturelle ou non, identifier le ou les responsables, et récupérer ce qu'on lui a volé avant que ça disparaisse pour de bon.</p>
+                        <p>Votre premier briefing complet vous attend <span class="highlight">chez lui</span>.</p>
+                        <p>L'Agence compte sur vous. Ce qui, ce matin, est à la fois un honneur et une légère source d'inquiétude de notre part.</p>
+                        <div class="signature">
+                            Bonne chance,<br><br>
+                            <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+                            Directrice des opérations — Agence PÂQUES<br><br>
+                            <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a rien à voir</em><br>
+                            <em style="color:#2a4a30;">"Le code pour entrer dans sa maison était 9357"</em>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-email2">
+                    <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
+                    <div class="email-meta">
+                        <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
+                        <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
+                        <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div></div>
+                        <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 08:35</div></div>
+                    </div>
+                    <div class="email-body">
+                        <p>Agent,</p>
+                        <p>Nos scientifiques ont terminé d'analyser l'ADN présent sur la scène de crime, malheureusement, nous n'avons pas été en mesure d'identifier le meurtrier.</p>
+                        <p>Par contre, si vous êtes capable de <span class="highlight">recueillir l'ADN</span> des autres suspects, nous pourrons identifier le meurtrier.</p>
+                        <p>Pour l'instant, je compte sur vous pour <span class="highlight">trouver qui aurait pu vouloir assassiner Monsieur Lafleur</span>.</p>
+                        <div class="signature">
+                            Bonne chance,<br><br>
+                            <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+                            Directrice des opérations — Agence PÂQUES<br><br>
+                            <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a toujours rien à voir</em><br>
+                            <em style="color:#2a4a30;">"J'ai entendu dire qu'il aimait beaucoup le Poker..."</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- ═══ TÉLÉPHONE DE BERNARD ═══ -->
-  <div class="page" id="page-telephone">
-    <div class="phone-wrapper">
-      <div class="phone-frame">
-        <div class="phone-notch"><div class="notch-pill"></div></div>
-
-        <!-- ÉCRAN VERROUILLÉ -->
-        <div id="phone-locked">
-          <div class="phone-status" style="background:#1c1c3a;">
-            <span class="status-time" style="color:#fff;">23:14</span>
-            <span class="status-icons" style="color:#fff;">▲▲▲ 🔋</span>
-          </div>
-
-          <!-- VUE NOTIFICATIONS -->
-          <div class="phone-lockscreen" id="lockscreen-notifs">
-            <div class="lock-time">23:14</div>
-            <div class="lock-date">Samedi 14 mars</div>
-
-            <div class="lock-notification">
-              <div class="notif-app">
-                <span class="notif-app-icon">💬</span>
-                Messages
-              </div>
-              <div class="notif-sender">L. Ébel</div>
-              <div class="notif-text">BERNARD. Mes fleurs. Je t'avais dit vendredi...</div>
+    <!-- ═══ CODE ═══ -->
+    <div class="page" id="page-code">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+                <div class="terminal-title">SYSTÈME DE DÉVERROUILLAGE</div>
             </div>
-
-            <div class="lock-notification">
-              <div class="notif-app">
-                <span class="notif-app-icon">💬</span>
-                Messages
-              </div>
-              <div class="notif-sender">L. Ébel</div>
-              <div class="notif-text">Tu réponds même pas?? Sapperlipopette!!</div>
-            </div>
-
-            <div class="lock-unlock-hint" id="lock-hint" onclick="showPasscode()" style="margin-top:auto; cursor:pointer;">
-              ↑ Appuyez pour déverrouiller
-            </div>
-          </div>
-
-          <!-- VUE CLAVIER (plein écran) -->
-          <div class="phone-lockscreen phone-passcode-screen" id="lockscreen-passcode" style="display:none;">
-            <div class="lock-passcode-label" style="margin-top:auto;">Entrez le code d'accès</div>
-            <div class="lock-passcode-dots" id="passcode-dots">
-              <div class="passcode-dot" id="dot0"></div>
-              <div class="passcode-dot" id="dot1"></div>
-              <div class="passcode-dot" id="dot2"></div>
-              <div class="passcode-dot" id="dot3"></div>
-            </div>
-            <div class="lock-passcode-error" id="passcode-error"></div>
-            <div class="numpad">
-              <button class="numpad-key" onclick="padPress('1')"><span class="key-num">1</span><span class="key-letters"></span></button>
-              <button class="numpad-key" onclick="padPress('2')"><span class="key-num">2</span><span class="key-letters">ABC</span></button>
-              <button class="numpad-key" onclick="padPress('3')"><span class="key-num">3</span><span class="key-letters">DEF</span></button>
-              <button class="numpad-key" onclick="padPress('4')"><span class="key-num">4</span><span class="key-letters">GHI</span></button>
-              <button class="numpad-key" onclick="padPress('5')"><span class="key-num">5</span><span class="key-letters">JKL</span></button>
-              <button class="numpad-key" onclick="padPress('6')"><span class="key-num">6</span><span class="key-letters">MNO</span></button>
-              <button class="numpad-key" onclick="padPress('7')"><span class="key-num">7</span><span class="key-letters">PQRS</span></button>
-              <button class="numpad-key" onclick="padPress('8')"><span class="key-num">8</span><span class="key-letters">TUV</span></button>
-              <button class="numpad-key" onclick="padPress('9')"><span class="key-num">9</span><span class="key-letters">WXYZ</span></button>
-              <button class="numpad-key special"></button>
-              <button class="numpad-key" onclick="padPress('0')"><span class="key-num">0</span></button>
-              <button class="numpad-key special delete" onclick="padDelete()">⌫</button>
-            </div>
-            <div class="numpad-cancel" onclick="hidePasscode()">Annuler</div>
-          </div>
+            <div class="terminal-body" id="code-body"></div>
         </div>
+    </div>
 
-        <!-- TÉLÉPHONE DÉVERROUILLÉ -->
-        <div id="phone-unlocked">
-          <div class="phone-status">
-            <span class="status-time">23:14</span>
-            <span class="status-icons">▲▲▲ 🔋</span>
-          </div>
-          <div class="phone-screen">
+    <!-- ═══ TÉLÉPHONE DE BERNARD ═══ -->
+    <div class="page" id="page-telephone">
+        <div class="phone-wrapper">
+            <div class="phone-frame">
+                <div class="phone-notch"><div class="notch-pill"></div></div>
 
-            <!-- LISTE SMS -->
-            <div id="sms-list">
-              <div class="sms-list-header">
-                <div class="sms-list-title">Messages</div>
-                <div class="sms-list-subtitle">Téléphone de Bernard Lafleur</div>
-              </div>
-              <div class="sms-contact-row" onclick="openThread()">
-                <div class="sms-avatar">LE</div>
-                <div class="sms-contact-info">
-                  <div class="sms-contact-name">L. Ébel</div>
-                  <div class="sms-contact-preview">Tu réponds même pas?? Sapperlipopette!!</div>
-                </div>
-                <div class="sms-contact-meta">
-                  <div class="sms-contact-time">23:02</div>
-                  <div class="sms-unread-badge">4</div>
-                </div>
-              </div>
-            </div>
+                <!-- ÉCRAN VERROUILLÉ -->
+                <div id="phone-locked">
+                    <div class="phone-status" style="background:#1c1c3a;">
+                        <span class="status-time" style="color:#fff;">23:14</span>
+                        <span class="status-icons" style="color:#fff;">▲▲▲ 🔋</span>
+                    </div>
 
-            <!-- THREAD -->
-            <div id="sms-thread">
-              <div class="thread-header">
-                <div class="thread-back" onclick="closeThread()">
-                  ‹ <span class="thread-back-count">4</span>
-                </div>
-                <div class="thread-contact-info">
-                  <div class="thread-avatar-sm">LE</div>
-                  <div class="thread-contact-name">L. Ébel</div>
-                </div>
-                <div style="width:40px;"></div>
-              </div>
+                    <!-- VUE NOTIFICATIONS -->
+                    <div class="phone-lockscreen" id="lockscreen-notifs">
+                        <div class="lock-time">23:14</div>
+                        <div class="lock-date">Samedi 14 mars</div>
 
-              <div class="thread-messages">
+                        <div class="lock-notification">
+                            <div class="notif-app">
+                                <span class="notif-app-icon">💬</span>
+                                Messages
+                            </div>
+                            <div class="notif-sender">L. Ébel</div>
+                            <div class="notif-text">BERNARD. Mes fleurs. Je t'avais dit vendredi...</div>
+                        </div>
 
-                <div class="msg-date-divider">Vendredi 13 mars, 09:15</div>
+                        <div class="lock-notification">
+                            <div class="notif-app">
+                                <span class="notif-app-icon">💬</span>
+                                Messages
+                            </div>
+                            <div class="notif-sender">L. Ébel</div>
+                            <div class="notif-text">Tu réponds même pas?? Sapperlipopette!!</div>
+                        </div>
 
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received">Bernard, je pars chez ma sœur ce soir pour le week-end. N'oublie pas d'arroser mes orchidées samedi matin. Elles sont sur le rebord de la fenêtre de la cuisine.</div>
-                    <div class="bubble-time">09:15</div>
-                  </div>
-                </div>
+                        <div class="lock-unlock-hint" id="lock-hint" onclick="showPasscode()" style="margin-top:auto; cursor:pointer;">
+                            ↑ Appuyez pour déverrouiller
+                        </div>
+                    </div>
 
-                <div class="bubble-row sent">
-                  <div class="bubble-col sent">
-                    <div class="bubble sent">Oui oui, compte sur moi. Profite bien du week-end!</div>
-                    <div class="bubble-time">09:23</div>
-                  </div>
-                </div>
-
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received">Et pas trop d'eau, la dernière fois tu en avais mis beaucoup trop. Juste un peu, deux fois par semaine.</div>
-                    <div class="bubble-time">09:25</div>
-                  </div>
-                </div>
-
-                <div class="bubble-row sent">
-                  <div class="bubble-col sent">
-                    <div class="bubble sent">Promis. Je sais comment arroser des fleurs, Lucie.</div>
-                    <div class="bubble-time">09:26</div>
-                  </div>
+                    <!-- VUE CLAVIER (plein écran) -->
+                    <div class="phone-lockscreen phone-passcode-screen" id="lockscreen-passcode" style="display:none;">
+                        <div class="lock-passcode-label" style="margin-top:auto;">Entrez le code d'accès</div>
+                        <div class="lock-passcode-dots" id="passcode-dots">
+                            <div class="passcode-dot" id="dot0"></div>
+                            <div class="passcode-dot" id="dot1"></div>
+                            <div class="passcode-dot" id="dot2"></div>
+                            <div class="passcode-dot" id="dot3"></div>
+                        </div>
+                        <div class="lock-passcode-error" id="passcode-error"></div>
+                        <div class="numpad">
+                            <button class="numpad-key" onclick="padPress('1')"><span class="key-num">1</span><span class="key-letters"></span></button>
+                            <button class="numpad-key" onclick="padPress('2')"><span class="key-num">2</span><span class="key-letters">ABC</span></button>
+                            <button class="numpad-key" onclick="padPress('3')"><span class="key-num">3</span><span class="key-letters">DEF</span></button>
+                            <button class="numpad-key" onclick="padPress('4')"><span class="key-num">4</span><span class="key-letters">GHI</span></button>
+                            <button class="numpad-key" onclick="padPress('5')"><span class="key-num">5</span><span class="key-letters">JKL</span></button>
+                            <button class="numpad-key" onclick="padPress('6')"><span class="key-num">6</span><span class="key-letters">MNO</span></button>
+                            <button class="numpad-key" onclick="padPress('7')"><span class="key-num">7</span><span class="key-letters">PQRS</span></button>
+                            <button class="numpad-key" onclick="padPress('8')"><span class="key-num">8</span><span class="key-letters">TUV</span></button>
+                            <button class="numpad-key" onclick="padPress('9')"><span class="key-num">9</span><span class="key-letters">WXYZ</span></button>
+                            <button class="numpad-key special"></button>
+                            <button class="numpad-key" onclick="padPress('0')"><span class="key-num">0</span></button>
+                            <button class="numpad-key special delete" onclick="padDelete()">⌫</button>
+                        </div>
+                        <div class="numpad-cancel" onclick="hidePasscode()">Annuler</div>
+                    </div>
                 </div>
 
-                <div class="msg-date-divider">Samedi 14 mars, 21:47</div>
+                <!-- TÉLÉPHONE DÉVERROUILLÉ -->
+                <div id="phone-unlocked">
+                    <div class="phone-status">
+                        <span class="status-time">23:14</span>
+                        <span class="status-icons">▲▲▲ 🔋</span>
+                    </div>
+                    <div class="phone-screen">
 
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received angry">Bernard. Je viens de rentrer. Mes orchidées sont complètement desséchées. Tu les as arrosées oui ou non??</div>
-                    <div class="bubble-time">21:47</div>
-                  </div>
+                        <!-- LISTE SMS -->
+                        <div id="sms-list">
+                            <div class="sms-list-header">
+                                <div class="sms-list-title">Messages</div>
+                                <div class="sms-list-subtitle">Téléphone de Bernard Lafleur</div>
+                            </div>
+                            <div class="sms-contact-row" onclick="openThread()">
+                                <div class="sms-avatar">LE</div>
+                                <div class="sms-contact-info">
+                                    <div class="sms-contact-name">L. Ébel</div>
+                                    <div class="sms-contact-preview">Tu réponds même pas?? Sapperlipopette!!</div>
+                                </div>
+                                <div class="sms-contact-meta">
+                                    <div class="sms-contact-time">23:02</div>
+                                    <div class="sms-unread-badge">4</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- THREAD -->
+                        <div id="sms-thread">
+                            <div class="thread-header">
+                                <div class="thread-back" onclick="closeThread()">
+                                    ‹ <span class="thread-back-count">4</span>
+                                </div>
+                                <div class="thread-contact-info">
+                                    <div class="thread-avatar-sm">LE</div>
+                                    <div class="thread-contact-name">L. Ébel</div>
+                                </div>
+                                <div style="width:40px;"></div>
+                            </div>
+
+                            <div class="thread-messages">
+
+                                <div class="msg-date-divider">Vendredi 13 mars, 09:15</div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received">Bernard, je pars chez ma sœur ce soir pour le week-end. N'oublie pas d'arroser mes orchidées samedi matin. Elles sont sur le rebord de la fenêtre de la cuisine.</div>
+                                        <div class="bubble-time">09:15</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row sent">
+                                    <div class="bubble-col sent">
+                                        <div class="bubble sent">Oui oui, compte sur moi. Profite bien du week-end!</div>
+                                        <div class="bubble-time">09:23</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received">Et pas trop d'eau, la dernière fois tu en avais mis beaucoup trop. Juste un peu, deux fois par semaine.</div>
+                                        <div class="bubble-time">09:25</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row sent">
+                                    <div class="bubble-col sent">
+                                        <div class="bubble sent">Promis. Je sais comment arroser des fleurs, Lucie.</div>
+                                        <div class="bubble-time">09:26</div>
+                                    </div>
+                                </div>
+
+                                <div class="msg-date-divider">Samedi 14 mars, 21:47</div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received angry">Bernard. Je viens de rentrer. Mes orchidées sont complètement desséchées. Tu les as arrosées oui ou non??</div>
+                                        <div class="bubble-time">21:47</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received angry">Flûte, Bernard! Je t'avais demandé UNE seule chose. Une. Seule. Chose.</div>
+                                        <div class="bubble-time">21:52</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received angry">BERNARD. Mes fleurs. Je t'avais dit vendredi. Tu étais où samedi matin pour ne même pas pouvoir arroser mes plantes?!</div>
+                                        <div class="bubble-time">22:38</div>
+                                    </div>
+                                </div>
+
+                                <div class="bubble-row received">
+                                    <div class="bubble-col received">
+                                        <div class="bubble received angry">Sapperlipopette!! Tu réponds même pas?? Je vais aller cogner à ta porte moi!!</div>
+                                        <div class="bubble-time">23:02</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="phone-home-indicator"><div class="home-bar"></div></div>
                 </div>
 
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received angry">Flûte, Bernard! Je t'avais demandé UNE seule chose. Une. Seule. Chose.</div>
-                    <div class="bubble-time">21:52</div>
-                  </div>
-                </div>
-
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received angry">BERNARD. Mes fleurs. Je t'avais dit vendredi. Tu étais où samedi matin pour ne même pas pouvoir arroser mes plantes?!</div>
-                    <div class="bubble-time">22:38</div>
-                  </div>
-                </div>
-
-                <div class="bubble-row received">
-                  <div class="bubble-col received">
-                    <div class="bubble received angry">Sapperlipopette!! Tu réponds même pas?? Je vais aller cogner à ta porte moi!!</div>
-                    <div class="bubble-time">23:02</div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-          <div class="phone-home-indicator"><div class="home-bar"></div></div>
-        </div>
-
-      </div><!-- /.phone-frame -->
-    </div><!-- /.phone-wrapper -->
-  </div>
+            </div><!-- /.phone-frame -->
+        </div><!-- /.phone-wrapper -->
+    </div>
 
 </div><!-- /.screen -->
 
 <!-- NAV -->
 <nav class="tab-bar">
-  <button class="tab-btn active" id="tab-portail" onclick="switchTab('portail')">
-    <span>Portail</span>
-  </button>
-  <button class="tab-btn" id="tab-code" onclick="switchTab('code')">
-    <span>Code</span>
-  </button>
-  <button class="tab-btn" id="tab-telephone" onclick="switchTab('telephone')">
-    <span>Cellulaire</span>
-  </button>
+    <button class="tab-btn active" id="tab-portail" onclick="switchTab('portail')">
+        <span>Portail</span>
+    </button>
+    <button class="tab-btn" id="tab-code" onclick="switchTab('code')">
+        <span>Code</span>
+    </button>
+    <button class="tab-btn" id="tab-telephone" onclick="switchTab('telephone')">
+        <span>Cellulaire</span>
+    </button>
 </nav>
 
 <script>
-  // ══════════════════════════════════════════════════════
-  //  CONFIG
-  // ══════════════════════════════════════════════════════
-  const PHONE_PASSCODE = "9357"; // ← code du téléphone de Bernard
+    // ══════════════════════════════════════════════════════
+    //  CONFIG
+    // ══════════════════════════════════════════════════════
+    const PHONE_PASSCODE = "9357"; // ← code du téléphone de Bernard
 
-  const PORTES = {
-    "SDJ": {
-      code: "9357",
-      titre: "Salle de jeu",
-      message: `
+    const PORTES = {
+        "SDJ": {
+            code: "9357",
+            titre: "Salle de jeu",
+            message: `
         <p>Accès autorisé. La salle de jeu est déverrouillée.</p>
         <p>Vous entrez dans la <strong>scène de crime</strong>. Observez attentivement chaque détail. Certains indices sont évidents. D'autres le sont beaucoup moins.</p>
         <p>Bonne chance!</p>
         <p style="color:var(--text-dim);font-size:0.6rem;margin-top:0.8rem;">— G. Delargent</p>
       `
+        }
+    };
+
+    // ══════════════════════════════════════════════════════
+    //  NAVIGATION
+    // ══════════════════════════════════════════════════════
+    const TABS = ['portail', 'code', 'telephone'];
+
+    function switchTab(tab) {
+        TABS.forEach(t => {
+            document.getElementById('page-' + t).classList.remove('active');
+            document.getElementById('tab-' + t).classList.remove('active');
+        });
+        document.getElementById('page-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (tab === 'code') renderCodePage();
     }
-  };
 
-  // ══════════════════════════════════════════════════════
-  //  NAVIGATION
-  // ══════════════════════════════════════════════════════
-  const TABS = ['portail', 'code', 'telephone'];
+    // ══════════════════════════════════════════════════════
+    //  PORTAIL
+    // ══════════════════════════════════════════════════════
+    function openEmail(id) {
+        document.getElementById('section-inbox').style.display = 'none';
+        const el = document.getElementById('section-email' + id);
+        el.style.display = 'block';
+        el.classList.add('anim-in');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-  function switchTab(tab) {
-    TABS.forEach(t => {
-      document.getElementById('page-' + t).classList.remove('active');
-      document.getElementById('tab-' + t).classList.remove('active');
-    });
-    document.getElementById('page-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (tab === 'code') renderCodePage();
-  }
+    function backToInbox() {
+        document.getElementById('section-email1').style.display = 'none';
+        document.getElementById('section-email2').style.display = 'none';
+        document.getElementById('section-inbox').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-  // ══════════════════════════════════════════════════════
-  //  PORTAIL
-  // ══════════════════════════════════════════════════════
-  function openEmail(id) {
-    document.getElementById('section-inbox').style.display = 'none';
-    const el = document.getElementById('section-email' + id);
-    el.style.display = 'block';
-    el.classList.add('anim-in');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+    // ══════════════════════════════════════════════════════
+    //  CODE
+    // ══════════════════════════════════════════════════════
+    function getQueryParam(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
 
-  function backToInbox() {
-    document.getElementById('section-email1').style.display = 'none';
-    document.getElementById('section-email2').style.display = 'none';
-    document.getElementById('section-inbox').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+    function renderCodePage() {
+        const porteId = (getQueryParam('porte') || '').toUpperCase();
+        const porte   = PORTES[porteId];
+        const body    = document.getElementById('code-body');
 
-  // ══════════════════════════════════════════════════════
-  //  CODE
-  // ══════════════════════════════════════════════════════
-  function getQueryParam(name) {
-    return new URLSearchParams(window.location.search).get(name);
-  }
-
-  function renderCodePage() {
-    const porteId = (getQueryParam('porte') || '').toUpperCase();
-    const porte   = PORTES[porteId];
-    const body    = document.getElementById('code-body');
-
-    if (!porteId || !porte) {
-      body.innerHTML = `
+        if (!porteId || !porte) {
+            body.innerHTML = `
         <div class="qr-prompt">
           <div class="qr-icon">⬛</div>
           <div class="qr-text">
@@ -1387,10 +1388,10 @@
           Chaque porte de la mission possède un <span class="accent">QR code unique</span>.<br>
           Pointez votre appareil photo vers le code pour continuer.
         </div>`;
-      return;
-    }
+            return;
+        }
 
-    body.innerHTML = `
+        body.innerHTML = `
       <div class="code-door-label">// PORTE DÉTECTÉE</div>
       <div class="code-door-id">${porte.titre.toUpperCase()}</div>
       <div class="code-divider"></div>
@@ -1404,100 +1405,100 @@
       <button class="btn-action" onclick="tryDoorCode('${porteId}')">[ DÉVERROUILLER ]</button>
       <div class="code-result" id="door-result"></div>`;
 
-    document.getElementById('door-code').addEventListener('keydown', e => {
-      if (e.key === 'Enter') tryDoorCode(porteId);
-    });
-  }
-
-  function tryDoorCode(porteId) {
-    const porte  = PORTES[porteId];
-    const input  = document.getElementById('door-code').value.trim().toUpperCase();
-    const err    = document.getElementById('door-error');
-    const result = document.getElementById('door-result');
-
-    err.textContent = '';
-    result.style.display = 'none';
-
-    if (input !== porte.code.toUpperCase()) {
-      err.textContent = '> CODE INCORRECT. Réessayez.';
-      const el = document.getElementById('door-code');
-      el.style.borderColor = 'var(--red)';
-      setTimeout(() => el.style.borderColor = '', 1500);
-      return;
+        document.getElementById('door-code').addEventListener('keydown', e => {
+            if (e.key === 'Enter') tryDoorCode(porteId);
+        });
     }
 
-    result.className = 'code-result success anim-in';
-    result.style.display = 'block';
-    result.innerHTML = `<div class="result-title ok">✓ ACCÈS AUTORISÉ</div>${porte.message}`;
-    document.getElementById('door-code').disabled = true;
-    const btn = document.querySelector('#code-body .btn-action');
-    if (btn) btn.style.display = 'none';
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
+    function tryDoorCode(porteId) {
+        const porte  = PORTES[porteId];
+        const input  = document.getElementById('door-code').value.trim().toUpperCase();
+        const err    = document.getElementById('door-error');
+        const result = document.getElementById('door-result');
 
-  // ══════════════════════════════════════════════════════
-  //  TÉLÉPHONE — clavier numérique
-  // ══════════════════════════════════════════════════════
+        err.textContent = '';
+        result.style.display = 'none';
 
-  function showPasscode() {
-    document.getElementById('lockscreen-notifs').style.display = 'none';
-    document.getElementById('lockscreen-passcode').style.display = 'flex';
-    padInput = '';
-    updateDots();
-    document.getElementById('passcode-error').textContent = '';
-  }
+        if (input !== porte.code.toUpperCase()) {
+            err.textContent = '> CODE INCORRECT. Réessayez.';
+            const el = document.getElementById('door-code');
+            el.style.borderColor = 'var(--red)';
+            setTimeout(() => el.style.borderColor = '', 1500);
+            return;
+        }
 
-  function hidePasscode() {
-    document.getElementById('lockscreen-passcode').style.display = 'none';
-    document.getElementById('lockscreen-notifs').style.display = 'flex';
-    padInput = '';
-    updateDots();
-    document.getElementById('passcode-error').textContent = '';
-  }
-
-  let padInput = '';
-
-  function padPress(digit) {
-    if (padInput.length >= 4) return;
-    padInput += digit;
-    updateDots();
-    if (padInput.length === 4) {
-      setTimeout(checkPasscode, 150);
+        result.className = 'code-result success anim-in';
+        result.style.display = 'block';
+        result.innerHTML = `<div class="result-title ok">✓ ACCÈS AUTORISÉ</div>${porte.message}`;
+        document.getElementById('door-code').disabled = true;
+        const btn = document.querySelector('#code-body .btn-action');
+        if (btn) btn.style.display = 'none';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
-  }
 
-  function padDelete() {
-    padInput = padInput.slice(0, -1);
-    document.getElementById('passcode-error').textContent = '';
-    updateDots();
-  }
+    // ══════════════════════════════════════════════════════
+    //  TÉLÉPHONE — clavier numérique
+    // ══════════════════════════════════════════════════════
 
-  function updateDots() {
-    for (let i = 0; i < 4; i++) {
-      const dot = document.getElementById('dot' + i);
-      dot.classList.toggle('filled', i < padInput.length);
+    function showPasscode() {
+        document.getElementById('lockscreen-notifs').style.display = 'none';
+        document.getElementById('lockscreen-passcode').style.display = 'flex';
+        padInput = '';
+        updateDots();
+        document.getElementById('passcode-error').textContent = '';
     }
-  }
 
-  function checkPasscode() {
-    if (padInput === PHONE_PASSCODE) {
-      document.getElementById('phone-locked').style.display = 'none';
-      document.getElementById('phone-unlocked').style.display = 'flex';
-    } else {
-      document.getElementById('passcode-error').textContent = 'Code incorrect';
-      // Animation shake
-      const dots = document.getElementById('passcode-dots');
-      dots.style.animation = 'none';
-      dots.offsetHeight; // reflow
-      dots.style.animation = 'shake 0.4s ease';
-      padInput = '';
-      updateDots();
+    function hidePasscode() {
+        document.getElementById('lockscreen-passcode').style.display = 'none';
+        document.getElementById('lockscreen-notifs').style.display = 'flex';
+        padInput = '';
+        updateDots();
+        document.getElementById('passcode-error').textContent = '';
     }
-  }
 
-  // Animation shake
-  const style = document.createElement('style');
-  style.textContent = `
+    let padInput = '';
+
+    function padPress(digit) {
+        if (padInput.length >= 4) return;
+        padInput += digit;
+        updateDots();
+        if (padInput.length === 4) {
+            setTimeout(checkPasscode, 150);
+        }
+    }
+
+    function padDelete() {
+        padInput = padInput.slice(0, -1);
+        document.getElementById('passcode-error').textContent = '';
+        updateDots();
+    }
+
+    function updateDots() {
+        for (let i = 0; i < 4; i++) {
+            const dot = document.getElementById('dot' + i);
+            dot.classList.toggle('filled', i < padInput.length);
+        }
+    }
+
+    function checkPasscode() {
+        if (padInput === PHONE_PASSCODE) {
+            document.getElementById('phone-locked').style.display = 'none';
+            document.getElementById('phone-unlocked').style.display = 'flex';
+        } else {
+            document.getElementById('passcode-error').textContent = 'Code incorrect';
+            // Animation shake
+            const dots = document.getElementById('passcode-dots');
+            dots.style.animation = 'none';
+            dots.offsetHeight; // reflow
+            dots.style.animation = 'shake 0.4s ease';
+            padInput = '';
+            updateDots();
+        }
+    }
+
+    // Animation shake
+    const style = document.createElement('style');
+    style.textContent = `
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20%      { transform: translateX(-8px); }
@@ -1506,28 +1507,28 @@
       80%      { transform: translateX(8px); }
     }
   `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
 
-  // ══════════════════════════════════════════════════════
-  //  SMS THREAD
-  // ══════════════════════════════════════════════════════
-  function openThread() {
-    document.getElementById('sms-list').style.display = 'none';
-    document.getElementById('sms-thread').style.display = 'flex';
-  }
+    // ══════════════════════════════════════════════════════
+    //  SMS THREAD
+    // ══════════════════════════════════════════════════════
+    function openThread() {
+        document.getElementById('sms-list').style.display = 'none';
+        document.getElementById('sms-thread').style.display = 'flex';
+    }
 
-  function closeThread() {
-    document.getElementById('sms-thread').style.display = 'none';
-    document.getElementById('sms-list').style.display = 'block';
-  }
+    function closeThread() {
+        document.getElementById('sms-thread').style.display = 'none';
+        document.getElementById('sms-list').style.display = 'block';
+    }
 
-  // ══════════════════════════════════════════════════════
-  //  INIT
-  // ══════════════════════════════════════════════════════
-  (function init() {
-    backToInbox();
-    if (getQueryParam('porte')) switchTab('code');
-  })();
+    // ══════════════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════════════
+    (function init() {
+        backToInbox();
+        if (getQueryParam('porte')) switchTab('code');
+    })();
 </script>
 </body>
 </html>
