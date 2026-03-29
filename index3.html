@@ -708,7 +708,7 @@
     if (tab === 'code') renderCodePage();
   }
 
-  function openEmail(let id) {
+  function openEmail(id) {
     document.getElementById('section-inbox').style.display = 'none';
     const el = document.getElementById('section-email' + id.toString());
     el.style.display = 'block';
@@ -717,14 +717,11 @@
   }
 
   function backToInbox() {
-    document.getElementById('section-email').style.display = 'none';
+    document.getElementById('section-email1').style.display = 'none';
+    document.getElementById('section-email2').style.display = 'none';
     document.getElementById('section-inbox').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') tryLogin();
-  });
 
   // ══════════════════════════════════════════════════════════
   //  PAGE CODE — logique principale
