@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Agence PÂQUES — Portail Sécurisé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --green:      #00ff50;
+            --green-dim:  #1a5a2a;
+            --green-dark: #1a3a22;
+            --green-bg:   #0d1f12;
+            --text:       #c8f0d0;
+            --text-dim:   #4a7a55;
+            --text-mid:   #b0d8b8;
+            --bg:         #0a0c0f;
+            --red:        #ff453a;
+            --yellow:     #ffd60a;
+        }
 
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; overflow-y: auto; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: visible;
+            padding: 1.5rem 1.5rem 6rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                    linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridScroll 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridScroll {
+            0%   { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    0deg, transparent, transparent 2px,
+                    rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        .agency-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            opacity: 100;
+            animation: fadeUp 0.5s ease forwards 0.2s;
+        }
+
+        .agency-badge {
+            display: inline-block;
+            border: 2px solid var(--green);
+            padding: 0.25rem 0.9rem;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            color: var(--green);
+            margin-bottom: 0.6rem;
+        }
+
+        .agency-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .agency-name span { color: var(--green); }
+
+        .agency-subtitle {
+            font-size: 0.5rem;
+            letter-spacing: 0.18em;
+            color: var(--text-dim);
+            margin-top: 0.35rem;
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body>
+<div class="screen">
+
+    <!-- HEADER -->
+    <div class="agency-header">
+        <div class="agency-badge">ACCÈS RESTREINT</div>
+        <div class="agency-name">AGENCE <span>PÂQUES</span></div>
+        <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
+    </div>
+    <br>
+    <h1>
+        BUREAU DE BERNARD LAFLEUR
+    </h1>
+</div><!-- /.screen -->
+
+</body>
+</html>
