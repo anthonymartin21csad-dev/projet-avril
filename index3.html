@@ -1,1 +1,821 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Agence PÂQUES — Portail Sécurisé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════════════════
+       CONFIGURATION — MODIFIER ICI
+    ══════════════════════════════════════════ */
+    :root {
+      /* Identifiants de connexion */
+      --login-code: "AGENT007";
+      --login-password: "!JAIME?LES123PATATES!";
 
+      /* Couleurs */
+      --green:      #00ff50;
+      --green-dim:  #1a5a2a;
+      --green-dark: #1a3a22;
+      --green-bg:   #0d1f12;
+      --text:       #c8f0d0;
+      --text-dim:   #4a7a55;
+      --text-mid:   #b0d8b8;
+      --bg:         #0a0c0f;
+      --red:        #ff453a;
+      --yellow:     #ffd60a;
+    }
+
+    /* ══════════════════════════════════════════
+       BASE
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { height: 100%; overflow-y: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: visible;
+      padding: 1.5rem 1.5rem 6rem;
+    }
+
+    /* Grille animée */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,80,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,80,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gridScroll {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    .agency-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.2s;
+    }
+
+    .agency-badge {
+      display: inline-block;
+      border: 2px solid var(--green);
+      padding: 0.25rem 0.9rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--green);
+      margin-bottom: 0.6rem;
+    }
+
+    .agency-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .agency-name span { color: var(--green); }
+
+    .agency-subtitle {
+      font-size: 0.5rem;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      margin-top: 0.35rem;
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════
+       NAV TABS — barre fixée en bas
+    ══════════════════════════════════════════ */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10,12,15,0.97);
+      border-top: 1px solid var(--green-dark);
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+      backdrop-filter: blur(8px);
+    }
+
+    .tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      padding: 0.4rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .tab-btn .tab-icon { font-size: 1.1rem; line-height: 1; }
+
+    .tab-btn.active { color: var(--green); }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 2px;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .tab-btn.locked { color: #2a3a2a; cursor: default; }
+    .tab-btn.locked .tab-icon { filter: grayscale(1); opacity: 0.3; }
+
+    /* ══════════════════════════════════════════
+       TERMINAL CARD (shared)
+    ══════════════════════════════════════════ */
+    .terminal {
+      background: rgba(0,10,5,0.88);
+      border: 1px solid var(--green-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0,255,80,0.06), inset 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.5s;
+    }
+
+    .terminal-bar {
+      background: var(--green-bg);
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--green-dark);
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-r { background: var(--red); }
+    .dot-y { background: var(--yellow); }
+    .dot-g { background: #30d158; }
+
+    .terminal-title {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin: 0 auto;
+    }
+
+    .terminal-body { padding: 1.5rem; }
+
+    /* ══════════════════════════════════════════
+       PAGES
+    ══════════════════════════════════════════ */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ══════════════════════════════════════════
+       PAGE : PORTAIL
+    ══════════════════════════════════════════ */
+    #section-inbox  { display: block; }
+    #section-email  { display: none; }
+
+    .prompt-line {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .prompt-line .blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .field-group { margin-bottom: 1.2rem; }
+
+    .field-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .field-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--green-dim);
+      padding: 0.5rem 0;
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      outline: none;
+      text-transform: uppercase;
+      transition: border-color 0.3s;
+    }
+
+    .field-input:focus { border-color: var(--green); }
+    .field-input::placeholder { color: var(--green-dark); }
+
+    .error-msg {
+      font-size: 0.6rem;
+      color: var(--red);
+      margin-top: 0.5rem;
+      min-height: 1rem;
+      letter-spacing: 0.1em;
+    }
+
+    .btn-action {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.9rem;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 2px;
+    }
+
+    .btn-action:active { background: var(--green); color: var(--bg); }
+
+    .loading-bar-wrap { margin-top: 1.2rem; display: none; }
+
+    .loading-label {
+      font-size: 0.55rem;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.4rem;
+    }
+
+    .loading-bar {
+      height: 2px;
+      background: var(--green-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading-bar::after {
+      content: '';
+      position: absolute;
+      left: -60%; top: 0;
+      height: 100%; width: 60%;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      animation: loadingAnim 1s linear infinite;
+    }
+
+    @keyframes loadingAnim {
+      0%   { left: -60%; }
+      100% { left: 110%; }
+    }
+
+    /* INBOX */
+    .inbox-header {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--green-dark);
+    }
+
+    .inbox-header span { color: var(--green); }
+
+    .email-row {
+      padding: 1rem 0.8rem;
+      border: 1px solid var(--green-dark);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .email-row:active { background: rgba(0,255,80,0.05); border-color: var(--green); }
+
+    .unread-dot {
+      position: absolute;
+      top: 50%; left: -6px;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    .email-from   { font-size: 0.7rem; color: #fff; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .email-subject{ font-size: 0.65rem; color: var(--green); margin-bottom: 0.3rem; }
+    .email-preview{ font-size: 0.6rem; color: #3a6a45; }
+    .email-date   { font-size: 0.55rem; color: #2a4a30; margin-top: 0.4rem; text-align: right; }
+
+    .email-nav {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .email-meta { border-bottom: 1px solid var(--green-dark); padding-bottom: 1rem; margin-bottom: 1.2rem; }
+
+    .email-meta-row { display: flex; gap: 0.5rem; margin-bottom: 0.3rem; }
+
+    .meta-key { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; min-width: 50px; }
+    .meta-val { font-size: 0.6rem; color: var(--text); letter-spacing: 0.05em; }
+    .meta-val.subject { color: #fff; font-size: 0.7rem; }
+
+    .email-body { font-size: 0.7rem; color: var(--text-mid); line-height: 1.8; }
+    .email-body p { margin-bottom: 1rem; }
+
+    .email-body .signature {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--green-dark);
+      color: var(--text-dim);
+      font-size: 0.6rem;
+      line-height: 1.6;
+    }
+
+    .email-body .highlight { color: var(--green); font-weight: bold; }
+
+    /* ══════════════════════════════════════════
+       PAGE : CODE
+    ══════════════════════════════════════════ */
+    .code-door-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .code-door-id {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 0 20px rgba(0,255,80,0.4);
+    }
+
+    .code-divider {
+      height: 1px;
+      background: var(--green-dark);
+      margin-bottom: 1.2rem;
+    }
+
+    .code-instruction {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 1.4rem;
+    }
+
+    .code-instruction .accent { color: var(--text-mid); }
+
+    /* QR prompt (no query param) */
+    .qr-prompt {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border: 1px dashed var(--green-dark);
+      border-radius: 4px;
+      margin-bottom: 1.2rem;
+    }
+
+    .qr-icon { font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.6; }
+
+    .qr-text {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+    }
+
+    .qr-text strong { color: var(--text-mid); }
+
+    /* Résultat */
+    .code-result {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+    }
+
+    .code-result.success {
+      border: 1px solid var(--green);
+      background: rgba(0,255,80,0.05);
+      color: var(--text-mid);
+    }
+
+    .code-result.error {
+      border: 1px solid var(--red);
+      background: rgba(255,69,58,0.05);
+      color: #ffb0ad;
+    }
+
+    .result-title {
+      font-size: 0.75rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.6rem;
+    }
+
+    .result-title.ok  { color: var(--green); }
+    .result-title.err { color: var(--red); }
+
+    /* ══════════════════════════════════════════
+       PAGE : INTERROGATOIRE (verrouillé)
+    ══════════════════════════════════════════ */
+    .locked-content {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .locked-icon {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      opacity: 0.35;
+    }
+
+    .locked-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+    }
+
+    .locked-text {
+      font-size: 0.62rem;
+      color: #2a4a30;
+      line-height: 1.7;
+      letter-spacing: 0.08em;
+    }
+
+    /* ══════════════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim-in { animation: fadeUp 0.35s ease forwards; }
+  </style>
+</head>
+<body>
+<div class="screen">
+
+  <!-- HEADER -->
+  <div class="agency-header">
+    <div class="agency-badge">ACCÈS RESTREINT</div>
+    <div class="agency-name">AGENCE <span>PÂQUES</span></div>
+    <div class="agency-subtitle">Programme d'Agents Qualifiés pour Unterrainer, Enquêtes et Situations Spéciales</div>
+  </div>
+
+  <!-- ═══ PAGE : PORTAIL ═══ -->
+  <div class="page active" id="page-portail">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="terminal-title">PORTAIL-AGENT v4.2.1</div>
+      </div>
+      <div class="terminal-body">
+
+        <!-- INBOX -->
+        <div id="section-inbox">
+          <div class="inbox-header">BOÎTE DE RÉCEPTION — <span>1 MESSAGE NON LU</span></div>
+          <div class="email-row" onclick="openEmail()">
+            <div class="unread-dot"></div>
+            <div class="email-from">Directrice G. Delargent</div>
+            <div class="email-subject">AFFAIRE LAFLEUR — Mission urgente</div>
+            <div class="email-preview">Agent, nous avons besoin de vous. Maintenant...</div>
+            <div class="email-date">Aujourd'hui, 06:47</div>
+          </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div id="section-email">
+          <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
+          <div class="email-meta">
+            <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
+            <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
+            <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Mission urgente</div></div>
+            <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 06:47</div></div>
+          </div>
+          <div class="email-body">
+            <p>Agent,</p>
+            <p>Je serai brève — c'est dimanche matin, je n'ai pas encore bu mon café, et franchement, je préférerais être ailleurs.</p>
+            <p>La nuit dernière, un certain <span class="highlight">Bernard Lafleur</span> — chocolatier excentrique, pianiste médiocre (il avait un piano chez lui), collectionneur de chapeaux inutiles — a été retrouvé mort dans sa demeure. La police parle de crise cardiaque. L'Agence, elle, parle d'autre chose.</p>
+            <p>Vous êtes notre meilleur agent disponible ce matin. Vous êtes, en réalité, notre <em>seul</em> agent disponible ce matin. Les autres ont pris congé pour Pâques. Je ne fais pas de commentaires là-dessus.</p>
+            <p>Votre mission : déterminer si la mort de M. Lafleur est naturelle ou non, identifier le ou les responsables, et récupérer ce qu'on lui a volé avant que ça disparaisse pour de bon.</p>
+            <p>Votre premier briefing complet vous attend <span class="highlight">chez lui</span>.</p>
+            <p>L'Agence compte sur vous. Ce qui, ce matin, est à la fois un honneur et une légère source d'inquiétude de notre part.</p>
+            <div class="signature">
+              Bonne chance,<br><br>
+              <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+              Directrice des opérations — Agence PÂQUES<br><br>
+              <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a rien à voir</em><br>
+              <em style="color:#2a4a30;">"Le code pour entrer dans sa maison était 9357"</em>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-email">
+          <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
+          <div class="email-meta">
+            <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
+            <div class="email-meta-row"><div class="meta-key">À :</div><div class="meta-val">agent@agence-paques.gc.ca</div></div>
+            <div class="email-meta-row"><div class="meta-key">OBJET :</div><div class="meta-val subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div></div>
+            <div class="email-meta-row"><div class="meta-key">DATE :</div><div class="meta-val">Dimanche, 08:35</div></div>
+          </div>
+          <div class="email-body">
+            <p>Agent,</p>
+            <p>Nos scientifiques ont terminé d'analyser l'ADN présent sur la scène de crime, malheureusement, nous n'avons pas été en mesure d'identifier le meurtrier.</p>
+            <p>Par contre, si vous êtes capable de <span class="highlight">receuillir l'ADN</span> des autres suspects, nous pourrons identifier le meurtrier.</p>
+            <p>Pour l'instant, je conte sur vous pour <span class="highlight">trouver qui aurait pu vouloir assassiner Monsieur Lafleur</span></p>
+            <p>Bonne chance!</p>
+            <div class="signature">
+              Bonne chance,<br><br>
+              <strong style="color:#c8f0d0;">G. Delargent</strong><br>
+              Directrice des opérations — Agence PÂQUES<br><br>
+              <em style="color:#2a4a30;">Pourquoi lis-tu ça? Il n'y a toujours rien à voir</em><br>
+              <em style="color:#2a4a30;">"J'ai entendu dire qu'il aimait beaucoup le Poker..."</em>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE : CODE ═══ -->
+  <div class="page" id="page-code">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="terminal-title">SYSTÈME DE DÉVERROUILLAGE</div>
+      </div>
+      <div class="terminal-body" id="code-body">
+        <!-- Contenu injecté par JS selon query param -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE : INTERROGATOIRE ═══ -->
+  <div class="page" id="page-interrogatoire">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="terminal-title">MODULE INTERROGATOIRE</div>
+      </div>
+      <div class="terminal-body">
+        <div class="locked-content">
+          <div class="locked-icon">🔒</div>
+          <div class="locked-title">ACCÈS VERROUILLÉ</div>
+          <div class="locked-text">
+            Ce module est inaccessible pour le moment.<br><br>
+            Scannez le QR code approprié<br>
+            pour déverrouiller cette section.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.screen -->
+
+<!-- BARRE DE NAVIGATION FIXE EN BAS -->
+<nav class="tab-bar">
+  <button class="tab-btn active" id="tab-portail" onclick="switchTab('portail')">
+    <span>Portail</span>
+  </button>
+  <button class="tab-btn" id="tab-code" onclick="switchTab('code')">
+    <span>Code</span>
+  </button>
+  <button class="tab-btn locked" id="tab-interrogatoire" onclick="switchTab('interrogatoire')">
+    <span class="tab-icon">🔒</span>
+    <span>Interrogatoire</span>
+  </button>
+</nav>
+
+<script>
+
+  // Portes : clé = ID de porte (query param ?porte=XXX), valeur = { code, message }
+  // Le message s'affiche après succès et peut contenir du HTML.
+  const PORTES = {
+    "SDJ": {
+      code: "9357",
+      titre: "Salle de jeu",
+      message: `
+        <p>Accès autorisé. La salle de jeu est déverrouillée.</p>
+        <p>Vous entrez dans la <strong>scène de crime</strong>. Observez attentivement chaque détail. Certains indices sont évidents. D'autres le sont beaucoup moins.</p>
+        <p>Bonne chance!</p>
+        <p style="color:var(--text-dim);font-size:0.6rem;margin-top:0.8rem;">— G. Delargent</p>
+      `
+    }
+  };
+
+  // ══════════════════════════════════════════════════════════
+  //  NAVIGATION PAR ONGLETS
+  // ══════════════════════════════════════════════════════════
+
+  const TABS = ['portail', 'code', 'interrogatoire'];
+
+  function switchTab(tab) {
+    // Interrogatoire verrouillé — désactivé
+    if (tab === 'interrogatoire') return;
+
+    TABS.forEach(t => {
+      document.getElementById('page-' + t).classList.remove('active');
+      document.getElementById('tab-' + t).classList.remove('active');
+    });
+
+    document.getElementById('page-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (tab === 'code') renderCodePage();
+  }
+
+  function openEmail() {
+    document.getElementById('section-inbox').style.display = 'none';
+    const el = document.getElementById('section-email');
+    el.style.display = 'block';
+    el.classList.add('anim-in');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToInbox() {
+    document.getElementById('section-email').style.display = 'none';
+    document.getElementById('section-inbox').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  // ══════════════════════════════════════════════════════════
+  //  PAGE CODE — logique principale
+  // ══════════════════════════════════════════════════════════
+
+  function getQueryParam(name) {
+    return new URLSearchParams(window.location.search).get(name);
+  }
+
+  function renderCodePage() {
+    const porteId = (getQueryParam('porte') || '').toUpperCase();
+    const porte   = PORTES[porteId];
+    const body    = document.getElementById('code-body');
+
+    if (!porteId || !porte) {
+      // Aucun query param reconnu → invite à scanner un QR code
+      body.innerHTML = `
+        <div class="qr-prompt">
+          <div class="qr-icon">⬛</div>
+          <div class="qr-text">
+            <strong>Scannez le QR code</strong> affiché sur la porte<br>
+            pour accéder au formulaire de déverrouillage.
+          </div>
+        </div>
+        <div class="code-instruction">
+          Chaque porte de la mission possède un <span class="accent">QR code unique</span>.<br>
+          Pointez votre appareil photo vers le code pour continuer.
+        </div>
+      `;
+      return;
+    }
+
+    // Query param reconnu → afficher le formulaire pour cette porte
+    body.innerHTML = `
+      <div class="code-door-label">// PORTE DÉTECTÉE</div>
+      <div class="code-door-id">${porte.titre.toUpperCase()}</div>
+      <div class="code-divider"></div>
+      <div class="code-instruction">
+        Entrez le <span class="accent">code d'accès</span> pour déverrouiller cette zone.
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="door-code">// CODE D'ACCÈS</label>
+        <input class="field-input" id="door-code" type="text"
+               placeholder="••••••••" autocomplete="off" autocorrect="off"
+               spellcheck="false" style="text-transform:uppercase;" />
+      </div>
+      <div class="error-msg" id="door-error"></div>
+      <button class="btn-action" onclick="tryDoorCode('${porteId}')">[ DÉVERROUILLER ]</button>
+      <div class="code-result" id="door-result"></div>
+    `;
+
+    document.getElementById('door-code').addEventListener('keydown', e => {
+      if (e.key === 'Enter') tryDoorCode(porteId);
+    });
+  }
+
+  function tryDoorCode(porteId) {
+    const porte    = PORTES[porteId];
+    const input    = document.getElementById('door-code').value.trim().toUpperCase();
+    const err      = document.getElementById('door-error');
+    const result   = document.getElementById('door-result');
+
+    err.textContent = '';
+    result.style.display = 'none';
+
+    if (input !== porte.code.toUpperCase()) {
+      err.textContent = '> CODE INCORRECT. Réessayez.';
+      const el = document.getElementById('door-code');
+      el.style.borderColor = 'var(--red)';
+      setTimeout(() => el.style.borderColor = '', 1500);
+      return;
+    }
+
+    // Succès
+    result.className = 'code-result success anim-in';
+    result.style.display = 'block';
+    result.innerHTML = `
+      <div class="result-title ok">✓ ACCÈS AUTORISÉ</div>
+      ${porte.message}
+    `;
+
+    document.getElementById('door-code').disabled = true;
+    document.querySelector('.btn-action') && (document.querySelector('#code-body .btn-action').style.display = 'none');
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  INIT — ouvrir directement l'onglet Code si query param
+  // ══════════════════════════════════════════════════════════
+
+  (function init() {
+    const porteId = getQueryParam('porte');
+    if (porteId) {
+      switchTab('code');
+    }
+  })();
+</script>
+</body>
+</html>
