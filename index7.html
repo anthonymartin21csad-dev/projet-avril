@@ -1,570 +1,570 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <title>Interrogatoire — Lucie Ébel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg:        #0e0c14;
-      --panel:     #16131f;
-      --border:    #2e2840;
-      --accent:    #a78bfa;
-      --accent2:   #7c5cbf;
-      --text:      #e8e0f0;
-      --text-dim:  #7a6e90;
-      --text-mid:  #b8a8d0;
-      --lucie-bg:  #1e1630;
-      --agent-bg:  #121018;
-      --red:       #f87171;
-      --green:     #6ee7b7;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>Interrogatoire — Lucie Ébel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --bg:        #0e0c14;
+            --panel:     #16131f;
+            --border:    #2e2840;
+            --accent:    #a78bfa;
+            --accent2:   #7c5cbf;
+            --text:      #e8e0f0;
+            --text-dim:  #7a6e90;
+            --text-mid:  #b8a8d0;
+            --lucie-bg:  #1e1630;
+            --agent-bg:  #121018;
+            --red:       #f87171;
+            --green:     #6ee7b7;
+        }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; overflow: hidden; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; overflow: hidden; }
 
-    body {
-      background: var(--bg);
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
+        body {
+            background: var(--bg);
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
 
-    /* ── SCÈNE ── */
-    #scene {
-      width: 100%;
-      max-width: 680px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
+        /* ── SCÈNE ── */
+        #scene {
+            width: 100%;
+            max-width: 680px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ── ZONE VISUELLE (haut) ── */
-    #visual-zone {
-      flex-shrink: 0;
-      height: 42vh;
-      position: relative;
-      overflow: hidden;
-      background: #0a0810;
-      border-bottom: 2px solid var(--border);
-    }
+        /* ── ZONE VISUELLE (haut) ── */
+        #visual-zone {
+            flex-shrink: 0;
+            height: 42vh;
+            position: relative;
+            overflow: hidden;
+            background: #0a0810;
+            border-bottom: 2px solid var(--border);
+        }
 
-    /* Fond salle d'interrogatoire */
-    #room-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(100,80,180,0.12) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0810 0%, #0e0b18 60%, #120e1e 100%);
-    }
+        /* Fond salle d'interrogatoire */
+        #room-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(100,80,180,0.12) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0810 0%, #0e0b18 60%, #120e1e 100%);
+        }
 
-    /* Table */
-    #room-bg::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      height: 35%;
-      background: linear-gradient(180deg, #1a1428 0%, #221c34 100%);
-      border-top: 2px solid #2e2448;
-    }
+        /* Table */
+        #room-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0; right: 0;
+            height: 35%;
+            background: linear-gradient(180deg, #1a1428 0%, #221c34 100%);
+            border-top: 2px solid #2e2448;
+        }
 
-    /* Lampe suspendue */
-    .lamp {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 60px;
-      background: #2e2448;
-    }
+        /* Lampe suspendue */
+        .lamp {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 60px;
+            background: #2e2448;
+        }
 
-    .lamp::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px; height: 24px;
-      background: #2e2448;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 0 40px 15px rgba(200,180,255,0.08);
-    }
+        .lamp::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; height: 24px;
+            background: #2e2448;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 0 40px 15px rgba(200,180,255,0.08);
+        }
 
-    /* Personnage Lucie */
-    #lucie-char {
-      position: absolute;
-      bottom: 28%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 110px;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
+        /* Personnage Lucie */
+        #lucie-char {
+            position: absolute;
+            bottom: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
 
-    #lucie-char.talking {
-      animation: bobble 0.5s ease-in-out infinite alternate;
-    }
+        #lucie-char.talking {
+            animation: bobble 0.5s ease-in-out infinite alternate;
+        }
 
-    @keyframes bobble {
-      from { transform: translateX(-50%) translateY(0); }
-      to   { transform: translateX(-50%) translateY(-4px); }
-    }
+        @keyframes bobble {
+            from { transform: translateX(-50%) translateY(0); }
+            to   { transform: translateX(-50%) translateY(-4px); }
+        }
 
-    .char-face {
-      width: 68px;
-      height: 68px;
-      margin: 0 auto 4px;
-      position: relative;
-    }
+        .char-face {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 4px;
+            position: relative;
+        }
 
-    .char-name-tag {
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      background: rgba(167,139,250,0.1);
-      border: 1px solid rgba(167,139,250,0.25);
-      padding: 2px 8px;
-      border-radius: 2px;
-      white-space: nowrap;
-    }
+        .char-name-tag {
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            background: rgba(167,139,250,0.1);
+            border: 1px solid rgba(167,139,250,0.25);
+            padding: 2px 8px;
+            border-radius: 2px;
+            white-space: nowrap;
+        }
 
-    /* Éléments visuels flottants */
-    #visual-overlay {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        /* Éléments visuels flottants */
+        #visual-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .visual-card {
-      background: rgba(22,19,31,0.92);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px 16px;
-      max-width: 72%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: scale(0.9) translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
+        .visual-card {
+            background: rgba(22,19,31,0.92);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 16px;
+            max-width: 72%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0.9) translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
 
-    .visual-card.show {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
+        .visual-card.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
 
-    /* Photo simulée */
-    .fake-photo {
-      border-radius: 4px;
-      overflow: hidden;
-      border: 2px solid #3a3050;
-    }
+        /* Photo simulée */
+        .fake-photo {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 2px solid #3a3050;
+        }
 
-    .fake-photo-inner {
-      width: 220px;
-      height: 140px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: #888;
-      position: relative;
-    }
+        .fake-photo-inner {
+            width: 220px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: #888;
+            position: relative;
+        }
 
-    .photo-timestamp {
-      position: absolute;
-      bottom: 6px;
-      right: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
-      color: #ffdd88;
-      opacity: 0.8;
-    }
+        .photo-timestamp {
+            position: absolute;
+            bottom: 6px;
+            right: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            color: #ffdd88;
+            opacity: 0.8;
+        }
 
-    .photo-location {
-      position: absolute;
-      top: 6px;
-      left: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.5rem;
-      color: #88ddff;
-      opacity: 0.7;
-    }
+        .photo-location {
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.5rem;
+            color: #88ddff;
+            opacity: 0.7;
+        }
 
-    /* Message texte */
-    .visual-msg {
-      font-size: 0.7rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-      text-align: center;
-    }
+        /* Message texte */
+        .visual-msg {
+            font-size: 0.7rem;
+            color: var(--text-mid);
+            line-height: 1.7;
+            text-align: center;
+        }
 
-    .visual-msg .em { color: var(--accent); font-style: italic; }
-    .visual-msg .warn { color: var(--red); }
-    .visual-msg .ok   { color: var(--green); }
+        .visual-msg .em { color: var(--accent); font-style: italic; }
+        .visual-msg .warn { color: var(--red); }
+        .visual-msg .ok   { color: var(--green); }
 
-    /* ── ZONE DIALOGUE (bas) ── */
-    #dialogue-zone {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: var(--panel);
-    }
+        /* ── ZONE DIALOGUE (bas) ── */
+        #dialogue-zone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--panel);
+        }
 
-    /* Bande de statut */
-    #status-bar {
-      height: 24px;
-      background: #0e0c14;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 16px;
-      flex-shrink: 0;
-    }
+        /* Bande de statut */
+        #status-bar {
+            height: 24px;
+            background: #0e0c14;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 16px;
+            flex-shrink: 0;
+        }
 
-    .status-item {
-      font-size: 0.5rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+        .status-item {
+            font-size: 0.5rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-    .status-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
-    }
+        .status-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-    /* Bulle de dialogue */
-    #dialogue-box {
-      flex: 1;
-      padding: 16px 18px 8px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
+        /* Bulle de dialogue */
+        #dialogue-box {
+            flex: 1;
+            padding: 16px 18px 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
 
-    .dialogue-speaker {
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-    }
+        .dialogue-speaker {
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
 
-    .speaker-lucie { color: var(--accent); }
-    .speaker-agent { color: #60a0c0; }
+        .speaker-lucie { color: var(--accent); }
+        .speaker-agent { color: #60a0c0; }
 
-    .dialogue-text {
-      font-family: 'Crimson Pro', serif;
-      font-size: 1.05rem;
-      color: var(--text);
-      line-height: 1.65;
-      min-height: 3em;
-    }
+        .dialogue-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.05rem;
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 3em;
+        }
 
-    .dialogue-text .funny {
-      color: #f9c74f;
-      font-style: italic;
-    }
+        .dialogue-text .funny {
+            color: #f9c74f;
+            font-style: italic;
+        }
 
-    .dialogue-text .important {
-      color: var(--green);
-      font-weight: 600;
-    }
+        .dialogue-text .important {
+            color: var(--green);
+            font-weight: 600;
+        }
 
-    /* Curseur clignotant */
-    .cursor {
-      display: inline-block;
-      width: 8px; height: 1em;
-      background: var(--accent);
-      margin-left: 2px;
-      vertical-align: middle;
-      animation: blink 0.9s step-end infinite;
-    }
+        /* Curseur clignotant */
+        .cursor {
+            display: inline-block;
+            width: 8px; height: 1em;
+            background: var(--accent);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 0.9s step-end infinite;
+        }
 
-    @keyframes blink { 50%{opacity:0;} }
+        @keyframes blink { 50%{opacity:0;} }
 
-    /* ── BOUTON SUIVANT ── */
-    #btn-next-wrap {
-      padding: 10px 18px 16px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+        /* ── BOUTON SUIVANT ── */
+        #btn-next-wrap {
+            padding: 10px 18px 16px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    #progress-bar {
-      flex: 1;
-      height: 2px;
-      background: var(--border);
-      border-radius: 1px;
-      margin-right: 14px;
-      overflow: hidden;
-    }
+        #progress-bar {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            border-radius: 1px;
+            margin-right: 14px;
+            overflow: hidden;
+        }
 
-    #progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 1px;
-      transition: width 0.4s ease;
-    }
+        #progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 1px;
+            transition: width 0.4s ease;
+        }
 
-    #btn-next {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      padding: 8px 18px;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
-      flex-shrink: 0;
-    }
+        #btn-next {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            padding: 8px 18px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            flex-shrink: 0;
+        }
 
-    #btn-next:active { background: var(--accent); color: var(--bg); }
-    #btn-next:disabled { opacity: 0.3; cursor: default; }
+        #btn-next:active { background: var(--accent); color: var(--bg); }
+        #btn-next:disabled { opacity: 0.3; cursor: default; }
 
-    /* ── FIN ── */
-    #end-screen {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: var(--bg);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 2rem;
-      text-align: center;
-    }
+        /* ── FIN ── */
+        #end-screen {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
 
-    #end-screen.show { display: flex; }
+        #end-screen.show { display: flex; }
 
-    .end-title {
-      font-family: 'Crimson Pro', serif;
-      font-size: 1.6rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
+        .end-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
 
-    .end-verdict {
-      background: rgba(167,139,250,0.08);
-      border: 1px solid rgba(167,139,250,0.2);
-      border-radius: 4px;
-      padding: 14px 20px;
-      font-size: 0.7rem;
-      color: var(--text-mid);
-      line-height: 1.8;
-      max-width: 420px;
-    }
+        .end-verdict {
+            background: rgba(167,139,250,0.08);
+            border: 1px solid rgba(167,139,250,0.2);
+            border-radius: 4px;
+            padding: 14px 20px;
+            font-size: 0.7rem;
+            color: var(--text-mid);
+            line-height: 1.8;
+            max-width: 420px;
+        }
 
-    .end-verdict .hl { color: var(--green); }
-    .end-verdict .warn { color: var(--red); }
-  </style>
+        .end-verdict .hl { color: var(--green); }
+        .end-verdict .warn { color: var(--red); }
+    </style>
 </head>
 <body>
 <div id="scene">
 
-  <!-- STATUS BAR -->
-  <div id="status-bar">
-    <div class="status-item">
-      <div class="status-dot"></div>
-      ENREGISTREMENT EN COURS
-    </div>
-    <div class="status-item">AFFAIRE LAFLEUR — INTERROGATOIRE</div>
-    <div class="status-item" id="step-counter">1 / 12</div>
-  </div>
-
-  <!-- DIALOGUE -->
-  <div id="dialogue-zone">
-    <div id="dialogue-box">
-      <div class="dialogue-speaker" id="speaker-label">LUCIE ÉBEL</div>
-      <div class="dialogue-text" id="dialogue-text"></div>
+    <!-- STATUS BAR -->
+    <div id="status-bar">
+        <div class="status-item">
+            <div class="status-dot"></div>
+            ENREGISTREMENT EN COURS
+        </div>
+        <div class="status-item">AFFAIRE LAFLEUR — INTERROGATOIRE</div>
+        <div class="status-item" id="step-counter">1 / 12</div>
     </div>
 
-    <div id="btn-next-wrap">
-      <div id="progress-bar"><div id="progress-fill" style="width:8%"></div></div>
-      <button id="btn-next" onclick="nextStep()">SUIVANT ▶</button>
-    </div>
-  </div>
+    <!-- DIALOGUE -->
+    <div id="dialogue-zone">
+        <div id="dialogue-box">
+            <div class="dialogue-speaker" id="speaker-label">LUCIE ÉBEL</div>
+            <div class="dialogue-text" id="dialogue-text"></div>
+        </div>
 
-  <!-- ÉCRAN DE FIN -->
-  <div id="end-screen">
-    <div class="end-title">— Fin de l'interrogatoire —</div>
-    <div class="end-verdict">
-      <strong style="color:var(--accent);">Résumé du témoignage</strong><br><br>
-      Lucie Ébel affirme avoir passé la soirée du <span class="hl">samedi 14 mars</span>
-      chez son amie <span class="hl">Martine Bouleau</span>, au 12 rue des Érables.<br><br>
-      Elle dispose de <span class="hl">photos horodatées</span> comme preuve de présence.<br><br>
-      Alibi : <span class="hl">non confirmé</span> — à vérifier auprès de Mme Bouleau.<br><br>
-      <span class="warn">Note :</span> Mme Ébel est clairement en colère contre M. Lafleur au sujet des orchidées.
-      Mobile potentiel présent. Alibi à corroborer.
+        <div id="btn-next-wrap">
+            <div id="progress-bar"><div id="progress-fill" style="width:8%"></div></div>
+            <button id="btn-next" onclick="nextStep()">SUIVANT ▶</button>
+        </div>
     </div>
-  </div>
+
+    <!-- ÉCRAN DE FIN -->
+    <div id="end-screen">
+        <div class="end-title">— Fin de l'interrogatoire —</div>
+        <div class="end-verdict">
+            <strong style="color:var(--accent);">Résumé du témoignage</strong><br><br>
+            Lucie Ébel affirme avoir passé la soirée du <span class="hl">samedi 14 mars</span>
+            chez son amie <span class="hl">Martine Bouleau</span>, au 12 rue des Érables.<br><br>
+            Elle dispose de <span class="hl">photos horodatées</span> comme preuve de présence.<br><br>
+            Alibi : <span class="hl">non confirmé</span> — à vérifier auprès de Mme Bouleau.<br><br>
+            <span class="warn">Note :</span> Mme Ébel est clairement en colère contre M. Lafleur au sujet des orchidées.
+            Mobile potentiel présent. Alibi à corroborer.
+        </div>
+    </div>
 
 </div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  SCRIPT DE L'INTERROGATOIRE
-//  Chaque étape : { speaker, text, visual, expression }
-//  visual: null | { type: 'photo'|'text', ... }
-//  expression: 'normal' | 'angry' | 'sad' | 'smug' | 'laugh'
-// ══════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════
+    //  SCRIPT DE L'INTERROGATOIRE
+    //  Chaque étape : { speaker, text, visual, expression }
+    //  visual: null | { type: 'photo'|'text', ... }
+    //  expression: 'normal' | 'angry' | 'sad' | 'smug' | 'laugh'
+    // ══════════════════════════════════════════════════
 
-const STEPS = [
-  {
-    speaker: 'agent',
-    text: 'Madame Ébel, merci de vous m\'accorder votre temps. Pouvez-vous nous décrire votre relation avec M. Bernard Lafleur ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'C\'était mon voisin. On se connaît depuis dix ans. Enfin, on <span class="important">se connaissait</span>. C\'était quelqu\'un de... particulier. Un peu distrait. Surtout avec les plantes des autres. (Petite blague — mais vraiment, ses orchidées, c\'est lui qui les a tuées.)',
-  },
-  {
-    speaker: 'agent',
-    text: 'Où étiez-vous le samedi 14 mars au soir ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'Chez mon amie <span class="important">Martine Bouleau</span>, au 12 rue des Érables. On a regardé un film, mangé des pâtes carbonara. Martine fait les meilleures carbonara du quartier. Meilleures que Bernard en tout cas — lui, il mettait de la crème. De la crème ! Dans des carbonara ! C\'est un crime, ça aussi!',
-  },
-  {
-    speaker: 'agent',
-    text: 'Avez-vous une preuve de votre présence là-bas ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'Oui, justement. J\'ai des photos. Martine et moi on a pris des selfies pendant le film. <span class="important">À 21h14</span>, avec la localisation GPS. Et avant que vous demandiez : non, on ne peut pas truquer le GPS. J\'ai essayé une fois pour éviter une contravention. Ça n\'a pas marché. Longue histoire.',
-  },
-  {
-    speaker: 'agent',
-    text: 'Avez-vous une autre photo ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'Oui, une de nous deux à <span class="important">23h02</span>, juste avant que je reparte. Et là, j\'ai vu les messages de Bernard qui ne répondait pas. J\'étais dans tous mes états. Mes orchidées... Bon, au moins lui, il est mort. Mes orchidées, elles, elles souffrent encore. C\'est plus long, pour une plante.',
-  },
-  {
-    speaker: 'agent',
-    text: 'Avez-vous envoyé des messages à M. Lafleur ce soir-là ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'Oui. Plusieurs. Je ne vais pas vous mentir, j\'étais fâchée. Très fâchée. <span class="important">Sapperlipopette</span>, ces orchidées coûtaient 80 dollars pièce ! Mais être fâchée ne fait pas de moi une meurtrière. Si c\'était le cas, mon ancien dentiste serait disparu depuis longtemps.',
-  },
-  {
-    speaker: 'agent',
-    text: 'Une dernière question. Saviez-vous que M. Lafleur était en conflit avec d\'autres personnes ?',
-  },
-  {
-    speaker: 'lucie',
-    text: 'Claude Lavi, oui. Tout le monde était au courant. Cette histoire de recette de ganache... Bernard était comme ça. Charmant, mais il <span class="important">empruntait</span> les idées des autres sans vraiment demander. Comme les plantes. Comme les recettes.',
-  }
-];
+    const STEPS = [
+        {
+            speaker: 'agent',
+            text: 'Madame Ébel, merci de vous m\'accorder votre temps. Pouvez-vous nous décrire votre relation avec M. Bernard Lafleur ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'C\'était mon voisin. On se connaît depuis dix ans. Enfin, on <span class="important">se connaissait</span>. C\'était quelqu\'un de... particulier. Un peu distrait. Surtout avec les plantes des autres. (Petite blague — mais vraiment, ses orchidées, c\'est lui qui les a tuées.)',
+        },
+        {
+            speaker: 'agent',
+            text: 'Où étiez-vous le samedi 14 mars au soir ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'Chez mon amie <span class="important">Martine Bouleau</span>, au 12 rue des Érables. On a regardé un film, mangé des pâtes carbonara. Martine fait les meilleures carbonara du quartier. Meilleures que Bernard en tout cas — lui, il mettait de la crème. De la crème ! Dans des carbonara ! C\'est un crime, ça aussi!',
+        },
+        {
+            speaker: 'agent',
+            text: 'Avez-vous une preuve de votre présence là-bas ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'Oui, justement. J\'ai des photos. Martine et moi on a pris des selfies pendant le film. <span class="important">À 21h14</span>, avec la localisation GPS. Et avant que vous demandiez : non, on ne peut pas truquer le GPS. J\'ai essayé une fois pour éviter une contravention. Ça n\'a pas marché. Longue histoire.',
+        },
+        {
+            speaker: 'agent',
+            text: 'Avez-vous une autre photo ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'Oui, une de nous deux à <span class="important">23h02</span>, juste avant que je reparte. Et là, j\'ai vu les messages de Bernard qui ne répondait pas. J\'étais dans tous mes états. Mes orchidées... Bon, au moins lui, il est mort. Mes orchidées, elles, elles souffrent encore. C\'est plus long, pour une plante.',
+        },
+        {
+            speaker: 'agent',
+            text: 'Avez-vous envoyé des messages à M. Lafleur ce soir-là ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'Oui. Plusieurs. Je ne vais pas vous mentir, j\'étais fâchée. Très fâchée. <span class="important">Sapperlipopette</span>, ces orchidées coûtaient 80 dollars pièce ! Mais être fâchée ne fait pas de moi une meurtrière. Si c\'était le cas, mon ancien dentiste serait disparu depuis longtemps.',
+        },
+        {
+            speaker: 'agent',
+            text: 'Une dernière question. Saviez-vous que M. Lafleur était en conflit avec d\'autres personnes ?',
+        },
+        {
+            speaker: 'lucie',
+            text: 'Claude Lavi, oui. Tout le monde était au courant. Cette histoire de recette de ganache... Bernard était comme ça. Charmant, mais il <span class="important">empruntait</span> les idées des autres sans vraiment demander. Comme les plantes. Comme les recettes.',
+        }
+    ];
 
-let current = 0;
-let typing = false;
-let typeTimer = null;
+    let current = 0;
+    let typing = false;
+    let typeTimer = null;
 
-const dialogueText = document.getElementById('dialogue-text');
-const speakerLabel = document.getElementById('speaker-label');
-const progressFill = document.getElementById('progress-fill');
-const stepCounter  = document.getElementById('step-counter');
-const btnNext      = document.getElementById('btn-next');
+    const dialogueText = document.getElementById('dialogue-text');
+    const speakerLabel = document.getElementById('speaker-label');
+    const progressFill = document.getElementById('progress-fill');
+    const stepCounter  = document.getElementById('step-counter');
+    const btnNext      = document.getElementById('btn-next');
 
-// ── TYPEWRITER ──
-function typeText(html, onDone) {
-  dialogueText.innerHTML = '';
-  // Extraire le texte brut pour l'animation, puis injecter le HTML final
-  // On fait une animation simple : afficher le HTML en entier après un délai dynamique
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  const plainLen = temp.textContent.length;
-  const delay = Math.min(plainLen * 18, 1800);
+    // ── TYPEWRITER ──
+    function typeText(html, onDone) {
+        dialogueText.innerHTML = '';
+        // Extraire le texte brut pour l'animation, puis injecter le HTML final
+        // On fait une animation simple : afficher le HTML en entier après un délai dynamique
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const plainLen = temp.textContent.length;
+        const delay = Math.min(plainLen * 18, 1800);
 
-  dialogueText.innerHTML = '<span class="cursor"></span>';
-  typing = true;
-  btnNext.disabled = true;
+        dialogueText.innerHTML = '<span class="cursor"></span>';
+        typing = true;
+        btnNext.disabled = true;
 
-  typeTimer = setTimeout(() => {
-    dialogueText.innerHTML = html + '<span class="cursor"></span>';
-    typing = false;
-    btnNext.disabled = false;
-    if (onDone) onDone();
-  }, delay);
-}
+        typeTimer = setTimeout(() => {
+            dialogueText.innerHTML = html + '<span class="cursor"></span>';
+            typing = false;
+            btnNext.disabled = false;
+            if (onDone) onDone();
+        }, delay);
+    }
 
-// ── AFFICHER UNE ÉTAPE ──
-function showStep(idx) {
-  if (idx >= STEPS.length) {
-    document.getElementById('end-screen').classList.add('show');
-    return;
-  }
+    // ── AFFICHER UNE ÉTAPE ──
+    function showStep(idx) {
+        if (idx >= STEPS.length) {
+            document.getElementById('end-screen').classList.add('show');
+            return;
+        }
 
-  const step = STEPS[idx];
-  const isLucie = step.speaker === 'lucie';
+        const step = STEPS[idx];
+        const isLucie = step.speaker === 'lucie';
 
-  // Speaker
-  speakerLabel.textContent = isLucie ? 'LUCIE ÉBEL' : 'AGENT — AGENCE PÂQUES';
-  speakerLabel.className = 'dialogue-speaker ' + (isLucie ? 'speaker-lucie' : 'speaker-agent');
+        // Speaker
+        speakerLabel.textContent = isLucie ? 'LUCIE ÉBEL' : 'AGENT — AGENCE PÂQUES';
+        speakerLabel.className = 'dialogue-speaker ' + (isLucie ? 'speaker-lucie' : 'speaker-agent');
 
-  // Progrès
-  const pct = Math.round(((idx + 1) / STEPS.length) * 100);
-  progressFill.style.width = pct + '%';
-  stepCounter.textContent = (idx + 1) + ' / ' + STEPS.length;
+        // Progrès
+        const pct = Math.round(((idx + 1) / STEPS.length) * 100);
+        progressFill.style.width = pct + '%';
+        stepCounter.textContent = (idx + 1) + ' / ' + STEPS.length;
 
-  // Texte
-  typeText(step.text);
-}
+        // Texte
+        typeText(step.text);
+    }
 
-// ── SUIVANT ──
-function nextStep() {
-  if (typing) {
-    // Afficher immédiatement si on clique pendant l'animation
-    clearTimeout(typeTimer);
-    const step = STEPS[current];
-    dialogueText.innerHTML = step.text + '<span class="cursor"></span>';
-    typing = false;
-    btnNext.disabled = false;
-    return;
-  }
+    // ── SUIVANT ──
+    function nextStep() {
+        if (typing) {
+            // Afficher immédiatement si on clique pendant l'animation
+            clearTimeout(typeTimer);
+            const step = STEPS[current];
+            dialogueText.innerHTML = step.text + '<span class="cursor"></span>';
+            typing = false;
+            btnNext.disabled = false;
+            return;
+        }
 
-  current++;
-  if (current >= STEPS.length) {
-    document.getElementById('end-screen').classList.add('show');
-    return;
-  }
-  showStep(current);
-}
+        current++;
+        if (current >= STEPS.length) {
+            document.getElementById('end-screen').classList.add('show');
+            return;
+        }
+        showStep(current);
+    }
 
-// ── INIT ──
-showStep(0);
+    // ── INIT ──
+    showStep(0);
 </script>
 </body>
 </html>
