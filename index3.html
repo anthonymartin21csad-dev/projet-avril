@@ -550,16 +550,22 @@
         <!-- INBOX -->
         <div id="section-inbox">
           <div class="inbox-header">BOÎTE DE RÉCEPTION — <span>1 MESSAGE NON LU</span></div>
-          <div class="email-row" onclick="openEmail()">
+          <div class="email-row" onclick="openEmail(1)">
             <div class="email-from">Directrice G. Delargent</div>
             <div class="email-subject">AFFAIRE LAFLEUR — Mission urgente</div>
             <div class="email-preview">Agent, nous avons besoin de vous. Maintenant...</div>
             <div class="email-date">Aujourd'hui, 06:47</div>
           </div>
+          <div class="email-row" onclick="openEmail(2)">
+            <div class="email-from">Directrice G. Delargent</div>
+            <div class="email-subject">AFFAIRE LAFLEUR — Avancement de l'enquête</div>
+            <div class="email-preview">Nos scientifiques ont terminé d'analyser...</div>
+            <div class="email-date">Aujourd'hui, 08:35</div>
+          </div>
         </div>
 
         <!-- EMAIL -->
-        <div id="section-email">
+        <div id="section-email1">
           <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
           <div class="email-meta">
             <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
@@ -585,7 +591,7 @@
           </div>
         </div>
 
-        <div id="section-email">
+        <div id="section-email2">
           <div class="email-nav" onclick="backToInbox()">← RETOUR</div>
           <div class="email-meta">
             <div class="email-meta-row"><div class="meta-key">DE :</div><div class="meta-val">g.delargent@agence-paques.gc.ca</div></div>
@@ -702,9 +708,9 @@
     if (tab === 'code') renderCodePage();
   }
 
-  function openEmail() {
+  function openEmail(let id) {
     document.getElementById('section-inbox').style.display = 'none';
-    const el = document.getElementById('section-email');
+    const el = document.getElementById('section-email' + id.toString());
     el.style.display = 'block';
     el.classList.add('anim-in');
     window.scrollTo({ top: 0, behavior: 'smooth' });
