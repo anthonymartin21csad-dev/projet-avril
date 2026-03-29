@@ -389,6 +389,53 @@
 </head>
 <body>
 <div id="scene">
+
+  <!-- ZONE VISUELLE -->
+  <div id="visual-zone">
+    <div id="room-bg"></div>
+    <div class="lamp"></div>
+
+    <div id="lucie-char">
+      <!-- SVG Lucie -->
+      <div class="char-face">
+        <svg viewBox="0 0 68 68" width="68" height="68" xmlns="http://www.w3.org/2000/svg">
+          <!-- Corps -->
+          <ellipse cx="34" cy="56" rx="18" ry="10" fill="#2a1f42"/>
+          <!-- Cou -->
+          <rect x="30" y="44" width="8" height="8" fill="#d4a574" rx="2"/>
+          <!-- Tête -->
+          <ellipse cx="34" cy="34" rx="16" ry="18" fill="#d4a574"/>
+          <!-- Cheveux -->
+          <ellipse cx="34" cy="22" rx="17" ry="10" fill="#5c3d1e"/>
+          <ellipse cx="18" cy="32" rx="5" ry="10" fill="#5c3d1e"/>
+          <ellipse cx="50" cy="32" rx="5" ry="10" fill="#5c3d1e"/>
+          <!-- Yeux -->
+          <ellipse cx="27" cy="34" rx="3" ry="3.5" fill="#fff"/>
+          <ellipse cx="41" cy="34" rx="3" ry="3.5" fill="#fff"/>
+          <circle cx="28" cy="34" r="1.8" fill="#3a2010"/>
+          <circle cx="42" cy="34" r="1.8" fill="#3a2010"/>
+          <circle cx="28.8" cy="33.2" r="0.6" fill="#fff"/>
+          <circle cx="42.8" cy="33.2" r="0.6" fill="#fff"/>
+          <!-- Sourcils normaux -->
+          <path id="brow-l" d="M24 29 Q27 27 30 29" stroke="#3a2010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path id="brow-r" d="M38 29 Q41 27 44 29" stroke="#3a2010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <!-- Nez -->
+          <ellipse cx="34" cy="39" rx="2" ry="1.5" fill="#c49060"/>
+          <!-- Bouche -->
+          <path id="mouth" d="M29 44 Q34 48 39 44" stroke="#9a5040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Boucles d'oreilles -->
+          <circle cx="18" cy="36" r="2" fill="#a78bfa"/>
+          <circle cx="50" cy="36" r="2" fill="#a78bfa"/>
+        </svg>
+      </div>
+      <div class="char-name-tag">LUCIE ÉBEL</div>
+    </div>
+
+    <div id="visual-overlay">
+      <div class="visual-card" id="visual-card"></div>
+    </div>
+  </div>
+
   <!-- STATUS BAR -->
   <div id="status-bar">
     <div class="status-item">
