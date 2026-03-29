@@ -635,12 +635,9 @@
   //  NAVIGATION PAR ONGLETS
   // ══════════════════════════════════════════════════════════
 
-  const TABS = ['portail', 'code', 'interrogatoire'];
+  const TABS = ['portail', 'code'];
 
   function switchTab(tab) {
-    // Interrogatoire verrouillé — désactivé
-    if (tab === 'interrogatoire') return;
-
     TABS.forEach(t => {
       document.getElementById('page-' + t).classList.remove('active');
       document.getElementById('tab-' + t).classList.remove('active');
