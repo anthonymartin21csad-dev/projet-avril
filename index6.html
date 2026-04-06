@@ -1,612 +1,545 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ordinateur de Bernard Lafleur</title>
-  <style>
-    /* ══════════════════════════════════════
-       RESET & BASE
-    ══════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ordinateur de Bernard Lafleur</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
-      font-size: 11px;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-      user-select: none;
-      cursor: default;
-    }
+        body {
+            font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
+            font-size: 11px;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            user-select: none;
+            cursor: default;
+        }
 
-    /* ══════════════════════════════════════
-       FOND D'ÉCRAN — Bliss (style XP)
-    ══════════════════════════════════════ */
-    #desktop {
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 120% 80% at 30% 110%, #2a7a1a 0%, transparent 55%),
-        radial-gradient(ellipse 80% 60% at 70% 110%, #1e6b10 0%, transparent 50%),
-        radial-gradient(ellipse 100% 70% at 50% 100%, #3a9422 0%, #4caf28 30%, transparent 60%),
-        linear-gradient(180deg,
-          #5b9bd5 0%,
-          #7ab3e0 18%,
-          #a8cde8 32%,
-          #c5ddf0 42%,
-          #ddeef8 48%,
-          #eef6fb 52%,
-          #f0f8fd 55%,
-          #e8f4f8 58%,
-          #d0eaf5 62%,
-          #a8d5ec 68%,
-          #82c2e4 72%,
-          #5ea8d8 78%,
-          #4a9ccf 84%,
-          #3a8ec5 90%
-        );
-      overflow: hidden;
-    }
+        /* ══════════════════════════════════════
+           BUREAU NORMAL (XP)
+        ══════════════════════════════════════ */
+        #desktop {
+            position: fixed;
+            inset: 0;
+            background:
+                    radial-gradient(ellipse 120% 80% at 30% 110%, #2a7a1a 0%, transparent 55%),
+                    radial-gradient(ellipse 80% 60% at 70% 110%, #1e6b10 0%, transparent 50%),
+                    radial-gradient(ellipse 100% 70% at 50% 100%, #3a9422 0%, #4caf28 30%, transparent 60%),
+                    linear-gradient(180deg, #5b9bd5 0%, #7ab3e0 18%, #a8cde8 32%, #c5ddf0 42%,
+                    #ddeef8 48%, #eef6fb 52%, #f0f8fd 55%, #e8f4f8 58%,
+                    #d0eaf5 62%, #a8d5ec 68%, #82c2e4 72%, #5ea8d8 78%, #4a9ccf 84%, #3a8ec5 90%);
+            overflow: hidden;
+        }
 
-    /* Collines vertes SVG */
-    #desktop::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 45%;
-      background:
-        radial-gradient(ellipse 160% 120% at 50% 120%, #4db52a 0%, #5dc832 20%, #6ad83a 35%, transparent 55%),
-        radial-gradient(ellipse 80% 100% at 20% 130%, #3a9420 0%, transparent 50%),
-        radial-gradient(ellipse 80% 100% at 80% 130%, #3a9420 0%, transparent 50%);
-    }
+        .spy-mode #desktop {
+            background: none;
+            z-index: 7;
+        }
 
-    /* Quelques nuages */
-    #desktop::after {
-      content: '';
-      position: absolute;
-      top: 8%;
-      left: 15%;
-      width: 180px;
-      height: 60px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 50px;
-      box-shadow:
-        30px -10px 0 10px rgba(255,255,255,0.8),
-        -20px 5px 0 5px rgba(255,255,255,0.7),
-        250px 5% 0 30px rgba(255,255,255,0.75),
-        280px -5% 0 15px rgba(255,255,255,0.7),
-        550px 8% 0 20px rgba(255,255,255,0.65),
-        580px -2% 0 10px rgba(255,255,255,0.6);
-      filter: blur(2px);
-    }
+        #desktop::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 45%;
+            background:
+                    radial-gradient(ellipse 160% 120% at 50% 120%, #4db52a 0%, #5dc832 20%, #6ad83a 35%, transparent 55%),
+                    radial-gradient(ellipse 80% 100% at 20% 130%, #3a9420 0%, transparent 50%),
+                    radial-gradient(ellipse 80% 100% at 80% 130%, #3a9420 0%, transparent 50%);
+            transition: opacity 1.5s ease;
+        }
 
-    /* ══════════════════════════════════════
-       ICÔNES BUREAU
-    ══════════════════════════════════════ */
-    .desktop-icons {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+        #desktop::after {
+            content: '';
+            position: absolute;
+            top: 8%; left: 15%;
+            width: 180px; height: 60px;
+            background: rgba(255,255,255,0.85);
+            border-radius: 50px;
+            box-shadow:
+                    30px -10px 0 10px rgba(255,255,255,0.8),
+                    -20px 5px 0 5px rgba(255,255,255,0.7),
+                    250px 5% 0 30px rgba(255,255,255,0.75),
+                    280px -5% 0 15px rgba(255,255,255,0.7),
+                    550px 8% 0 20px rgba(255,255,255,0.65),
+                    580px -2% 0 10px rgba(255,255,255,0.6);
+            filter: blur(2px);
+            transition: opacity 1.5s ease;
+        }
 
-    .icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 72px;
-      padding: 4px;
-      border-radius: 2px;
-      cursor: pointer;
-      gap: 4px;
-    }
+        /* ══════════════════════════════════════
+           MODE ESPION — overlays
+        ══════════════════════════════════════ */
+        #spy-overlay {
+            position: fixed;
+            inset: 0;
+            background: #030803;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+            transition: opacity 1.5s ease;
+        }
 
-    .icon:hover { background: rgba(49,106,197,0.35); }
-    .icon.selected { background: rgba(49,106,197,0.5); outline: 1px dotted rgba(255,255,255,0.8); }
+        body.spy-mode #spy-overlay { opacity: 1; }
+        body.spy-mode #desktop::before { opacity: 0; }
+        body.spy-mode #desktop::after  { opacity: 0; }
 
-    .icon-img {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-    }
+        #spy-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 2s ease;
+            background-image:
+                    linear-gradient(rgba(0,255,60,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,60,0.035) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
 
-    .icon-label {
-      font-size: 10px;
-      color: #fff;
-      text-align: center;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.6);
-      line-height: 1.3;
-      word-break: break-word;
-      max-width: 72px;
-    }
+        body.spy-mode #spy-grid { opacity: 1; }
 
-    /* ══════════════════════════════════════
-       BARRE DES TÂCHES
-    ══════════════════════════════════════ */
-    #taskbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 30px;
-      background: linear-gradient(180deg, #245edb 0%, #1c4fc7 8%, #2462d4 15%, #1a4ec5 50%, #1644b8 90%, #1240b0 100%);
-      display: flex;
-      align-items: center;
-      box-shadow: 0 -1px 0 rgba(255,255,255,0.3) inset;
-      z-index: 1000;
-    }
+        #spy-scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 2s ease;
+            background: repeating-linear-gradient(
+                    0deg, transparent, transparent 2px,
+                    rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 4px
+            );
+        }
 
-    /* Bouton Démarrer */
-    #start-btn {
-      height: 100%;
-      padding: 0 12px 0 6px;
-      background: linear-gradient(180deg, #5cb85c 0%, #3d9940 30%, #348f37 70%, #2d7a30 100%);
-      border: none;
-      border-right: 1px solid #1a5c1e;
-      border-radius: 0 12px 12px 0;
-      color: #fff;
-      font-family: 'Tahoma', sans-serif;
-      font-weight: bold;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
-      flex-shrink: 0;
-    }
+        body.spy-mode #spy-scanlines { opacity: 1; }
 
-    #start-btn:hover { background: linear-gradient(180deg, #6dc96d 0%, #4aaa4d 30%, #3e9e41 70%, #357835 100%); }
+        #spy-flash {
+            position: fixed;
+            inset: 0;
+            background: #00ff50;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
 
-    #start-btn .win-logo {
-      width: 18px;
-      height: 18px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-    }
+        /* ══════════════════════════════════════
+           ICÔNES BUREAU
+        ══════════════════════════════════════ */
+        .desktop-icons {
+            position: absolute;
+            top: 16px; left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+        }
 
-    #start-btn .win-logo span {
-      border-radius: 1px;
-    }
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 72px; padding: 4px;
+            border-radius: 2px;
+            cursor: pointer; gap: 4px;
+        }
 
-    #start-btn .win-logo span:nth-child(1) { background: #f04e23; }
-    #start-btn .win-logo span:nth-child(2) { background: #7ab300; }
-    #start-btn .win-logo span:nth-child(3) { background: #00a4ef; }
-    #start-btn .win-logo span:nth-child(4) { background: #ffb900; }
+        .icon:hover { background: rgba(49,106,197,0.35); }
+        .icon.selected { background: rgba(49,106,197,0.5); outline: 1px dotted rgba(255,255,255,0.8); }
+        body.spy-mode .icon:hover    { background: rgba(0,255,60,0.18); }
+        body.spy-mode .icon.selected { background: rgba(0,255,60,0.28); outline: 1px dotted rgba(0,255,60,0.6); }
 
-    /* Tâches ouvertes */
-    .taskbar-tasks {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      padding: 0 4px;
-      overflow: hidden;
-    }
+        .emoji-icon { font-size: 22px; line-height: 1; }
 
-    .taskbar-task {
-      height: 22px;
-      padding: 0 8px;
-      background: linear-gradient(180deg, #3a78d4 0%, #2a5fb8 100%);
-      border: 1px solid #1a3a80;
-      border-radius: 2px;
-      color: #fff;
-      font-size: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      min-width: 120px;
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-    }
+        .icon-label {
+            font-size: 10px; color: #fff; text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.6);
+            line-height: 1.3; word-break: break-word; max-width: 72px;
+        }
 
-    .taskbar-task:hover { background: linear-gradient(180deg, #4a88e4 0%, #3a6fc8 100%); }
-    .taskbar-task.active {
-      background: linear-gradient(180deg, #1a40a0 0%, #1e4ab0 100%);
-      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
-    }
+        body.spy-mode .icon-label { color: #00ff50; text-shadow: 0 0 6px rgba(0,255,60,0.7); }
 
-    /* Horloge */
-    #clock {
-      padding: 0 10px;
-      color: #fff;
-      font-size: 11px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.1);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      border-left: 1px solid rgba(255,255,255,0.15);
-      flex-shrink: 0;
-    }
+        .spy-only  { display: none !important; }
+        body.spy-mode .spy-only    { display: flex !important; }
+        body.spy-mode .normal-only { display: none !important; }
 
-    /* ══════════════════════════════════════
-       FENÊTRES GÉNÉRIQUES (style XP)
-    ══════════════════════════════════════ */
-    .win {
-      position: fixed;
-      background: #ece9d8;
-      border: 1px solid #0054e3;
-      border-radius: 6px 6px 0 0;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.8);
-      min-width: 300px;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 100;
-    }
+        /* ══════════════════════════════════════
+           BARRE DES TÂCHES
+        ══════════════════════════════════════ */
+        #taskbar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0; height: 30px;
+            background: linear-gradient(180deg, #245edb 0%, #1c4fc7 8%, #2462d4 15%, #1a4ec5 50%, #1644b8 90%, #1240b0 100%);
+            display: flex; align-items: center;
+            box-shadow: 0 -1px 0 rgba(255,255,255,0.3) inset;
+            z-index: 1000;
+            transition: background 1.5s ease;
+        }
 
-    .win.visible { display: flex; }
-    .win.focused { z-index: 200; }
+        body.spy-mode #taskbar {
+            background: linear-gradient(180deg, #001800 0%, #002200 50%, #001200 100%);
+            box-shadow: 0 -1px 0 rgba(0,255,60,0.2) inset;
+        }
 
-    /* Barre de titre */
-    .win-titlebar {
-      height: 28px;
-      background: linear-gradient(180deg, #0078d7 0%, #0058c0 40%, #0050b8 60%, #004ab0 100%);
-      display: flex;
-      align-items: center;
-      padding: 0 6px;
-      gap: 4px;
-      cursor: move;
-      flex-shrink: 0;
-    }
+        #start-btn {
+            height: 100%; padding: 0 12px 0 6px;
+            background: linear-gradient(180deg, #5cb85c 0%, #3d9940 30%, #348f37 70%, #2d7a30 100%);
+            border: none; border-right: 1px solid #1a5c1e;
+            border-radius: 0 12px 12px 0; color: #fff;
+            font-family: 'Tahoma', sans-serif; font-weight: bold; font-size: 13px;
+            cursor: pointer; display: flex; align-items: center; gap: 4px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); flex-shrink: 0;
+            transition: background 1.5s ease, color 1.5s ease;
+        }
 
-    .win.inactive .win-titlebar {
-      background: linear-gradient(180deg, #7890c0 0%, #6080b0 100%);
-    }
+        body.spy-mode #start-btn {
+            background: linear-gradient(180deg, #003800 0%, #002800 100%);
+            border-right-color: #00ff50; color: #00ff50;
+            text-shadow: 0 0 6px rgba(0,255,60,0.8);
+        }
 
-    .win-icon { width: 16px; height: 16px; flex-shrink: 0; }
+        #start-btn .win-logo { width: 18px; height: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+        #start-btn .win-logo span { border-radius: 1px; }
+        #start-btn .win-logo span:nth-child(1) { background: #f04e23; }
+        #start-btn .win-logo span:nth-child(2) { background: #7ab300; }
+        #start-btn .win-logo span:nth-child(3) { background: #00a4ef; }
+        #start-btn .win-logo span:nth-child(4) { background: #ffb900; }
+        body.spy-mode #start-btn .win-logo span { background: #00ff50 !important; }
 
-    .win-title {
-      flex: 1;
-      color: #fff;
-      font-weight: bold;
-      font-size: 11px;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+        .taskbar-tasks { flex: 1; display: flex; align-items: center; gap: 2px; padding: 0 4px; overflow: hidden; }
 
-    /* Boutons de fenêtre */
-    .win-btns { display: flex; gap: 2px; flex-shrink: 0; }
+        .taskbar-task {
+            height: 22px; padding: 0 8px;
+            background: linear-gradient(180deg, #3a78d4 0%, #2a5fb8 100%);
+            border: 1px solid #1a3a80; border-radius: 2px; color: #fff;
+            font-size: 10px; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            white-space: nowrap; min-width: 120px; max-width: 200px;
+            overflow: hidden; text-overflow: ellipsis;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: background 1.5s, border-color 1.5s, color 1.5s;
+        }
 
-    .win-btn {
-      width: 21px;
-      height: 21px;
-      border-radius: 3px;
-      border: 1px solid rgba(0,0,0,0.3);
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-      line-height: 1;
-    }
+        body.spy-mode .taskbar-task { background: linear-gradient(180deg, #002200 0%, #001800 100%); border-color: #004400; color: #00cc40; }
+        .taskbar-task.active { background: linear-gradient(180deg, #1a40a0 0%, #1e4ab0 100%); box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3); }
+        body.spy-mode .taskbar-task.active { background: linear-gradient(180deg, #003800 0%, #002800 100%); border-color: #00ff50; color: #00ff50; }
 
-    .win-btn-min { background: linear-gradient(180deg, #5494d0 0%, #3878c0 100%); }
-    .win-btn-max { background: linear-gradient(180deg, #5494d0 0%, #3878c0 100%); }
-    .win-btn-close {
-      background: linear-gradient(180deg, #e05555 0%, #c03030 100%);
-      font-size: 13px;
-    }
+        #clock {
+            padding: 0 10px; color: #fff; font-size: 11px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.1); height: 100%;
+            display: flex; align-items: center;
+            border-left: 1px solid rgba(255,255,255,0.15); flex-shrink: 0;
+            transition: color 1.5s, border-color 1.5s;
+        }
 
-    .win-btn:hover { filter: brightness(1.2); }
-    .win-btn:active { filter: brightness(0.9); }
+        body.spy-mode #clock { color: #00ff50; text-shadow: 0 0 6px rgba(0,255,60,0.7); border-left-color: rgba(0,255,60,0.2); }
 
-    /* Barre de menu */
-    .win-menubar {
-      background: #ece9d8;
-      border-bottom: 1px solid #aaa;
-      padding: 2px 4px;
-      display: flex;
-      gap: 2px;
-      flex-shrink: 0;
-    }
+        /* ══════════════════════════════════════
+           FENÊTRES
+        ══════════════════════════════════════ */
+        .win {
+            position: fixed;
+            background: #ece9d8; border: 1px solid #0054e3;
+            border-radius: 6px 6px 0 0;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.8);
+            min-width: 300px; display: none; flex-direction: column;
+            overflow: hidden; z-index: 100;
+            transition: background 1.5s, border-color 1.5s, box-shadow 1.5s;
+        }
 
-    .menu-item {
-      padding: 2px 6px;
-      border-radius: 2px;
-      cursor: pointer;
-      font-size: 11px;
-    }
+        body.spy-mode .win {
+            background: #030a03; border-color: #00aa30;
+            box-shadow: 2px 2px 20px rgba(0,255,60,0.15), 0 0 0 1px rgba(0,255,60,0.08);
+        }
 
-    .menu-item:hover { background: #316ac5; color: #fff; }
+        .win.visible { display: flex; }
+        .win.focused { z-index: 200; }
 
-    /* Corps */
-    .win-body {
-      flex: 1;
-      overflow: auto;
-      scrollbar-width: thin;
-    }
+        .win-titlebar {
+            height: 28px;
+            background: linear-gradient(180deg, #0078d7 0%, #0058c0 40%, #0050b8 60%, #004ab0 100%);
+            display: flex; align-items: center; padding: 0 6px; gap: 4px;
+            cursor: move; flex-shrink: 0;
+            transition: background 1.5s;
+        }
 
-    /* Barre de statut */
-    .win-statusbar {
-      height: 20px;
-      background: #ece9d8;
-      border-top: 1px solid #aaa;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      font-size: 10px;
-      color: #444;
-      flex-shrink: 0;
-    }
+        body.spy-mode .win-titlebar { background: linear-gradient(180deg, #003800 0%, #002800 100%); }
+        .win.inactive .win-titlebar { background: linear-gradient(180deg, #7890c0 0%, #6080b0 100%); }
+        body.spy-mode .win.inactive .win-titlebar { background: linear-gradient(180deg, #001800 0%, #001200 100%); }
 
-    /* ══════════════════════════════════════
-       BLOC-NOTE
-    ══════════════════════════════════════ */
-    #win-notepad {
-      top: 80px;
-      left: 120px;
-      width: 480px;
-      height: 380px;
-      resize: both;
-    }
+        .win-icon { width: 16px; height: 16px; flex-shrink: 0; }
 
-    #notepad-content {
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      resize: none;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
-      background: #fff;
-      padding: 6px;
-      color: #000;
-      line-height: 1.5;
-    }
+        .win-title {
+            flex: 1; color: #fff; font-weight: bold; font-size: 11px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            transition: color 1.5s, text-shadow 1.5s;
+        }
 
-    /* ══════════════════════════════════════
-       MAPS (itinéraire)
-    ══════════════════════════════════════ */
-    #win-maps {
-      top: 60px;
-      left: 200px;
-      width: 560px;
-      height: 460px;
-    }
+        body.spy-mode .win-title { color: #00ff50; text-shadow: 0 0 6px rgba(0,255,60,0.5); }
 
-    .maps-body {
-      display: flex;
-      height: 100%;
-      background: #fff;
-    }
+        .win-btns { display: flex; gap: 2px; flex-shrink: 0; }
 
-    /* Panneau gauche — recherche + résultats */
-    .maps-sidebar {
-      width: 220px;
-      flex-shrink: 0;
-      border-right: 1px solid #ccc;
-      display: flex;
-      flex-direction: column;
-      background: #f5f5f5;
-    }
+        .win-btn {
+            width: 21px; height: 21px; border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.3); cursor: pointer;
+            font-size: 11px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); line-height: 1;
+            transition: background 1.5s, border-color 1.5s, color 1.5s;
+        }
 
-    .maps-search-bar {
-      padding: 6px;
-      border-bottom: 1px solid #ccc;
-      background: #e8e8e8;
-    }
+        .win-btn-min { background: linear-gradient(180deg, #5494d0 0%, #3878c0 100%); }
+        .win-btn-max { background: linear-gradient(180deg, #5494d0 0%, #3878c0 100%); }
+        .win-btn-close { background: linear-gradient(180deg, #e05555 0%, #c03030 100%); font-size: 13px; }
+        .win-btn:hover { filter: brightness(1.2); }
+        .win-btn:active { filter: brightness(0.9); }
+        body.spy-mode .win-btn { background: #001800 !important; border-color: #004400; color: #00cc40; }
+        body.spy-mode .win-btn-close { background: #1a0000 !important; border-color: #660000; color: #ff4444; }
 
-    .maps-search-bar input {
-      width: 100%;
-      padding: 3px 6px;
-      border: 1px solid #7f9db9;
-      border-radius: 2px;
-      font-size: 11px;
-      background: #fff;
-      outline: none;
-    }
+        .win-menubar {
+            background: #ece9d8; border-bottom: 1px solid #aaa;
+            padding: 2px 4px; display: flex; gap: 2px; flex-shrink: 0;
+            transition: background 1.5s, border-color 1.5s;
+        }
 
-    .maps-search-bar input:focus { border-color: #316ac5; }
+        body.spy-mode .win-menubar { background: #020802; border-bottom-color: #0d1f0d; }
 
-    .maps-directions-panel {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 6px;
-    }
+        .menu-item { padding: 2px 6px; border-radius: 2px; cursor: pointer; font-size: 11px; transition: color 1.5s; }
+        .menu-item:hover { background: #316ac5; color: #fff; }
+        body.spy-mode .menu-item { color: #00bb38; }
+        body.spy-mode .menu-item:hover { background: #002a00; color: #00ff50; }
 
-    .maps-from-to {
-      margin-bottom: 10px;
-    }
+        .win-body { flex: 1; overflow: auto; scrollbar-width: thin; }
 
-    .maps-route-label {
-      font-size: 10px;
-      color: #666;
-      margin-bottom: 2px;
-    }
+        .win-statusbar {
+            height: 20px; background: #ece9d8; border-top: 1px solid #aaa;
+            display: flex; align-items: center; padding: 0 8px;
+            font-size: 10px; color: #444; flex-shrink: 0;
+            transition: background 1.5s, border-color 1.5s, color 1.5s;
+        }
 
-    .maps-route-place {
-      font-size: 11px;
-      font-weight: bold;
-      color: #003399;
-      padding: 3px 6px;
-      background: #e8eef8;
-      border: 1px solid #b8c8e8;
-      border-radius: 2px;
-      margin-bottom: 4px;
-    }
+        body.spy-mode .win-statusbar { background: #020802; border-top-color: #0d1f0d; color: #00aa30; }
 
-    .maps-divider-label {
-      font-size: 10px;
-      color: #555;
-      padding: 4px 0;
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      margin: 4px 0 8px;
-      font-weight: bold;
-      text-align: center;
-      background: #efefef;
-    }
+        /* ══════════════════════════════════════
+           BLOC-NOTE
+        ══════════════════════════════════════ */
+        #win-notepad { top: 80px; left: 120px; width: 480px; height: 380px; }
 
-    .maps-step {
-      display: flex;
-      gap: 8px;
-      padding: 5px 4px;
-      border-bottom: 1px solid #e8e8e8;
-      cursor: pointer;
-    }
+        #notepad-content {
+            width: 100%; height: 100%; border: none; outline: none;
+            resize: none; font-family: 'Courier New', Courier, monospace;
+            font-size: 12px; background: #fff; padding: 6px; color: #000; line-height: 1.5;
+            transition: background 1.5s, color 1.5s;
+        }
 
-    .maps-step:hover { background: #e8eef8; }
-    .maps-step.highlighted { background: #ccd8f0; }
+        body.spy-mode #notepad-content { background: #010601; color: #00ff50; caret-color: #00ff50; }
 
-    .maps-step-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      background: #316ac5;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 10px;
-      font-weight: bold;
-      margin-top: 1px;
-    }
+        /* ══════════════════════════════════════
+           MAPS
+        ══════════════════════════════════════ */
+        #win-maps { top: 60px; left: 200px; width: 560px; height: 460px; }
 
-    .maps-step-text {
-      flex: 1;
-    }
+        .maps-body { display: flex; height: 100%; background: #fff; transition: background 1.5s; }
+        body.spy-mode .maps-body { background: #010601; }
 
-    .maps-step-instruction {
-      font-size: 11px;
-      color: #000;
-      line-height: 1.4;
-    }
+        .maps-sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid #ccc; display: flex; flex-direction: column; background: #f5f5f5; transition: background 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-sidebar { background: #020802; border-right-color: #0d1f0d; }
 
-    .maps-step-detail {
-      font-size: 10px;
-      color: #666;
-      margin-top: 1px;
-    }
+        .maps-search-bar { padding: 6px; border-bottom: 1px solid #ccc; background: #e8e8e8; transition: background 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-search-bar { background: #010601; border-bottom-color: #0d1f0d; }
 
-    .maps-total {
-      padding: 6px;
-      background: #e8e8e8;
-      border-top: 1px solid #ccc;
-      font-size: 10px;
-      color: #333;
-    }
+        .maps-search-bar input { width: 100%; padding: 3px 6px; border: 1px solid #7f9db9; border-radius: 2px; font-size: 11px; background: #fff; outline: none; transition: background 1.5s, color 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-search-bar input { background: #010401; color: #00ff50; border-color: #00aa30; }
 
-    /* Zone carte (droite) — plan de maison schématique */
-    .maps-map {
-      flex: 1;
-      background: #e8e4d8;
-      position: relative;
-      overflow: hidden;
-    }
+        .maps-directions-panel { flex: 1; overflow-y: auto; padding: 8px 6px; }
+        .maps-route-label { font-size: 10px; color: #666; margin-bottom: 2px; transition: color 1.5s; }
+        body.spy-mode .maps-route-label { color: #00aa30; }
 
-    .maps-map-title {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(255,255,255,0.9);
-      border: 1px solid #ccc;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: bold;
-      color: #333;
-      border-radius: 2px;
-    }
+        .maps-route-place { font-size: 11px; font-weight: bold; color: #003399; padding: 3px 6px; background: #e8eef8; border: 1px solid #b8c8e8; border-radius: 2px; margin-bottom: 4px; transition: background 1.5s, color 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-route-place { background: #001800; color: #00ff50; border-color: #00aa30; }
 
-    /* Plan schématique SVG */
-    .maps-floorplan {
-      width: 100%;
-      height: 100%;
-    }
+        .maps-divider-label { font-size: 10px; color: #555; padding: 4px 0; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; margin: 4px 0 8px; font-weight: bold; text-align: center; background: #efefef; transition: background 1.5s, color 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-divider-label { background: #001200; color: #00cc40; border-color: #0d1f0d; }
 
-    /* ══════════════════════════════════════
-       ICÔNES SVG INLINE (emoji fallback)
-    ══════════════════════════════════════ */
-    .emoji-icon { font-size: 22px; line-height: 1; }
+        .maps-step { display: flex; gap: 8px; padding: 5px 4px; border-bottom: 1px solid #e8e8e8; cursor: pointer; transition: border-color 1.5s; }
+        .maps-step:hover { background: #e8eef8; }
+        .maps-step.highlighted { background: #ccd8f0; }
+        body.spy-mode .maps-step { border-bottom-color: #0a1a0a; }
+        body.spy-mode .maps-step:hover { background: #001800; }
+        body.spy-mode .maps-step.highlighted { background: #002800; }
 
-    /* ══════════════════════════════════════
-       CURSEUR
-    ══════════════════════════════════════ */
-    .win-titlebar, .win-btn, .icon, .menu-item, .maps-step { cursor: default; }
-    .win-btn { cursor: pointer; }
-    .icon { cursor: pointer; }
-    .menu-item { cursor: default; }
-    .maps-step { cursor: pointer; }
-  </style>
+        .maps-step-icon { width: 20px; height: 20px; flex-shrink: 0; background: #316ac5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: bold; margin-top: 1px; transition: background 1.5s, color 1.5s; }
+        body.spy-mode .maps-step-icon { background: #00aa30; color: #000; }
+
+        .maps-step-instruction { font-size: 11px; color: #000; line-height: 1.4; transition: color 1.5s; }
+        body.spy-mode .maps-step-instruction { color: #00ff50; }
+
+        .maps-step-detail { font-size: 10px; color: #666; margin-top: 1px; transition: color 1.5s; }
+        body.spy-mode .maps-step-detail { color: #009920; }
+
+        .maps-total { padding: 6px; background: #e8e8e8; border-top: 1px solid #ccc; font-size: 10px; color: #333; transition: background 1.5s, color 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-total { background: #010601; color: #00aa30; border-top-color: #0d1f0d; }
+
+        .maps-map { flex: 1; background: #e8e4d8; position: relative; overflow: hidden; transition: background 1.5s; }
+        body.spy-mode .maps-map { background: #010401; }
+
+        .maps-map-title { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; padding: 3px 8px; font-size: 10px; font-weight: bold; color: #333; border-radius: 2px; transition: background 1.5s, color 1.5s, border-color 1.5s; }
+        body.spy-mode .maps-map-title { background: rgba(0,25,0,0.9); color: #00ff50; border-color: #00aa30; }
+
+        .maps-floorplan { width: 100%; height: 100%; }
+        .maps-from-to { margin-bottom: 10px; }
+
+        /* ══════════════════════════════════════
+           SECRET.txt (ESPION)
+        ══════════════════════════════════════ */
+        #win-secret { top: 100px; left: 160px; width: 500px; height: 420px; }
+
+        #secret-content {
+            width: 100%; height: 100%; border: none; outline: none;
+            resize: none; font-family: 'Courier New', Courier, monospace;
+            font-size: 12px; background: #010601; padding: 8px;
+            color: #00ff50; line-height: 1.6; caret-color: #00ff50;
+        }
+
+        /* ══════════════════════════════════════
+           MESSAGERIE CRYPTÉE (ESPION)
+        ══════════════════════════════════════ */
+        #win-crypto { top: 80px; left: 280px; width: 520px; height: 450px; }
+
+        .crypto-body { display: flex; flex-direction: column; height: 100%; background: #010601; font-family: 'Courier New', monospace; }
+
+        #crypto-login { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; }
+
+        .crypto-logo { font-size: 28px; letter-spacing: 3px; color: #00ff50; text-shadow: 0 0 12px rgba(0,255,60,0.4); font-family: 'Courier New', monospace; font-weight: bold; }
+
+        .crypto-subtitle { font-size: 10px; letter-spacing: 0.3em; color: #009920; text-align: center; }
+
+        .crypto-field-wrap { width: 100%; max-width: 280px; }
+
+        .crypto-label { font-size: 10px; color: #009920; letter-spacing: 0.15em; margin-bottom: 4px; }
+
+        .crypto-input {
+            width: 100%; background: #010401; border: 1px solid #00ff50;
+            padding: 7px 10px; color: #00ff50;
+            font-family: 'Courier New', monospace; font-size: 13px;
+            outline: none; letter-spacing: 0.1em; caret-color: #00ff50;
+        }
+
+        .crypto-input:focus { box-shadow: 0 0 8px rgba(0,255,60,0.25); }
+
+        .crypto-error { font-size: 10px; color: #ff4444; letter-spacing: 0.1em; min-height: 16px; text-align: center; }
+
+        .crypto-btn {
+            width: 100%; max-width: 280px; padding: 8px;
+            background: transparent; border: 1px solid #00ff50;
+            color: #00ff50; font-family: 'Courier New', monospace;
+            font-size: 11px; letter-spacing: 0.3em; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .crypto-btn:hover  { background: rgba(0,255,60,0.08); }
+        .crypto-btn:active { background: rgba(0,255,60,0.18); }
+
+        #crypto-messages { display: none; flex: 1; flex-direction: column; }
+
+        .crypto-header { padding: 6px 10px; border-bottom: 1px solid #0d1f0d; display: flex; align-items: center; justify-content: space-between; }
+        .crypto-header-title { color: #00ff50; font-size: 11px; letter-spacing: 0.15em; }
+        .crypto-header-status { font-size: 9px; color: #009920; }
+
+        .crypto-thread { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; scrollbar-color: #00ff50 #010601; }
+
+        .crypto-msg { display: flex; flex-direction: column; gap: 2px; }
+        .crypto-msg.incoming { align-items: flex-start; }
+        .crypto-msg.outgoing { align-items: flex-end; }
+
+        .crypto-msg-header { font-size: 9px; color: #009920; letter-spacing: 0.1em; }
+
+        .crypto-bubble { max-width: 76%; padding: 6px 10px; font-size: 11px; line-height: 1.5; border-radius: 2px; }
+        .crypto-msg.incoming .crypto-bubble { background: #001800; border: 1px solid #0d1f0d; color: #00ff50; border-bottom-left-radius: 0; }
+        .crypto-msg.outgoing .crypto-bubble { background: #002800; border: 1px solid #00aa30; color: #00ff50; border-bottom-right-radius: 0; }
+
+        .crypto-footer { padding: 6px 10px; border-top: 1px solid #0d1f0d; font-size: 9px; color: #004410; letter-spacing: 0.1em; }
+    </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     BUREAU
-══════════════════════════════════════ -->
+<div id="spy-overlay"></div>
+<div id="spy-grid"></div>
+<div id="spy-scanlines"></div>
+<div id="spy-flash"></div>
+
+<!-- BUREAU -->
 <div id="desktop">
+    <div class="desktop-icons">
 
-  <!-- Icônes -->
-  <div class="desktop-icons">
-    <div class="icon" id="icon-notepad" ondblclick="openApp('notepad')" onclick="selectIcon(this)">
-      <div class="emoji-icon">📝</div>
-      <div class="icon-label">TODO.txt</div>
-    </div>
-    <div class="icon" id="icon-maps" ondblclick="openApp('maps')" onclick="selectIcon(this)">
-      <div class="emoji-icon">🗺️</div>
-      <div class="icon-label">BernardMaps</div>
-    </div>
-    <div class="icon" ondblclick="" onclick="selectIcon(this)">
-      <div class="emoji-icon">🗑️</div>
-      <div class="icon-label">Corbeille</div>
-    </div>
-  </div>
+        <!-- Icônes normales -->
+        <div class="icon normal-only" id="icon-notepad" ondblclick="openApp('notepad')" onclick="selectIcon(this)">
+            <div class="emoji-icon">📝</div>
+            <div class="icon-label">TODO.txt</div>
+        </div>
+        <div class="icon normal-only" id="icon-maps" ondblclick="openApp('maps')" onclick="selectIcon(this)">
+            <div class="emoji-icon">🗺️</div>
+            <div class="icon-label">BernardMaps</div>
+        </div>
+        <div class="icon normal-only" onclick="selectIcon(this)">
+            <div class="emoji-icon">🗑️</div>
+            <div class="icon-label">Corbeille</div>
+        </div>
 
+        <!-- Icônes espion (mêmes + nouveaux) -->
+        <div class="icon spy-only" ondblclick="openApp('notepad')" onclick="selectIcon(this)">
+            <div class="emoji-icon">📝</div>
+            <div class="icon-label">TODO.txt</div>
+        </div>
+        <div class="icon spy-only" ondblclick="openApp('maps')" onclick="selectIcon(this)">
+            <div class="emoji-icon">🗺️</div>
+            <div class="icon-label">BernardMaps</div>
+        </div>
+        <div class="icon spy-only" onclick="selectIcon(this)">
+            <div class="emoji-icon">🗑️</div>
+            <div class="icon-label">Corbeille</div>
+        </div>
+        <div class="icon spy-only" id="icon-secret" ondblclick="openApp('secret')" onclick="selectIcon(this)">
+            <div class="emoji-icon">🔐</div>
+            <div class="icon-label">SECRET.txt</div>
+        </div>
+        <div class="icon spy-only" id="icon-crypto" ondblclick="openApp('crypto')" onclick="selectIcon(this)">
+            <div class="emoji-icon">💬</div>
+            <div class="icon-label">CryptoMsg</div>
+        </div>
+
+    </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     BARRE DES TÂCHES
-══════════════════════════════════════ -->
+<!-- BARRE DES TÂCHES -->
 <div id="taskbar">
-  <button id="start-btn">
-    <div class="win-logo">
-      <span></span><span></span><span></span><span></span>
-    </div>
-    Démarrer
-  </button>
-  <div class="taskbar-tasks" id="taskbar-tasks"></div>
-  <div id="clock">--:--</div>
+    <button id="start-btn">
+        <div class="win-logo"><span></span><span></span><span></span><span></span></div>
+        Démarrer
+    </button>
+    <div class="taskbar-tasks" id="taskbar-tasks"></div>
+    <div id="clock">--:--</div>
 </div>
 
-<!-- ══════════════════════════════════════
-     FENÊTRE BLOC-NOTE
-══════════════════════════════════════ -->
+<!-- BLOC-NOTE -->
 <div class="win" id="win-notepad">
-  <div class="win-titlebar" onmousedown="startDrag(event, 'win-notepad')">
-    <span class="win-icon">📝</span>
-    <span class="win-title">TODO.txt — Bloc-notes</span>
-    <div class="win-btns">
-      <div class="win-btn win-btn-min" onclick="minimizeWin('notepad')">_</div>
-      <div class="win-btn win-btn-max">□</div>
-      <div class="win-btn win-btn-close" onclick="closeWin('notepad')">✕</div>
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-notepad')">
+        <span class="win-icon">📝</span>
+        <span class="win-title">TODO.txt — Bloc-notes</span>
+        <div class="win-btns">
+            <div class="win-btn win-btn-min" onclick="minimizeWin('notepad')">_</div>
+            <div class="win-btn win-btn-max">□</div>
+            <div class="win-btn win-btn-close" onclick="closeWin('notepad')">✕</div>
+        </div>
     </div>
-  </div>
-  <div class="win-menubar">
-    <span class="menu-item">Fichier</span>
-    <span class="menu-item">Édition</span>
-    <span class="menu-item">Format</span>
-    <span class="menu-item">Affichage</span>
-    <span class="menu-item">?</span>
-  </div>
-  <div class="win-body">
+    <div class="win-menubar">
+        <span class="menu-item">Fichier</span><span class="menu-item">Édition</span>
+        <span class="menu-item">Format</span><span class="menu-item">Affichage</span>
+        <span class="menu-item">?</span>
+    </div>
+    <div class="win-body">
     <textarea id="notepad-content" readonly>LISTE DE CHOSES À FAIRE — Bernard Lafleur
 ========================================
 Mis à jour le : vendredi 13 mars
@@ -636,249 +569,410 @@ RAPPEL :
 - Fête de Lucie: 14 janvier
 - Fête de Liam: ? (j'ai oublié)
 - Fête de maman: 26 juillet
-
 </textarea>
-  </div>
-  <div class="win-statusbar">Ln 1, Col 1</div>
+    </div>
+    <div class="win-statusbar">Ln 1, Col 1</div>
+</div>
+
+<!-- BERNARDMAPS -->
+<div class="win" id="win-maps">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-maps')">
+        <span class="win-icon">🗺️</span>
+        <span class="win-title">BernardMaps — Itinéraire vers chez Lucie</span>
+        <div class="win-btns">
+            <div class="win-btn win-btn-min" onclick="minimizeWin('maps')">_</div>
+            <div class="win-btn win-btn-max">□</div>
+            <div class="win-btn win-btn-close" onclick="closeWin('maps')">✕</div>
+        </div>
+    </div>
+    <div class="win-menubar">
+        <span class="menu-item">Fichier</span><span class="menu-item">Affichage</span>
+        <span class="menu-item">Itinéraires</span><span class="menu-item">?</span>
+    </div>
+    <div class="win-body">
+        <div class="maps-body">
+            <div class="maps-sidebar">
+                <div class="maps-search-bar">
+                    <input type="text" value="Chez Lucie Ébel" readonly />
+                </div>
+                <div class="maps-directions-panel">
+                    <div class="maps-from-to">
+                        <div class="maps-route-label">De :</div>
+                        <div class="maps-route-place">📍 Bureau de Bernard</div>
+                        <div class="maps-route-label">À :</div>
+                        <div class="maps-route-place">🏠 Maison de Lucie Ébel</div>
+                    </div>
+                    <div class="maps-divider-label">▼ ITINÉRAIRE (5 étapes)</div>
+                    <div class="maps-step" onclick="highlightStep(this,1)">
+                        <div class="maps-step-icon">1</div>
+                        <div class="maps-step-text">
+                            <div class="maps-step-instruction">Descendre le groupe d'escaliers</div>
+                            <div class="maps-step-detail">Prendre les escaliers vers le rez-de-chaussée</div>
+                        </div>
+                    </div>
+                    <div class="maps-step" onclick="highlightStep(this,2)">
+                        <div class="maps-step-icon">2</div>
+                        <div class="maps-step-text">
+                            <div class="maps-step-instruction">Tourner à droite</div>
+                            <div class="maps-step-detail">En bas des escaliers, prendre à droite</div>
+                        </div>
+                    </div>
+                    <div class="maps-step" onclick="highlightStep(this,3)">
+                        <div class="maps-step-icon">3</div>
+                        <div class="maps-step-text">
+                            <div class="maps-step-instruction">Continuer jusqu'au mur</div>
+                            <div class="maps-step-detail">Continuer jusqu'au fond</div>
+                        </div>
+                    </div>
+                    <div class="maps-step" onclick="highlightStep(this,4)">
+                        <div class="maps-step-icon">4</div>
+                        <div class="maps-step-text">
+                            <div class="maps-step-instruction">Tourner à droite</div>
+                            <div class="maps-step-detail">Devant le mur du fond, prendre à droite</div>
+                        </div>
+                    </div>
+                    <div class="maps-step" onclick="highlightStep(this,5)">
+                        <div class="maps-step-icon">🏠</div>
+                        <div class="maps-step-text">
+                            <div class="maps-step-instruction">Passer la porte</div>
+                            <div class="maps-step-detail">Arrivée — Maison de Lucie Ébel</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="maps-total">⏱ ~45 sec &nbsp;|&nbsp; 📏 ~18 m</div>
+            </div>
+            <div class="maps-map">
+                <div class="maps-map-title">Plan — Maison Lafleur</div>
+                <p style="padding:8px;font-size:10px;color:#999;">Image indisponible</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- ══════════════════════════════════════
-     FENÊTRE BERNARDMAPS
+     SECRET.txt
 ══════════════════════════════════════ -->
-<div class="win" id="win-maps">
-  <div class="win-titlebar" onmousedown="startDrag(event, 'win-maps')">
-    <span class="win-icon">🗺️</span>
-    <span class="win-title">BernardMaps — Itinéraire vers chez Lucie</span>
-    <div class="win-btns">
-      <div class="win-btn win-btn-min" onclick="minimizeWin('maps')">_</div>
-      <div class="win-btn win-btn-max">□</div>
-      <div class="win-btn win-btn-close" onclick="closeWin('maps')">✕</div>
+<div class="win" id="win-secret">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-secret')">
+        <span class="win-icon">🔐</span>
+        <span class="win-title">SECRET.txt — Bloc-notes</span>
+        <div class="win-btns">
+            <div class="win-btn win-btn-min" onclick="minimizeWin('secret')">_</div>
+            <div class="win-btn win-btn-max">□</div>
+            <div class="win-btn win-btn-close" onclick="closeWin('secret')">✕</div>
+        </div>
     </div>
-  </div>
-  <div class="win-menubar">
-    <span class="menu-item">Fichier</span>
-    <span class="menu-item">Affichage</span>
-    <span class="menu-item">Itinéraires</span>
-    <span class="menu-item">?</span>
-  </div>
-  <div class="win-body">
-    <div class="maps-body">
-
-      <!-- Panneau latéral -->
-      <div class="maps-sidebar">
-        <div class="maps-search-bar">
-          <input type="text" value="Chez Lucie Ébel" readonly />
-        </div>
-        <div class="maps-directions-panel">
-
-          <div class="maps-from-to">
-            <div class="maps-route-label">De :</div>
-            <div class="maps-route-place">📍 Bureau de Bernard</div>
-            <div class="maps-route-label">À :</div>
-            <div class="maps-route-place">🏠 Chambre de Lucie Ébel</div>
-          </div>
-
-          <div class="maps-divider-label">▼ ITINÉRAIRE (5 étapes)</div>
-
-          <div class="maps-step" onclick="highlightStep(this, 1)" id="step-1">
-            <div class="maps-step-icon">1</div>
-            <div class="maps-step-text">
-              <div class="maps-step-instruction">Descendre le groupe d'escaliers</div>
-              <div class="maps-step-detail">Prendre les escaliers vers le rez-de-chaussée</div>
-            </div>
-          </div>
-
-          <div class="maps-step" onclick="highlightStep(this, 2)" id="step-2">
-            <div class="maps-step-icon">2</div>
-            <div class="maps-step-text">
-              <div class="maps-step-instruction">Tourner à droite</div>
-              <div class="maps-step-detail">En bas des escaliers, prendre à droite</div>
-            </div>
-          </div>
-
-          <div class="maps-step" onclick="highlightStep(this, 3)" id="step-3">
-            <div class="maps-step-icon">3</div>
-            <div class="maps-step-text">
-              <div class="maps-step-instruction">Continuer jusqu'au mur</div>
-              <div class="maps-step-detail">Continuer jusqu'au fond</div>
-            </div>
-          </div>
-
-          <div class="maps-step" onclick="highlightStep(this, 4)" id="step-4">
-            <div class="maps-step-icon">4</div>
-            <div class="maps-step-text">
-              <div class="maps-step-instruction">Tourner à droite</div>
-              <div class="maps-step-detail">Devant le mur du fond, prendre à droite</div>
-            </div>
-          </div>
-
-          <div class="maps-step" onclick="highlightStep(this, 5)" id="step-5">
-            <div class="maps-step-icon">🏠</div>
-            <div class="maps-step-text">
-              <div class="maps-step-instruction">Passer la porte</div>
-              <div class="maps-step-detail">Arrivée — Maison de Lucie Ébel</div>
-            </div>
-          </div>
-
-        </div>
-        <div class="maps-total">
-          ⏱ Durée estimée : ~45 sec &nbsp;|&nbsp; 📏 ~18 m
-        </div>
-      </div>
-
-      <!-- Plan schématique -->
-      <div class="maps-map">
-        <div class="maps-map-title">Plan — Maison Lafleur</div>
-        <p>Image Indisponible</p>
-      </div>
-
+    <div class="win-menubar">
+        <span class="menu-item">Fichier</span><span class="menu-item">Édition</span>
+        <span class="menu-item">Chiffrement</span><span class="menu-item">?</span>
     </div>
-  </div>
+    <div class="win-body">
+    <textarea id="secret-content" readonly>DOSSIER CLASSIFIÉ — B. LAFLEUR — AGENT #7-CACAO
+================================================
+Niveau d'accréditation : AMARETTO-3
+Dernière mise à jour   : vendredi 13 mars
+
+
+COUVERTURE ACTIVE :
+  Profession déclarée  : Chocolatier artisanal
+  Adresse officielle   : 47, rue des Érables
+  Statut               : Actif — couverture non compromise
+
+
+MISSION EN COURS — OP. GANACHE NOIRE :
+  Objectif     : Infiltrer le réseau de distribution
+                 de recettes volées au sein du
+                 milieu chocolatier régional.
+  Cible        : Un réseau opérant sous le nom de
+                 "La Confrérie du Cacao"
+  Progression  : Phase 3 / 5 — Identification
+                 des membres actifs en cours.
+
+
+CONTACTS TERRAIN :
+  > CANARI    — identité inconnue, fiable
+  > LAVI, C.  — suspect principal, mobile confirmé
+
+
+NOTE PERSONNELLE :
+  Si quelqu'un lit ceci, c'est que je ne suis
+  plus en mesure de terminer la mission.
+  Coincez le.
+
+  — B.L.
+
+
+[FIN DU DOCUMENT — CHIFFREMENT AES-256]
+</textarea>
+    </div>
+    <div class="win-statusbar">DÉCHIFFRÉ — AES-256 · AGENT CACAO7</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MESSAGERIE CRYPTÉE
+══════════════════════════════════════ -->
+<div class="win" id="win-crypto">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-crypto')">
+        <span class="win-icon">💬</span>
+        <span class="win-title">CryptoMsg v2.1 — Messagerie sécurisée</span>
+        <div class="win-btns">
+            <div class="win-btn win-btn-min" onclick="minimizeWin('crypto')">_</div>
+            <div class="win-btn win-btn-max">□</div>
+            <div class="win-btn win-btn-close" onclick="closeWin('crypto')">✕</div>
+        </div>
+    </div>
+    <div class="win-menubar">
+        <span class="menu-item">Connexion</span><span class="menu-item">Messages</span>
+        <span class="menu-item">Sécurité</span><span class="menu-item">?</span>
+    </div>
+    <div class="win-body" style="overflow:hidden;">
+        <div class="crypto-body">
+
+            <div id="crypto-login">
+                <div class="crypto-logo">/// CryptoMsg ///</div>
+                <div class="crypto-subtitle">CANAL CHIFFRÉ — ACCÈS RESTREINT</div>
+                <div class="crypto-field-wrap">
+                    <div class="crypto-label">// NOM D'AGENT</div>
+                    <input class="crypto-input" id="crypto-pass" type="password"
+                           placeholder="••••••••••" autocomplete="off"
+                           onkeydown="if(event.key==='Enter') unlockCrypto()"/>
+                </div>
+                <div class="crypto-error" id="crypto-error"></div>
+                <button class="crypto-btn" onclick="unlockCrypto()">[ CONNEXION ]</button>
+            </div>
+
+            <div id="crypto-messages">
+                <div class="crypto-header">
+                    <div class="crypto-header-title">/// CANAL SÉCURISÉ — CANARI</div>
+                    <div class="crypto-header-status">🟢 CHIFFRÉ · AES-256</div>
+                </div>
+                <div class="crypto-thread">
+
+                    <div class="crypto-msg incoming">
+                        <div class="crypto-msg-header">CANARI — Jeu 12 mars, 22:14</div>
+                        <div class="crypto-bubble">Le suspect est identifé. Nous pensons que le coupable est Claude Lavi, né le 17 décembre 1987.</div>
+                    </div>
+
+                    <div class="crypto-msg outgoing">
+                        <div class="crypto-msg-header">CACAO-7 — Jeu 12 mars, 22:31</div>
+                        <div class="crypto-bubble">Confirmé. Je continue d'essayer de le coincer.</div>
+                    </div>
+
+                    <div class="crypto-msg incoming">
+                        <div class="crypto-msg-header">CANARI — Jeu 12 mars, 22:33</div>
+                        <div class="crypto-bubble">Attention. Il est dangereux.</div>
+                    </div>
+
+                    <div class="crypto-msg outgoing">
+                        <div class="crypto-msg-header">CACAO-7 — Ven 13 mars, 09:07</div>
+                        <div class="crypto-bubble">Compris.</div>
+                    </div>
+
+                    <div class="crypto-msg incoming">
+                        <div class="crypto-msg-header">CANARI — Jeu 12 mars, 22:33</div>
+                        <div class="crypto-bubble">Le code de son usine est composé de 4 chiffres : Le temps qu'il a mis à perfectionner sa recette, Sa date de fête, Et son chiffre chanceux.</div>
+                    </div>
+
+                </div>
+                <div class="crypto-footer">/// FIN DE L'HISTORIQUE — AUCUN NOUVEAU MESSAGE ///</div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script>
-  // ══════════════════════════════════════════════════════
-  //  HORLOGE
-  // ══════════════════════════════════════════════════════
-  function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('clock').textContent = `${h}:${m}`;
-  }
-  updateClock();
-  setInterval(updateClock, 10000);
+    // ══════════════════════════════════════════════════════
+    //  ⚙️  CONFIGURATION — MODIFIER ICI
+    // ══════════════════════════════════════════════════════
+    const CRYPTO_PASSWORD = "CACAO7";  // ← Mot de passe de la messagerie cryptée
 
-  // ══════════════════════════════════════════════════════
-  //  GESTION DES FENÊTRES
-  // ══════════════════════════════════════════════════════
-  const windows = {
-    notepad: { id: 'win-notepad', title: '📝 TODO.txt', minimized: false },
-    maps:    { id: 'win-maps',    title: '🗺️ BernardMaps', minimized: false }
-  };
-
-  let zCounter = 200;
-
-  function openApp(name) {
-    const w = windows[name];
-    const el = document.getElementById(w.id);
-    w.minimized = false;
-    el.classList.add('visible');
-    focusWin(name);
-    updateTaskbar();
-  }
-
-  function closeWin(name) {
-    const w = windows[name];
-    document.getElementById(w.id).classList.remove('visible');
-    updateTaskbar();
-  }
-
-  function minimizeWin(name) {
-    const w = windows[name];
-    w.minimized = true;
-    document.getElementById(w.id).style.display = 'none';
-    updateTaskbar();
-  }
-
-  function focusWin(name) {
-    // Rendre toutes les fenêtres inactives
-    Object.values(windows).forEach(w => {
-      const el = document.getElementById(w.id);
-      el.classList.remove('focused');
-      el.classList.add('inactive');
-    });
-    // Activer celle-ci
-    const el = document.getElementById(windows[name].id);
-    el.classList.remove('inactive');
-    el.classList.add('focused');
-    el.style.zIndex = ++zCounter;
-    updateTaskbar(name);
-  }
-
-  function updateTaskbar(active) {
-    const container = document.getElementById('taskbar-tasks');
-    container.innerHTML = '';
-    Object.entries(windows).forEach(([name, w]) => {
-      const el = document.getElementById(w.id);
-      if (!el.classList.contains('visible') && !w.minimized) return;
-      if (el.style.display === 'none' && !w.minimized) return;
-
-      const btn = document.createElement('div');
-      btn.className = 'taskbar-task' + (active === name ? ' active' : '');
-      btn.textContent = w.title;
-      btn.onclick = () => {
-        if (w.minimized) {
-          w.minimized = false;
-          el.style.display = '';
-          el.classList.add('visible');
-          focusWin(name);
-        } else {
-          focusWin(name);
-        }
-      };
-      container.appendChild(btn);
-    });
-  }
-
-  // Clic sur bureau = désélectionner icônes
-  document.getElementById('desktop').addEventListener('click', e => {
-    if (e.target === document.getElementById('desktop') || e.target.id === 'desktop') {
-      document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+    // ══════════════════════════════════════════════════════
+    //  HORLOGE
+    // ══════════════════════════════════════════════════════
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').textContent =
+            String(now.getHours()).padStart(2,'0') + ':' +
+            String(now.getMinutes()).padStart(2,'0');
     }
-  });
+    updateClock();
+    setInterval(updateClock, 10000);
 
-  function selectIcon(el) {
-    document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-
-  // Focus au clic sur une fenêtre
-  Object.keys(windows).forEach(name => {
-    document.getElementById(windows[name].id).addEventListener('mousedown', () => focusWin(name));
-  });
-
-  // ══════════════════════════════════════════════════════
-  //  DRAG & DROP FENÊTRES
-  // ══════════════════════════════════════════════════════
-  let dragState = null;
-
-  function startDrag(e, winId) {
-    const el = document.getElementById(winId);
-    const rect = el.getBoundingClientRect();
-    dragState = {
-      el,
-      offsetX: e.clientX - rect.left,
-      offsetY: e.clientY - rect.top
+    // ══════════════════════════════════════════════════════
+    //  GESTION DES FENÊTRES
+    // ══════════════════════════════════════════════════════
+    const windows = {
+        notepad: { id: 'win-notepad', title: '📝 TODO.txt',   minimized: false },
+        maps:    { id: 'win-maps',    title: '🗺️ BernardMaps', minimized: false },
+        secret:  { id: 'win-secret', title: '🔐 SECRET.txt',  minimized: false },
+        crypto:  { id: 'win-crypto', title: '💬 CryptoMsg',   minimized: false },
     };
-    e.preventDefault();
-  }
 
-  document.addEventListener('mousemove', e => {
-    if (!dragState) return;
-    const x = e.clientX - dragState.offsetX;
-    const y = e.clientY - dragState.offsetY;
-    dragState.el.style.left = Math.max(0, x) + 'px';
-    dragState.el.style.top  = Math.max(0, Math.min(y, window.innerHeight - 30)) + 'px';
-  });
+    let zCounter = 200;
 
-  document.addEventListener('mouseup', () => { dragState = null; });
+    function openApp(name) {
+        const w = windows[name];
+        const el = document.getElementById(w.id);
+        w.minimized = false;
+        el.style.display = '';
+        el.classList.add('visible');
+        focusWin(name);
+        updateTaskbar();
+    }
 
-  // ══════════════════════════════════════════════════════
-  //  ITINÉRAIRE — mise en évidence des étapes
-  // ══════════════════════════════════════════════════════
-  function highlightStep(el, num) {
-    document.querySelectorAll('.maps-step').forEach(s => s.classList.remove('highlighted'));
-    el.classList.add('highlighted');
-  }
+    function closeWin(name) {
+        const el = document.getElementById(windows[name].id);
+        el.classList.remove('visible');
+        el.style.display = 'none';
+        updateTaskbar();
+    }
 
-  // ══════════════════════════════════════════════════════
-  //  INIT — ouvrir les deux applis au démarrage
-  // ══════════════════════════════════════════════════════
-  window.addEventListener('load', () => {
-    openApp('maps');
-    setTimeout(() => openApp('notepad'), 100);
-  });
+    function minimizeWin(name) {
+        windows[name].minimized = true;
+        document.getElementById(windows[name].id).style.display = 'none';
+        updateTaskbar();
+    }
+
+    function focusWin(name) {
+        Object.values(windows).forEach(w => {
+            const el = document.getElementById(w.id);
+            el.classList.remove('focused');
+            el.classList.add('inactive');
+        });
+        const el = document.getElementById(windows[name].id);
+        el.classList.remove('inactive');
+        el.classList.add('focused');
+        el.style.zIndex = ++zCounter;
+        updateTaskbar(name);
+    }
+
+    function updateTaskbar(active) {
+        const container = document.getElementById('taskbar-tasks');
+        container.innerHTML = '';
+        Object.entries(windows).forEach(([name, w]) => {
+            const el = document.getElementById(w.id);
+            if (!el.classList.contains('visible') && !w.minimized) return;
+            const btn = document.createElement('div');
+            btn.className = 'taskbar-task' + (active === name ? ' active' : '');
+            btn.textContent = w.title;
+            btn.onclick = () => {
+                if (w.minimized) {
+                    w.minimized = false;
+                    el.style.display = '';
+                    el.classList.add('visible');
+                    focusWin(name);
+                } else {
+                    focusWin(name);
+                }
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    document.getElementById('desktop').addEventListener('click', e => {
+        if (e.target.id === 'desktop') document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+    });
+
+    function selectIcon(el) {
+        document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    Object.keys(windows).forEach(name => {
+        document.getElementById(windows[name].id).addEventListener('mousedown', () => focusWin(name));
+    });
+
+    // ══════════════════════════════════════════════════════
+    //  DRAG & DROP
+    // ══════════════════════════════════════════════════════
+    let dragState = null;
+
+    function startDrag(e, winId) {
+        const el = document.getElementById(winId);
+        const rect = el.getBoundingClientRect();
+        dragState = { el, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top };
+        e.preventDefault();
+    }
+
+    document.addEventListener('mousemove', e => {
+        if (!dragState) return;
+        dragState.el.style.left = Math.max(0, e.clientX - dragState.offsetX) + 'px';
+        dragState.el.style.top  = Math.max(0, Math.min(e.clientY - dragState.offsetY, window.innerHeight - 30)) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => { dragState = null; });
+
+    // ══════════════════════════════════════════════════════
+    //  MAPS
+    // ══════════════════════════════════════════════════════
+    function highlightStep(el) {
+        document.querySelectorAll('.maps-step').forEach(s => s.classList.remove('highlighted'));
+        el.classList.add('highlighted');
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  MODE ESPION — S + K simultanés
+    // ══════════════════════════════════════════════════════
+    let spyMode = false;
+    const keysDown = new Set();
+
+    document.addEventListener('keydown', e => {
+        keysDown.add(e.key.toLowerCase());
+        if (keysDown.has('s') && keysDown.has('k') && !spyMode) triggerSpyMode();
+    });
+
+    document.addEventListener('keyup', e => keysDown.delete(e.key.toLowerCase()));
+
+    function triggerSpyMode() {
+        spyMode = true;
+
+        // Flash vert
+        const flash = document.getElementById('spy-flash');
+        flash.style.transition = 'opacity 0.08s';
+        flash.style.opacity = '0.6';
+        setTimeout(() => {
+            flash.style.transition = 'opacity 0.6s';
+            flash.style.opacity = '0';
+        }, 80);
+
+        // Activation décalée pour laisser le flash apparaître
+        setTimeout(() => document.body.classList.add('spy-mode'), 60);
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  MESSAGERIE CRYPTÉE
+    // ══════════════════════════════════════════════════════
+    function unlockCrypto() {
+        const val = document.getElementById('crypto-pass').value.trim().toUpperCase();
+        const err = document.getElementById('crypto-error');
+
+        if (val !== CRYPTO_PASSWORD.toUpperCase()) {
+            err.textContent = '> MOT DE PASSE INCORRECT';
+            const inp = document.getElementById('crypto-pass');
+            inp.style.borderColor = '#ff4444';
+            setTimeout(() => { inp.style.borderColor = '#00ff50'; err.textContent = ''; }, 1500);
+            return;
+        }
+
+        document.getElementById('crypto-login').style.display = 'none';
+        const msgs = document.getElementById('crypto-messages');
+        msgs.style.display = 'flex';
+        msgs.style.flexDirection = 'column';
+        msgs.style.flex = '1';
+        setTimeout(() => {
+            const thread = msgs.querySelector('.crypto-thread');
+            if (thread) thread.scrollTop = thread.scrollHeight;
+        }, 50);
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════════════
+    window.addEventListener('load', () => {
+        openApp('maps');
+        setTimeout(() => openApp('notepad'), 100);
+    });
 </script>
 </body>
 </html>
